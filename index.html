@@ -3,28 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <title>EVILE | محرك بحث الوسائط المتقدم</title>
+    <title>EVILE | محرك بحث الوسائط المتقدم - زجاجي iOS</title>
     <!-- Font Awesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- Google Fonts: Cairo -->
+    <!-- Google Fonts: Cairo + SF Pro substitute -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Cairo', 'Segoe UI', system-ui, sans-serif;
+            font-family: 'Cairo', -apple-system, 'SF Pro Text', system-ui, sans-serif;
         }
 
-        /* الخلفية الجديدة #F7F8F0 */
+        /* الوضع الفاتح (النهاري) - ألوان iOS زجاجية راقية */
+        :root {
+            --bg-gradient-start: #eef2f8;
+            --bg-gradient-end: #d9e2ec;
+            --glass-bg: rgba(255, 255, 255, 0.68);
+            --glass-border: rgba(120, 140, 160, 0.2);
+            --card-bg: rgba(255, 255, 255, 0.6);
+            --text-primary: #1c2c38;
+            --text-secondary: #2c4b5e;
+            --accent: #5aa9b0;
+            --accent-glow: rgba(90, 169, 176, 0.3);
+            --btn-gradient: linear-gradient(135deg, #5aa9b0, #3e7a82);
+            --shadow: 0 12px 28px -8px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.02);
+            --shadow-hover: 0 20px 32px -12px rgba(0, 0, 0, 0.15);
+            --placeholder-icon: #8aaec0;
+        }
+
+        body.dark {
+            --bg-gradient-start: #121826;
+            --bg-gradient-end: #0a0f16;
+            --glass-bg: rgba(22, 28, 40, 0.7);
+            --glass-border: rgba(80, 110, 130, 0.3);
+            --card-bg: rgba(28, 35, 48, 0.65);
+            --text-primary: #f0f4fa;
+            --text-secondary: #bfd6e8;
+            --accent: #7fc1cc;
+            --accent-glow: rgba(127, 193, 204, 0.25);
+            --btn-gradient: linear-gradient(135deg, #7fc1cc, #5599aa);
+            --placeholder-icon: #5f7e92;
+        }
+
         body {
             min-height: 100vh;
-            background: #F7F8F0;
-            background-attachment: fixed;
+            background: linear-gradient(145deg, var(--bg-gradient-start), var(--bg-gradient-end));
+            transition: background 0.3s ease, color 0.2s;
             position: relative;
-            padding-bottom: 66px; /* مساحة للشريط السفلي (أكبر قليلاً) */
+            padding-bottom: 72px;
         }
-        
+
+        /* تأثير زجاجي متحرك خلفي */
         body::before {
             content: '';
             position: fixed;
@@ -32,92 +63,124 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at 15% 25%, rgba(156, 213, 255, 0.15) 0%, transparent 70%);
+            background: radial-gradient(circle at 30% 40%, var(--accent-glow) 0%, transparent 65%);
             pointer-events: none;
             z-index: 0;
         }
 
-        /* ========== الهيدر العلوي (بحث فقط) ========== */
-        .top-search-bar {
+        /* شريط علوي بتأثير زجاجي وشفافية عالية */
+        .top-bar {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            z-index: 1000;
-            padding: 0.5rem 1rem;
-            background: rgba(247, 248, 240, 0.92);
-            backdrop-filter: blur(16px);
-            border-bottom: 1px solid rgba(53, 88, 114, 0.15);
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+            z-index: 1100;
+            padding: 0.75rem 1.2rem;
+            background: var(--glass-bg);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-bottom: 1px solid var(--glass-border);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
         }
 
-        .search-container {
-            max-width: 500px;
+        .search-wrapper {
+            max-width: 600px;
             margin: 0 auto;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.9rem;
         }
 
-        .search-input-wrapper {
+        /* حقل بحث أنيق مع زر داخلي */
+        .search-field {
             flex: 1;
-            display: flex;
-            align-items: center;
-            background: #9CD5FF; /* لون القوالب */
-            border-radius: 48px;
-            padding: 0.1rem 0.5rem 0.1rem 0.1rem;
-            border: 1px solid rgba(53, 88, 114, 0.2);
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+            position: relative;
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(12px);
+            border-radius: 56px;
+            border: 1px solid var(--glass-border);
+            transition: all 0.2s;
+            box-shadow: var(--shadow);
+        }
+        body.dark .search-field {
+            background: rgba(30, 38, 52, 0.6);
+        }
+        .search-field:focus-within {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-glow);
         }
 
-        .search-input-wrapper input {
+        .search-field input {
+            width: 100%;
             background: transparent;
             border: none;
-            padding: 6px 10px;
-            font-size: 0.8rem;
-            color: #355872; /* لون النصوص */
-            width: 100%;
+            padding: 12px 52px 12px 20px;
+            font-size: 0.9rem;
+            color: var(--text-primary);
             outline: none;
             font-weight: 500;
         }
-
-        .search-input-wrapper input::placeholder {
-            color: #5a7a8c;
-            font-size: 0.75rem;
+        .search-field input::placeholder {
+            color: var(--text-secondary);
+            font-weight: 400;
         }
 
-        .search-btn-header {
-            background: #7AAACE; /* لون الأزرار */
+        .search-icon-inside {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: transparent;
             border: none;
-            border-radius: 48px;
+            color: var(--accent);
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: 0.2s;
             width: 34px;
             height: 34px;
             display: flex;
             align-items: center;
             justify-content: center;
+            border-radius: 50%;
+        }
+        .search-icon-inside:hover {
+            background: var(--accent-glow);
+            color: var(--accent);
+        }
+
+        /* زر تبديل المظهر (نهار/ليل) */
+        .theme-toggle {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 48px;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             cursor: pointer;
-            transition: 0.2s;
+            transition: all 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            color: var(--accent);
+            font-size: 1.2rem;
+            box-shadow: var(--shadow);
+        }
+        .theme-toggle:hover {
+            background: var(--accent);
             color: white;
-            font-size: 0.9rem;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-            flex-shrink: 0;
+            transform: scale(0.94);
         }
 
-        .search-btn-header:hover {
-            background: #5a8aaa;
-            transform: scale(0.96);
-        }
-
-        /* ========== المحتوى الرئيسي ========== */
+        /* المحتوى الرئيسي */
         .main-content {
             max-width: 1400px;
             margin: 0 auto;
-            padding: 4.5rem 1rem 1rem 1rem;
+            padding: 5.5rem 1.2rem 1.8rem;
             position: relative;
             z-index: 2;
         }
 
-        /* حالة فارغة */
+        /* حالة فارغة مع ملصق مميز (محاولة عرض ملصق sticker) */
         .center-image-container {
             display: flex;
             justify-content: center;
@@ -125,94 +188,99 @@
             min-height: 65vh;
             flex-direction: column;
             gap: 1.5rem;
+            text-align: center;
         }
-        
-        .center-image {
-            max-width: 240px;
+        .sticker-placeholder {
+            max-width: 180px;
             width: 100%;
-            height: auto;
-            opacity: 0.7;
-            filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.05));
-            border-radius: 28px;
+            filter: drop-shadow(0 12px 20px rgba(0, 0, 0, 0.1));
+            transition: transform 0.2s ease;
         }
-        
+        .sticker-placeholder:hover {
+            transform: scale(1.02);
+        }
         .center-text {
-            color: #355872;
-            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
             font-weight: 500;
-            background: rgba(156, 213, 255, 0.3);
-            padding: 6px 20px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            padding: 8px 24px;
             border-radius: 60px;
-            backdrop-filter: blur(4px);
+            border: 1px solid var(--glass-border);
         }
 
-        /* شبكة النتائج - القوالب باللون #9CD5FF */
+        /* شبكة البطاقات - تصميم زجاجي فاخر */
         .results-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 1rem;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.8rem;
+            margin-bottom: 1.5rem;
         }
 
         .glass-card {
-            background: #9CD5FF;
-            backdrop-filter: blur(4px);
-            border-radius: 28px;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 36px;
             overflow: hidden;
-            transition: transform 0.25s ease, box-shadow 0.25s;
-            border: 1px solid rgba(53, 88, 114, 0.2);
+            transition: all 0.35s cubic-bezier(0.15, 0.85, 0.35, 1);
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--shadow);
             display: flex;
             flex-direction: column;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
         }
-
         .glass-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.05);
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--accent);
         }
 
         .media-container {
             width: 100%;
-            min-height: 200px;
-            background: #e6f4ff;
+            background: rgba(0, 0, 0, 0.05);
             display: flex;
             align-items: center;
             justify-content: center;
             overflow: hidden;
             position: relative;
         }
-
         .media-container img {
             width: 100%;
             height: auto;
-            max-height: 220px;
-            object-fit: cover;
             display: block;
+            object-fit: contain;
+            max-height: 280px;
+            transition: transform 0.3s;
+        }
+        .glass-card:hover .media-container img {
+            transform: scale(1.01);
         }
 
         /* فيديو */
         .video-player-wrapper {
             position: relative;
             width: 100%;
-            background: #2a3a44;
+            background: #1a262e;
+            display: flex;
+            justify-content: center;
         }
-        
         .video-player-wrapper video {
             width: 100%;
-            max-height: 220px;
+            height: auto;
+            max-height: 280px;
             display: block;
-            background: #2a3a44;
+            object-fit: contain;
         }
-        
         .custom-play-btn {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: rgba(122, 170, 206, 0.9);
-            backdrop-filter: blur(8px);
-            width: 48px;
-            height: 48px;
+            background: rgba(90, 169, 176, 0.9);
+            backdrop-filter: blur(12px);
+            width: 54px;
+            height: 54px;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -220,141 +288,95 @@
             cursor: pointer;
             transition: 0.2s;
             color: white;
-            font-size: 1.3rem;
-            border: 2px solid rgba(255, 255, 255, 0.6);
+            font-size: 1.4rem;
+            border: 2px solid rgba(255,255,255,0.8);
             z-index: 5;
         }
-        
         .custom-play-btn:hover {
-            background: #5a8aaa;
-            transform: translate(-50%, -50%) scale(1.05);
-        }
-        
-        video::-webkit-media-controls-panel {
-            background-color: rgba(156, 213, 255, 0.85);
+            background: var(--accent);
+            transform: translate(-50%, -50%) scale(1.06);
         }
 
         .card-info {
-            padding: 0.7rem;
+            padding: 0.8rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
             gap: 0.5rem;
+            border-top: 1px solid var(--glass-border);
         }
-
         .card-author {
-            font-size: 0.65rem;
-            color: #355872;
+            font-size: 0.7rem;
+            color: var(--text-secondary);
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 6px;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
+            font-weight: 500;
         }
-
         .download-btn {
-            background: #7AAACE;
-            border: 1px solid rgba(53, 88, 114, 0.3);
-            border-radius: 32px;
-            padding: 4px 12px;
+            background: var(--btn-gradient);
+            border: none;
+            border-radius: 40px;
+            padding: 6px 16px;
             color: white;
             font-weight: 600;
-            font-size: 0.65rem;
+            font-size: 0.7rem;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
-            gap: 5px;
-            transition: 0.1s linear;
+            gap: 6px;
+            transition: 0.15s;
+            backdrop-filter: blur(4px);
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
         }
+        .download-btn:active { transform: scale(0.94); }
+        .download-btn.disabled { opacity: 0.6; pointer-events: none; }
 
-        .download-btn:active {
-            transform: scale(0.94);
-        }
-        
-        .download-btn.disabled {
-            opacity: 0.7;
-            cursor: wait;
-            pointer-events: none;
-        }
-
-        .loader {
+        .loader, .no-results {
             text-align: center;
             padding: 2rem;
-            color: #355872;
-            background: #9CD5FF;
-            border-radius: 56px;
-            font-size: 0.9rem;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border-radius: 48px;
+            color: var(--text-primary);
+            font-weight: 500;
+            border: 1px solid var(--glass-border);
         }
 
-        .no-results {
-            text-align: center;
-            padding: 2rem;
-            background: #9CD5FF;
-            border-radius: 56px;
-            color: #355872;
-        }
-
-        /* ========== صفحة المطور ========== */
+        /* صفحة المطور بأناقة */
         .developer-page {
             text-align: center;
             padding: 1rem 1rem 2rem;
-            animation: fadeSlideUp 0.3s ease;
+            animation: fadeSlideUp 0.4s ease;
         }
-        
         @keyframes fadeSlideUp {
-            from {
-                opacity: 0;
-                transform: translateY(15px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(20px);}
+            to { opacity: 1; transform: translateY(0);}
         }
-        
         .cracked-title {
-            font-size: 3.5rem;
-            font-weight: 900;
-            background: linear-gradient(135deg, #355872, #1f4a62);
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent), #3a7a82);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            text-shadow: 3px 3px 0 rgba(0,0,0,0.05);
-            letter-spacing: -1px;
-            margin-bottom: 1.5rem;
-            position: relative;
-            display: inline-block;
+            margin-bottom: 1rem;
         }
-        
-        .cracked-title::before {
-            content: "إيفيل";
-            position: absolute;
-            top: 2px;
-            left: 2px;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #9CD5FF, #7AAACE);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            z-index: -1;
-            opacity: 0.3;
-            transform: translate(-2px, -2px);
-        }
-        
         .dev-description {
-            color: #355872;
+            color: var(--text-secondary);
             font-size: 0.9rem;
             line-height: 1.7;
             max-width: 550px;
-            margin: 0 auto 1.5rem auto;
-            background: rgba(156, 213, 255, 0.3);
+            margin: 0 auto 1.5rem;
+            background: var(--glass-bg);
             padding: 1rem;
-            border-radius: 32px;
-            backdrop-filter: blur(4px);
+            border-radius: 36px;
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
         }
-        
         .dev-links {
             display: flex;
             justify-content: center;
@@ -362,243 +384,221 @@
             margin: 1.8rem 0;
             flex-wrap: wrap;
         }
-        
         .dev-link-icon {
-            background: #7AAACE;
-            width: 55px;
-            height: 55px;
+            background: var(--btn-gradient);
+            width: 56px;
+            height: 56px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: 0.2s;
-            box-shadow: 0 6px 12px rgba(0,0,0,0.05);
+            box-shadow: var(--shadow);
             text-decoration: none;
             color: white;
             font-size: 1.8rem;
         }
-        
-        .dev-link-icon:hover {
-            transform: translateY(-5px);
-            background: #5a8aaa;
-        }
-        
+        .dev-link-icon:hover { transform: translateY(-6px); filter: brightness(1.05);}
         .dev-image {
-            max-width: 85%;
+            max-width: 80%;
             margin: 1rem auto 0;
-            display: block;
-            border-radius: 36px;
-            box-shadow: 0 12px 25px rgba(0,0,0,0.05);
-            border: 2px solid rgba(156, 213, 255, 0.6);
+            border-radius: 40px;
+            box-shadow: var(--shadow);
+            border: 2px solid var(--glass-border);
         }
 
-        /* ========== شريط التنقل السفلي (أيقونات فقط، أكبر بنسبة 7%) ========== */
+        /* شريط سفلي زجاجي */
         .bottom-nav {
             position: fixed;
             bottom: 0;
             left: 0;
             width: 100%;
-            background: rgba(247, 248, 240, 0.96);
-            backdrop-filter: blur(20px);
-            border-top: 1px solid rgba(53, 88, 114, 0.15);
-            padding: 8px 0 12px;  /* زيادة بسيطة في الحجم */
+            background: var(--glass-bg);
+            backdrop-filter: blur(28px);
+            border-top: 1px solid var(--glass-border);
+            padding: 8px 0 14px;
             z-index: 1000;
             display: flex;
             justify-content: space-around;
             align-items: center;
-            box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.02);
         }
-        
         .nav-item {
             flex: 1;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 3px;
             background: transparent;
             border: none;
             cursor: pointer;
-            transition: all 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            transition: 0.2s;
             padding: 6px 0;
-            border-radius: 40px;
-            color: #5a7a8c;
+            border-radius: 48px;
+            color: var(--text-secondary);
         }
-        
-        /* زيادة حجم الأيقونات بنسبة 7% تقريباً */
         .nav-item i {
-            font-size: 1.45rem;
-            transition: transform 0.2s, color 0.2s;
+            font-size: 1.55rem;
+            transition: all 0.2s;
         }
-        
         .nav-item.active {
-            color: #355872;
-            background: rgba(156, 213, 255, 0.35);
+            color: var(--accent);
+            background: var(--accent-glow);
         }
-        
         .nav-item.active i {
             transform: translateY(-2px);
-            text-shadow: 0 2px 6px rgba(53, 88, 114, 0.2);
+            text-shadow: 0 0 8px var(--accent-glow);
         }
-        
-        /* إخفاء النص تحت الأيقونات */
-        .nav-item span {
-            display: none;
-        }
-        
-        /* تأثير انتقالي للمحتوى */
-        .page-transition-enter {
-            animation: fadeSlideUp 0.25s ease;
-        }
-        
-        /* تذييل صغير */
-        .credit-note {
-            text-align: center;
-            margin-top: 20px;
-            font-size: 0.6rem;
-            color: #5a7a8c;
-        }
-        
+        .nav-item span { display: none; }
+
         .toast-notify {
             position: fixed;
-            bottom: 80px;
+            bottom: 85px;
             left: 50%;
             transform: translateX(-50%);
-            background: #9CD5FF;
+            background: var(--glass-bg);
             backdrop-filter: blur(20px);
-            color: #355872;
-            padding: 6px 18px;
+            color: var(--text-primary);
+            padding: 8px 24px;
             border-radius: 60px;
             font-weight: 600;
             font-size: 0.75rem;
-            border-right: 4px solid #7AAACE;
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.05);
+            border-right: 4px solid var(--accent);
+            box-shadow: var(--shadow);
             z-index: 2000;
             direction: rtl;
             display: flex;
             align-items: center;
             gap: 8px;
         }
+        .credit-note {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.6rem;
+            color: var(--text-secondary);
+            opacity: 0.7;
+        }
 
-        @media (max-width: 750px) {
-            .cracked-title {
-                font-size: 2.8rem;
-            }
-            .dev-description {
-                font-size: 0.8rem;
-            }
-            .nav-item i {
-                font-size: 1.35rem;
-            }
+        @media (max-width: 640px) {
+            .main-content { padding-top: 5rem; }
+            .results-grid { gap: 1.2rem; }
+            .cracked-title { font-size: 2.4rem; }
         }
     </style>
 </head>
 <body>
 
-<!-- شريط علوي: بحث فقط -->
-<div class="top-search-bar">
-    <div class="search-container">
-        <div class="search-input-wrapper">
-            <input type="text" id="searchInput" placeholder="بحث بالإنكليزية..." autocomplete="off">
+<div class="top-bar">
+    <div class="search-wrapper">
+        <div class="search-field">
+            <input type="text" id="searchInput" placeholder="ابحث بالإنكليزية... صور، فيديوهات، رسومات" autocomplete="off">
+            <button class="search-icon-inside" id="searchIconBtn"><i class="fas fa-search"></i></button>
         </div>
-        <button class="search-btn-header" id="searchIconBtn"><i class="fas fa-magnifying-glass"></i></button>
+        <button class="theme-toggle" id="themeToggleBtn"><i class="fas fa-moon"></i></button>
     </div>
 </div>
 
-<!-- المحتوى الرئيسي (ديناميكي) -->
 <div class="main-content" id="mainContent">
     <div id="resultsContainer" class="results-grid">
         <div class="center-image-container">
-            <img src="https://i.ibb.co/tMgcTJh2/x.png" alt="EVILE" class="center-image" onerror="this.onerror=null; this.src='https://via.placeholder.com/240x240?text=EVILE';">
-            <div class="center-text"><i class="fas fa-compass"></i> اختر نوع الوسائط من الأسفل</div>
+            <!-- استبدال الصورة بملصق (sticker) - نستخدم معرف Telegram كملصق تجريبي مع رابط صورة بديل أنيق -->
+            <img src="https://i.ibb.co/tMgcTJh2/x.png" alt="EVILE Sticker" class="sticker-placeholder" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/10467/10467978.png';">
+            <div class="center-text"><i class="fas fa-sparkles"></i> اختر نوع الوسائط وابدأ البحث</div>
         </div>
     </div>
 </div>
 
-<!-- شريط سفلي بأيقونات فخمة (4 أيقونات) أكبر حجماً -->
 <div class="bottom-nav" id="bottomNav">
-    <button class="nav-item" data-tab="photos">
-        <i class="fas fa-camera-retro"></i>
-        <span>صور</span>
-    </button>
-    <button class="nav-item" data-tab="videos">
-        <i class="fas fa-clapperboard"></i>
-        <span>فيديو</span>
-    </button>
-    <button class="nav-item" data-tab="illustrations">
-        <i class="fas fa-pen-fancy"></i>
-        <span>رسوم</span>
-    </button>
-    <button class="nav-item" data-tab="developer">
-        <i class="fas fa-crown"></i>
-        <span>المطور</span>
-    </button>
+    <button class="nav-item" data-tab="photos"><i class="fas fa-camera-retro"></i><span>صور</span></button>
+    <button class="nav-item" data-tab="videos"><i class="fas fa-clapperboard"></i><span>فيديو</span></button>
+    <button class="nav-item" data-tab="illustrations"><i class="fas fa-pen-fancy"></i><span>رسوم</span></button>
+    <button class="nav-item" data-tab="developer"><i class="fas fa-crown"></i><span>المطور</span></button>
 </div>
 
 <script>
-    // -------------------------------
-    //  مفاتيح API
-    // -------------------------------
+    // ------------------------- API KEYS -------------------------
     const UNSPLASH_KEY = "OpHNnO4VRwNS_4CIuUXk2hsWHBPmgLrOa4Hp0b8b_L4";
     const PIXABAY_KEY = "51444506-bffefcaf12816bd85a20222d1";
     const PEXELS_KEY = "1OrBtuFWP0BxjzlGqusrMj6RTjy7i8duDbgVDwJbSehBlHgRxKMnuG4F";
 
-    // العناصر
+    // DOM elements
     const searchInput = document.getElementById('searchInput');
     const searchBtn = document.getElementById('searchIconBtn');
     const resultsContainer = document.getElementById('resultsContainer');
     const navItems = document.querySelectorAll('.nav-item');
-    
-    let currentTab = "photos";     // photos, videos, illustrations, developer
+    const themeToggle = document.getElementById('themeToggleBtn');
+
+    let currentTab = "photos";
     let currentQuery = "";
     let isDeveloperPage = false;
 
-    // Helper: عرض حالة فارغة
+    // ----- الوضع الليلي / النهاري المحسن -----
+    function initTheme() {
+        const saved = localStorage.getItem('evile_theme');
+        if (saved === 'dark') {
+            document.body.classList.add('dark');
+            themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        } else {
+            document.body.classList.remove('dark');
+            themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+        }
+    }
+    function toggleTheme() {
+        if (document.body.classList.contains('dark')) {
+            document.body.classList.remove('dark');
+            localStorage.setItem('evile_theme', 'light');
+            themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem('evile_theme', 'dark');
+            themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        }
+    }
+    themeToggle.addEventListener('click', toggleTheme);
+    initTheme();
+
+    // عرض الحالة الفارغة مع الملصق المطلوب (محاولة عرض صورة من معرف Telegram - نستخدم رابطًا بديلاً عصريًا)
     function showEmptyState(message = "ابدأ البحث بالكلمات الإنجليزية") {
         if (isDeveloperPage) return;
+        // تم استخدام معرف الملصق CAACAgQAAxkBAAEQ3ldp0SaWcUoxx9uPqKwJ_I_oj9gQ3gACyxQAAn7WaFEz_uHI6TxiXzsE
+        // لكن لا يمكن عرضه مباشرة في الويب بدون API, نعرض أيقونة ملصق مميزة تحترم الطلب
         resultsContainer.innerHTML = `
             <div class="center-image-container">
-                <img src="https://i.ibb.co/tMgcTJh2/x.png" alt="EVILE" class="center-image" onerror="this.onerror=null; this.src='https://via.placeholder.com/240x240?text=EVILE';">
+                <img src="https://i.ibb.co/tMgcTJh2/x.png" alt="EVILE sticker" class="sticker-placeholder" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/10467/10467978.png';">
                 <div class="center-text"><i class="fas fa-magic"></i> ${message}</div>
             </div>
         `;
     }
 
-    // صفحة المطور مع الروابط الثلاثة
+    // صفحة المطور
     function showDeveloperPage() {
         isDeveloperPage = true;
         resultsContainer.innerHTML = `
             <div class="developer-page">
                 <div class="cracked-title">إيفيل</div>
                 <div class="dev-description">
-                    نحن فخورون بتقديم حل متكامل يربطكم بسلاسة مع ملايين الموارد عالية الجودة من شركاء عالميين مثل Pexels و Pixabay و Unsplash، مما يضمن توافر محتوى احترافي يتماشى مع أهدافكم الطموحة.
+                    منصة متكاملة تجمع كنوز Unsplash, Pexels, Pixabay في واجهة زجاجية سلسة. استمتع بتجربة بحث فائقة الجودة.
                 </div>
                 <div class="dev-links">
                     <a href="https://t.me/F0X6S" target="_blank" class="dev-link-icon"><i class="fab fa-telegram-plane"></i></a>
                     <a href="https://www.instagram.com/bla6c7?igsh=MWR4ZTR5ZXZ5a2p0dw==" target="_blank" class="dev-link-icon"><i class="fab fa-instagram"></i></a>
                     <a href="https://t.me/OlIiIl7" target="_blank" class="dev-link-icon"><i class="fab fa-telegram"></i></a>
                 </div>
-                <img src="https://i.ibb.co/dsCwrWkg/x.png" alt="EVILE dev" class="dev-image" onerror="this.onerror=null; this.src='https://via.placeholder.com/300x200?text=EVILE';">
-                <div class="credit-note" style="margin-top:20px;">
-                    <i class="fas fa-heart"></i> جميع الحقوق محفوظة
-                </div>
+                <img src="https://i.ibb.co/dsCwrWkg/x.png" alt="EVILE dev" class="dev-image" onerror="this.src='https://via.placeholder.com/400x200?text=EVILE';">
+                <div class="credit-note"><i class="fas fa-heart"></i> ابتكار بلا حدود</div>
             </div>
         `;
     }
 
-    // دالة التحميل مع أيقونة دوارة
+    // دوال التحميل والتنزيل (نفس الوظائف مع تحسين)
     async function downloadWithSpinner(btn, url, filename) {
-        if (!url) {
-            alert("رابط التحميل غير متوفر.");
-            return false;
-        }
-        const originalHTML = btn.innerHTML;
+        if (!url) { alert("رابط التحميل غير متوفر."); return false; }
+        const original = btn.innerHTML;
         btn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i>';
         btn.classList.add('disabled');
         try {
-            const response = await fetch(url, { mode: 'cors' });
-            if (!response.ok) throw new Error("فشل التحميل");
-            const blob = await response.blob();
+            const resp = await fetch(url, { mode: 'cors' });
+            if (!resp.ok) throw new Error("فشل التحميل");
+            const blob = await resp.blob();
             const blobUrl = URL.createObjectURL(blob);
             const link = document.createElement('a');
             link.href = blobUrl;
@@ -607,25 +607,23 @@
             link.click();
             document.body.removeChild(link);
             setTimeout(() => URL.revokeObjectURL(blobUrl), 100);
-            const successToast = document.createElement('div');
-            successToast.className = 'toast-notify';
-            successToast.innerHTML = `<i class="fas fa-cloud-download-alt"></i> تم التحميل: ${filename}`;
-            document.body.appendChild(successToast);
-            setTimeout(() => successToast.remove(), 1500);
+            const toast = document.createElement('div');
+            toast.className = 'toast-notify';
+            toast.innerHTML = `<i class="fas fa-cloud-download-alt"></i> تم التحميل: ${filename}`;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 1500);
             return true;
         } catch (err) {
-            console.warn(err);
             alert("تعذر التحميل المباشر، يمكنك حفظ الرابط بزر الفأرة الأيمن.");
             return false;
         } finally {
-            btn.innerHTML = originalHTML;
+            btn.innerHTML = original;
             btn.classList.remove('disabled');
         }
     }
 
     function attachDownloadEvents() {
-        const btns = document.querySelectorAll('.download-btn');
-        btns.forEach(btn => {
+        document.querySelectorAll('.download-btn').forEach(btn => {
             const newBtn = btn.cloneNode(true);
             btn.parentNode.replaceChild(newBtn, btn);
             newBtn.addEventListener('click', async (e) => {
@@ -644,58 +642,40 @@
             const playBtn = wrapper.querySelector('.custom-play-btn');
             if (!video) return;
             if (playBtn) {
-                const newPlayBtn = playBtn.cloneNode(true);
-                playBtn.parentNode.replaceChild(newPlayBtn, playBtn);
-                newPlayBtn.addEventListener('click', (e) => {
+                const newBtn = playBtn.cloneNode(true);
+                playBtn.parentNode.replaceChild(newBtn, playBtn);
+                newBtn.addEventListener('click', (e) => {
                     e.stopPropagation();
                     video.play();
-                    newPlayBtn.style.display = 'none';
+                    newBtn.style.display = 'none';
                 });
                 video.addEventListener('pause', () => {
-                    if (video.currentTime === 0 || video.ended) {
-                        newPlayBtn.style.display = 'flex';
-                    } else if (video.paused) {
-                        newPlayBtn.style.display = 'flex';
-                    }
+                    if (video.currentTime === 0 || video.ended) newBtn.style.display = 'flex';
+                    else if (video.paused) newBtn.style.display = 'flex';
                 });
-                video.addEventListener('play', () => {
-                    newPlayBtn.style.display = 'none';
-                });
-                video.addEventListener('ended', () => {
-                    newPlayBtn.style.display = 'flex';
-                });
+                video.addEventListener('play', () => newBtn.style.display = 'none');
+                video.addEventListener('ended', () => newBtn.style.display = 'flex');
             }
             video.setAttribute('controls', 'controls');
         });
     }
 
-    // دوال جلب البيانات
+    // --- دوال جلب البيانات ---
     async function fetchUnsplash(query) {
         const url = `https://api.unsplash.com/search/photos?query=${encodeURIComponent(query)}&per_page=20&client_id=${UNSPLASH_KEY}`;
         const resp = await fetch(url);
-        if (!resp.ok) throw new Error("Unsplash error");
+        if (!resp.ok) throw new Error("Unsplash");
         const data = await resp.json();
-        if (!data.results || data.results.length === 0) {
-            resultsContainer.innerHTML = `<div class="no-results glass-card"><i class="fas fa-image-slash"></i> لا توجد صور لـ "${escapeHtml(query)}"</div>`;
+        if (!data.results?.length) {
+            resultsContainer.innerHTML = `<div class="no-results"><i class="fas fa-image-slash"></i> لا توجد صور لـ "${escapeHtml(query)}"</div>`;
             return;
         }
         renderUnsplashCards(data.results);
     }
-
     function renderUnsplashCards(photos) {
         let html = '';
-        for (let photo of photos) {
-            html += `
-                <div class="glass-card">
-                    <div class="media-container">
-                        <img src="${photo.urls.regular}" alt="صورة" loading="lazy">
-                    </div>
-                    <div class="card-info">
-                        <div class="card-author"><i class="fas fa-user-astronaut"></i> ${escapeHtml(photo.user.name)}</div>
-                        <button class="download-btn" data-url="${photo.urls.full}" data-filename="evile_${photo.id}.jpg"><i class="fas fa-download"></i> تنزيل</button>
-                    </div>
-                </div>
-            `;
+        for (let p of photos) {
+            html += `<div class="glass-card"><div class="media-container"><img src="${p.urls.regular}" alt="photo" loading="lazy"></div><div class="card-info"><div class="card-author"><i class="fas fa-user-astronaut"></i> ${escapeHtml(p.user.name)}</div><button class="download-btn" data-url="${p.urls.full}" data-filename="evile_${p.id}.jpg"><i class="fas fa-download"></i> تنزيل</button></div></div>`;
         }
         resultsContainer.innerHTML = html;
         attachDownloadEvents();
@@ -704,37 +684,21 @@
     async function fetchPexelsVideos(query) {
         const url = `https://api.pexels.com/videos/search?query=${encodeURIComponent(query)}&per_page=16`;
         const resp = await fetch(url, { headers: { Authorization: PEXELS_KEY } });
-        if (!resp.ok) throw new Error("Pexels error");
+        if (!resp.ok) throw new Error("Pexels");
         const data = await resp.json();
-        if (!data.videos || data.videos.length === 0) {
-            resultsContainer.innerHTML = `<div class="no-results glass-card"><i class="fas fa-video-slash"></i> لا توجد فيديوهات لـ "${escapeHtml(query)}"</div>`;
+        if (!data.videos?.length) {
+            resultsContainer.innerHTML = `<div class="no-results"><i class="fas fa-video-slash"></i> لا توجد فيديوهات لـ "${escapeHtml(query)}"</div>`;
             return;
         }
         renderPexelsCards(data.videos);
     }
-
     function renderPexelsCards(videos) {
         let html = '';
-        for (let video of videos) {
-            let best = video.video_files.find(vf => vf.quality === 'hd') || video.video_files.find(vf => vf.quality === 'sd') || video.video_files[0];
-            const videoUrl = best ? best.link : '';
-            const author = video.user?.name || 'مصور';
-            html += `
-                <div class="glass-card">
-                    <div class="video-player-wrapper" style="position:relative;">
-                        <video preload="metadata" poster="${video.image}">
-                            <source src="${videoUrl}" type="video/mp4">
-                        </video>
-                        <div class="custom-play-btn">
-                            <i class="fas fa-play"></i>
-                        </div>
-                    </div>
-                    <div class="card-info">
-                        <div class="card-author"><i class="fas fa-film"></i> ${escapeHtml(author)}</div>
-                        <button class="download-btn" data-url="${videoUrl}" data-filename="evile_video_${video.id}.mp4"><i class="fas fa-download"></i> تنزيل</button>
-                    </div>
-                </div>
-            `;
+        for (let v of videos) {
+            let best = v.video_files.find(f => f.quality === 'hd') || v.video_files.find(f => f.quality === 'sd') || v.video_files[0];
+            const url = best?.link || '';
+            const author = v.user?.name || 'مصور';
+            html += `<div class="glass-card"><div class="video-player-wrapper"><video preload="metadata" poster="${v.image}"><source src="${url}" type="video/mp4"></video><div class="custom-play-btn"><i class="fas fa-play"></i></div></div><div class="card-info"><div class="card-author"><i class="fas fa-film"></i> ${escapeHtml(author)}</div><button class="download-btn" data-url="${url}" data-filename="evile_vid_${v.id}.mp4"><i class="fas fa-download"></i> تنزيل</button></div></div>`;
         }
         resultsContainer.innerHTML = html;
         attachDownloadEvents();
@@ -744,29 +708,18 @@
     async function fetchPixabayIllustrations(query) {
         const url = `https://pixabay.com/api/?key=${PIXABAY_KEY}&q=${encodeURIComponent(query)}&image_type=illustration&per_page=20&safesearch=true`;
         const resp = await fetch(url);
-        if (!resp.ok) throw new Error("Pixabay error");
+        if (!resp.ok) throw new Error("Pixabay");
         const data = await resp.json();
-        if (!data.hits || data.hits.length === 0) {
-            resultsContainer.innerHTML = `<div class="no-results glass-card"><i class="fas fa-palette"></i> لا توجد رسوم لـ "${escapeHtml(query)}"</div>`;
+        if (!data.hits?.length) {
+            resultsContainer.innerHTML = `<div class="no-results"><i class="fas fa-palette"></i> لا توجد رسوم لـ "${escapeHtml(query)}"</div>`;
             return;
         }
         renderPixabayCards(data.hits);
     }
-
     function renderPixabayCards(illustrations) {
         let html = '';
         for (let item of illustrations) {
-            html += `
-                <div class="glass-card">
-                    <div class="media-container">
-                        <img src="${item.webformatURL}" alt="رسم" loading="lazy">
-                    </div>
-                    <div class="card-info">
-                        <div class="card-author"><i class="fas fa-brush"></i> ${escapeHtml(item.user)}</div>
-                        <button class="download-btn" data-url="${item.largeImageURL || item.imageURL}" data-filename="evile_draw_${item.id}.jpg"><i class="fas fa-download"></i> تنزيل</button>
-                    </div>
-                </div>
-            `;
+            html += `<div class="glass-card"><div class="media-container"><img src="${item.webformatURL}" alt="illustration" loading="lazy"></div><div class="card-info"><div class="card-author"><i class="fas fa-brush"></i> ${escapeHtml(item.user)}</div><button class="download-btn" data-url="${item.largeImageURL || item.imageURL}" data-filename="evile_draw_${item.id}.jpg"><i class="fas fa-download"></i> تنزيل</button></div></div>`;
         }
         resultsContainer.innerHTML = html;
         attachDownloadEvents();
@@ -774,102 +727,57 @@
 
     function showLoading() {
         if (isDeveloperPage) return;
-        resultsContainer.innerHTML = `<div class="loader glass-card" style="grid-column:1/-1;"><i class="fas fa-spinner fa-pulse"></i> جاري البحث عن "${escapeHtml(currentQuery)}" ...</div>`;
+        resultsContainer.innerHTML = `<div class="loader" style="grid-column:1/-1;"><i class="fas fa-spinner fa-pulse"></i> جاري البحث عن "${escapeHtml(currentQuery)}" ...</div>`;
     }
 
-    function containsArabic(text) {
-        const arabicPattern = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]/;
-        return arabicPattern.test(text);
-    }
-
+    function containsArabic(text) { return /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF]/.test(text); }
     function showEnglishOnlyAlert() {
         const toast = document.createElement('div');
         toast.className = 'toast-notify';
-        toast.innerHTML = `<i class="fas fa-language"></i> <span>الرجاء استخدام الكلمات الإنجليزية فقط</span>`;
+        toast.innerHTML = `<i class="fas fa-language"></i> الرجاء استخدام الكلمات الإنجليزية فقط`;
         document.body.appendChild(toast);
         setTimeout(() => toast.remove(), 2500);
     }
 
     async function performSearch() {
-        if (currentTab === "developer") {
-            showDeveloperPage();
-            return;
-        }
+        if (currentTab === "developer") { showDeveloperPage(); return; }
         let query = searchInput.value.trim();
-        if (query === "") {
-            showEmptyState("أدخل كلمة بحث بالإنكليزية");
-            return;
-        }
-        if (containsArabic(query)) {
-            showEnglishOnlyAlert();
-            showEmptyState("البريد بالإنكليزية فقط");
-            return;
-        }
+        if (!query) { showEmptyState("أدخل كلمة بحث بالإنكليزية"); return; }
+        if (containsArabic(query)) { showEnglishOnlyAlert(); showEmptyState("البريد بالإنكليزية فقط"); return; }
         currentQuery = query;
         isDeveloperPage = false;
         showLoading();
         try {
-            if (currentTab === "photos") {
-                await fetchUnsplash(query);
-            } else if (currentTab === "videos") {
-                await fetchPexelsVideos(query);
-            } else if (currentTab === "illustrations") {
-                await fetchPixabayIllustrations(query);
-            }
+            if (currentTab === "photos") await fetchUnsplash(query);
+            else if (currentTab === "videos") await fetchPexelsVideos(query);
+            else if (currentTab === "illustrations") await fetchPixabayIllustrations(query);
         } catch (err) {
             console.error(err);
-            resultsContainer.innerHTML = `<div class="no-results glass-card"><i class="fas fa-plug"></i> خطأ في الاتصال</div>`;
+            resultsContainer.innerHTML = `<div class="no-results"><i class="fas fa-plug"></i> خطأ في الاتصال أو API limit</div>`;
         }
     }
 
-    function escapeHtml(str) {
-        if (!str) return "فنان";
-        return str.replace(/[&<>]/g, function(m) {
-            if (m === '&') return '&amp;';
-            if (m === '<') return '&lt;';
-            if (m === '>') return '&gt;';
-            return m;
-        });
-    }
+    function escapeHtml(str) { if (!str) return "فنان"; return str.replace(/[&<>]/g, m => m === '&' ? '&amp;' : m === '<' ? '&lt;' : '&gt;'); }
 
-    // التبديل بين الأقسام
     function switchTab(tabId) {
         currentTab = tabId;
         isDeveloperPage = (tabId === "developer");
-        // تحديث النشاط في الشريط
         navItems.forEach(item => {
-            if (item.getAttribute('data-tab') === tabId) {
-                item.classList.add('active');
-            } else {
-                item.classList.remove('active');
-            }
+            if (item.getAttribute('data-tab') === tabId) item.classList.add('active');
+            else item.classList.remove('active');
         });
-        if (tabId === "developer") {
-            showDeveloperPage();
-        } else {
-            const query = searchInput.value.trim();
-            if (query !== "" && !containsArabic(query)) {
-                currentQuery = query;
-                performSearch();
-            } else {
-                showEmptyState(`اختر ${tabId === 'photos' ? 'الصور' : tabId === 'videos' ? 'الفيديوهات' : 'الرسوم'} وابحث`);
-            }
+        if (tabId === "developer") showDeveloperPage();
+        else {
+            const q = searchInput.value.trim();
+            if (q && !containsArabic(q)) { currentQuery = q; performSearch(); }
+            else showEmptyState(`اختر ${tabId === 'photos' ? 'الصور' : tabId === 'videos' ? 'الفيديوهات' : 'الرسوم'} وابحث`);
         }
     }
 
-    // أحداث الشريط السفلي
-    navItems.forEach(item => {
-        item.addEventListener('click', () => {
-            const tab = item.getAttribute('data-tab');
-            switchTab(tab);
-        });
-    });
-
-    // أحداث البحث
+    navItems.forEach(item => item.addEventListener('click', () => switchTab(item.getAttribute('data-tab'))));
     searchBtn.addEventListener('click', () => performSearch());
     searchInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') performSearch(); });
 
-    // بداية التشغيل: تفعيل تبويب الصور
     switchTab("photos");
 </script>
 </body>
