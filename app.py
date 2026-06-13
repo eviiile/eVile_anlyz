@@ -145,7 +145,8 @@ def add_notification():
     if title and text:
         conn = get_db()
         conn.execute("INSERT INTO notifications (title, text) VALUES (?, ?)", (title, text))
-        conn.commit()        conn.close()
+        conn.commit()
+        conn.close()
         flash('تم إرسال الإشعار بنجاح', 'success')
     
     return redirect(url_for('admin_panel'))
