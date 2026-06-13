@@ -13,7 +13,7 @@ try:
     PSYCOPG_VERSION = 3
 except ImportError:
     try:
-        import psycopg2
+        import psycopg2 as psycopg
         from psycopg2.extras import RealDictCursor
         PSYCOPG_VERSION = 2
     except ImportError:
@@ -33,39 +33,30 @@ DATABASE_URL = os.getenv('DATABASE_URL', 'postgresql://evile_site_user:yxWlZVZsC
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-
 @contextmanager
-def get_db(dict_cursor=True):
-    """إدارة آمنة لاتصالات قاعدة البيانات مع دعم cursor قاموسي"""
+def get_db():
+    """إدارة آمنة لاتصالات قاعدة البيانات"""
     conn = None
     cur = None
     try:
-        conn = psycopg.connect(DATABASE_URL) if PSYCOPG_VERSION == 3 else psycopg2.connect(DATABASE_URL)
-        if dict_cursor:
-            if PSYCOPG_VERSION == 3:
-                cur = conn.cursor(row_factory=dict_row)
-            else:
-                cur = conn.cursor(cursor_factory=RealDictCursor)
-        else:
-            cur = conn.cursor()
+        conn = psycopg.connect(DATABASE_URL)
+        cur = conn.cursor()
         yield cur
         conn.commit()
     except Exception as e:
         if conn:
             conn.rollback()
-        logger.error(f"Database error: {e}")
-        raise
-    finally:
+        logger.error(f"Database error: {str(e)}")
+        raise    finally:
         if cur:
             cur.close()
         if conn:
             conn.close()
 
-
 def init_db():
     """تهيئة قاعدة البيانات"""
     try:
-        with get_db(dict_cursor=False) as cur:
+        with get_db() as cur:
             cur.execute('''CREATE TABLE IF NOT EXISTS characters (
                 id SERIAL PRIMARY KEY,
                 name TEXT NOT NULL,
@@ -74,24 +65,24 @@ def init_db():
                 callback_key TEXT UNIQUE NOT NULL,
                 logo_url TEXT DEFAULT ''
             )''')
-
+            
             cur.execute('''CREATE TABLE IF NOT EXISTS notifications (
                 id SERIAL PRIMARY KEY,
                 title TEXT NOT NULL,
                 text TEXT NOT NULL,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )''')
-
+            
             cur.execute('''CREATE TABLE IF NOT EXISTS users (
                 id SERIAL PRIMARY KEY,
                 telegram_id TEXT UNIQUE NOT NULL,
                 is_subscribed BOOLEAN DEFAULT FALSE,
                 last_active TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )''')
-
+            
             cur.execute("SELECT COUNT(*) FROM characters")
             count = cur.fetchone()[0]
-
+            
             if count == 0:
                 cur.execute(
                     "INSERT INTO characters (name, description, prompt, callback_key, logo_url) VALUES (%s, %s, %s, %s, %s)",
@@ -110,16 +101,14 @@ def init_db():
         logger.error(f"Database initialization error: {e}")
         raise
 
-
 def update_user_activity(telegram_id):
     if not telegram_id:
         return
     try:
-        with get_db(dict_cursor=False) as cur:
+        with get_db() as cur:
             cur.execute("UPDATE users SET last_active = CURRENT_TIMESTAMP WHERE telegram_id = %s", (telegram_id,))
     except Exception as e:
         logger.error(f"Update activity error: {e}")
-
 
 def check_telegram_subscription(telegram_id):
     try:
@@ -135,7 +124,6 @@ def check_telegram_subscription(telegram_id):
         logger.error(f"Telegram API Error: {e}")
         return False
 
-
 def admin_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
@@ -144,13 +132,12 @@ def admin_required(f):
         return f(*args, **kwargs)
     return decorated
 
-
 @app.route('/')
 def index():
     telegram_id = session.get('telegram_id')
     if telegram_id:
         update_user_activity(telegram_id)
-
+    
     try:
         with get_db() as cur:
             cur.execute('SELECT * FROM characters ORDER BY id')
@@ -159,15 +146,13 @@ def index():
             notifications = [dict(row) for row in cur.fetchall()]
     except Exception as e:
         logger.error(f"Index error: {e}")
-        characters, notifications = [], []
-
+        characters, notifications = [], []    
     channel_url = f"https://t.me/{TELEGRAM_CHANNEL_ID.replace('@', '')}"
-    return render_template('index.html',
+    return render_template('index.html', 
                          characters=characters,
                          notifications=notifications,
                          telegram_id=telegram_id,
                          channel_url=channel_url)
-
 
 @app.route('/register', methods=['POST'])
 def register():
@@ -175,26 +160,25 @@ def register():
         telegram_id = request.form.get('telegram_id', '').strip()
         if not telegram_id or not telegram_id.isdigit():
             return jsonify({'success': False, 'message': 'معرّف غير صحيح'}), 400
-
-        with get_db(dict_cursor=False) as cur:
+        
+        with get_db() as cur:
             cur.execute(
                 "INSERT INTO users (telegram_id) VALUES (%s) ON CONFLICT (telegram_id) DO UPDATE SET last_active = CURRENT_TIMESTAMP",
                 (telegram_id,)
             )
-
+        
         session['telegram_id'] = telegram_id
         session.permanent = True
-
+        
         is_sub = check_telegram_subscription(telegram_id)
-
-        with get_db(dict_cursor=False) as cur:
+        
+        with get_db() as cur:
             cur.execute("UPDATE users SET is_subscribed = %s WHERE telegram_id = %s", (is_sub, telegram_id))
-
+        
         return jsonify({'success': True, 'subscribed': is_sub})
     except Exception as e:
         logger.error(f"Register error: {e}")
         return jsonify({'success': False, 'message': str(e)}), 500
-
 
 @app.route('/api/verify_subscription', methods=['POST'])
 def api_verify_subscription():
@@ -202,40 +186,53 @@ def api_verify_subscription():
         telegram_id = session.get('telegram_id')
         if not telegram_id:
             return jsonify({'success': False, 'subscribed': False}), 401
-
+        
         is_sub = check_telegram_subscription(telegram_id)
-
-        with get_db(dict_cursor=False) as cur:
-            cur.execute("UPDATE users SET is_subscribed = %s, last_active = CURRENT_TIMESTAMP WHERE telegram_id = %s",
-                       (is_sub, telegram_id))
-
+        
+        with get_db() as cur:
+            cur.execute("UPDATE users SET is_subscribed = %s, last_active = CURRENT_TIMESTAMP WHERE telegram_id = %s", (is_sub, telegram_id))
+        
         return jsonify({'success': is_sub, 'subscribed': is_sub})
     except Exception as e:
         logger.error(f"Verify error: {e}")
         return jsonify({'success': False, 'subscribed': False}), 500
-
-
 @app.route('/api/active_users')
 def api_active_users():
     try:
-        with get_db(dict_cursor=False) as cur:
+        with get_db() as cur:
             cur.execute("SELECT COUNT(*) FROM users WHERE last_active > NOW() - INTERVAL '5 minutes'")
-            count = cur.fetchone()[0]
+            result = cur.fetchone()
+            count = result[0] if result else 0
         return jsonify({'count': count})
-    except Exception:
+    except Exception as e:
+        logger.error(f"Active users error: {e}")
         return jsonify({'count': 0})
-
 
 @app.route('/keepalive')
 def keepalive():
     try:
-        with get_db(dict_cursor=False) as cur:
+        with get_db() as cur:
             cur.execute("SELECT COUNT(*) FROM users")
-            count = cur.fetchone()[0]
+            result = cur.fetchone()
+            count = result[0] if result else 0
         return jsonify({'status': 'alive', 'users': count})
-    except Exception:
+    except Exception as e:
         return jsonify({'status': 'error'}), 500
 
+@app.route('/health')
+def health_check():
+    try:
+        with get_db() as cur:
+            cur.execute("SELECT 1")
+            result = cur.fetchone()
+            db_ok = result is not None
+        return jsonify({
+            'status': 'healthy' if db_ok else 'unhealthy',
+            'database': 'connected' if db_ok else 'disconnected',
+            'timestamp': datetime.now().isoformat()
+        })
+    except Exception as e:
+        return jsonify({'status': 'unhealthy', 'error': str(e)}), 500
 
 @app.route('/admin/login', methods=['GET', 'POST'])
 def login():
@@ -246,12 +243,9 @@ def login():
         flash('كلمة المرور غير صحيحة', 'error')
     return render_template('login.html')
 
-
 @app.route('/admin/logout')
-def logout():
-    session.clear()
+def logout():    session.clear()
     return redirect(url_for('login'))
-
 
 @app.route('/admin')
 @admin_required
@@ -263,14 +257,12 @@ def admin_panel():
             cur.execute('SELECT * FROM notifications ORDER BY id DESC')
             notifications = [dict(row) for row in cur.fetchall()]
             cur.execute('SELECT COUNT(*) FROM users')
-            users_count = cur.fetchone()[0]
-    except Exception:
+            result = cur.fetchone()
+            users_count = result[0] if result else 0
+    except Exception as e:
+        logger.error(f"Admin panel error: {e}")
         characters, notifications, users_count = [], [], 0
-    return render_template('admin.html',
-                         characters=characters,
-                         notifications=notifications,
-                         users_count=users_count)
-
+    return render_template('admin.html', characters=characters, notifications=notifications, users_count=users_count)
 
 @app.route('/admin/character/add', methods=['POST'])
 @admin_required
@@ -282,15 +274,13 @@ def add_character():
     logo_url = request.form.get('logo_url', '')
     if name and description and prompt:
         try:
-            with get_db(dict_cursor=False) as cur:
-                cur.execute(
-                    "INSERT INTO characters (name, description, prompt, callback_key, logo_url) VALUES (%s, %s, %s, %s, %s)",
+            with get_db() as cur:
+                cur.execute("INSERT INTO characters (name, description, prompt, callback_key, logo_url) VALUES (%s, %s, %s, %s, %s)",
                     (name, description, prompt, callback_key, logo_url))
             flash('تمت إضافة الشخصية بنجاح', 'success')
         except Exception as e:
             flash('مفتاح الشخصية موجود مسبقاً' if 'unique' in str(e).lower() else str(e), 'error')
     return redirect(url_for('admin_panel'))
-
 
 @app.route('/admin/character/<int:char_id>/edit', methods=['POST'])
 @admin_required
@@ -301,27 +291,23 @@ def edit_character(char_id):
     logo_url = request.form.get('logo_url', '')
     if name and description and prompt:
         try:
-            with get_db(dict_cursor=False) as cur:
-                cur.execute(
-                    "UPDATE characters SET name=%s, description=%s, prompt=%s, logo_url=%s WHERE id=%s",
-                    (name, description, prompt, logo_url, char_id))
-            flash('تم تعديل الشخصية بنجاح', 'success')
+            with get_db() as cur:
+                cur.execute("UPDATE characters SET name=%s, description=%s, prompt=%s, logo_url=%s WHERE id=%s",
+                    (name, description, prompt, logo_url, char_id))            flash('تم تعديل الشخصية بنجاح', 'success')
         except Exception as e:
             flash(str(e), 'error')
     return redirect(url_for('admin_panel'))
-
 
 @app.route('/admin/character/<int:char_id>/delete')
 @admin_required
 def delete_character(char_id):
     try:
-        with get_db(dict_cursor=False) as cur:
+        with get_db() as cur:
             cur.execute("DELETE FROM characters WHERE id=%s", (char_id,))
         flash('تم حذف الشخصية', 'success')
     except Exception as e:
         flash(str(e), 'error')
     return redirect(url_for('admin_panel'))
-
 
 @app.route('/admin/notification/add', methods=['POST'])
 @admin_required
@@ -330,25 +316,23 @@ def add_notification():
     text = request.form.get('text')
     if title and text:
         try:
-            with get_db(dict_cursor=False) as cur:
+            with get_db() as cur:
                 cur.execute("INSERT INTO notifications (title, text) VALUES (%s, %s)", (title, text))
             flash('تم إرسال الإشعار بنجاح', 'success')
         except Exception as e:
             flash(str(e), 'error')
     return redirect(url_for('admin_panel'))
 
-
 @app.route('/admin/notification/<int:notif_id>/delete')
 @admin_required
 def delete_notification(notif_id):
     try:
-        with get_db(dict_cursor=False) as cur:
+        with get_db() as cur:
             cur.execute("DELETE FROM notifications WHERE id=%s", (notif_id,))
         flash('تم حذف الإشعار', 'success')
     except Exception as e:
         flash(str(e), 'error')
     return redirect(url_for('admin_panel'))
-
 
 @app.route('/api/characters')
 def api_characters():
@@ -356,19 +340,18 @@ def api_characters():
         with get_db() as cur:
             cur.execute('SELECT * FROM characters ORDER BY id')
             return jsonify([dict(row) for row in cur.fetchall()])
-    except Exception:
+    except Exception as e:
+        logger.error(f"API characters error: {e}")
         return jsonify([])
-
-
 @app.route('/api/notifications')
 def api_notifications():
     try:
         with get_db() as cur:
             cur.execute('SELECT * FROM notifications ORDER BY id DESC')
             return jsonify([dict(row) for row in cur.fetchall()])
-    except Exception:
+    except Exception as e:
+        logger.error(f"API notifications error: {e}")
         return jsonify([])
-
 
 @app.route('/api/chat', methods=['POST'])
 def api_chat():
@@ -380,11 +363,11 @@ def api_chat():
             cur.execute("SELECT * FROM characters WHERE callback_key=%s", (character_key,))
             character = cur.fetchone()
     except Exception as e:
+        logger.error(f"Get character error: {e}")
         return jsonify({'error': str(e)}), 500
-
     if not character:
         return jsonify({'error': 'Character not found'}), 404
-
+    
     headers = {
         'Authorization': f'Bearer {OPENROUTER_API_KEY}',
         'Content-Type': 'application/json',
@@ -404,9 +387,8 @@ def api_chat():
         result = response.json()
         return jsonify({'response': result['choices'][0]['message']['content']})
     except Exception as e:
+        logger.error(f"API chat error: {e}")
         return jsonify({'error': str(e)}), 500
 
-
 if __name__ == '__main__':
-    init_db()
-    app.run(host='0.0.0.0', port=int(os.getenv('PORT', 5000)), debug=False)
+    init_db()    app.run(host='0.0.0.0', port=int(os.getenv('PORT', 5000)), debug=False)
