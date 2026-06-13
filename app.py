@@ -47,7 +47,8 @@ def init_db():
             ('كاتب محتوى', 'كاتب محترف لقنوات تيليجرام',
              'أنت الآن كاتب محتوى محترف لقنوات تيليجرام، ممنوع تماماً استخدام أي إيموجي. طبّق أفضل تقنيات كتابة النصوص القوية والجذابة (Copywriting).',
              'content_writer'))
-    conn.commit()    conn.close()
+    conn.commit()
+    conn.close()
 
 def admin_required(f):
     @wraps(f)
