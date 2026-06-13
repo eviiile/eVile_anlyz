@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>EVILE</title>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         
@@ -30,28 +29,6 @@
                 radial-gradient(circle at 20% 80%, rgba(30, 41, 89, 0.4) 0%, transparent 50%),
                 radial-gradient(circle at 80% 20%, rgba(49, 46, 129, 0.3) 0%, transparent 50%);
             filter: blur(80px);
-            animation: bgPulse 15s ease-in-out infinite;
-        }
-
-        @keyframes bgPulse {
-            0%, 100% { transform: scale(1); opacity: 0.8; }
-            50% { transform: scale(1.15); opacity: 1; }
-        }
-
-        .orb {
-            position: fixed;
-            border-radius: 50%;
-            filter: blur(60px);
-            z-index: -1;
-            animation: float 20s infinite ease-in-out;
-        }
-
-        .orb-1 { width: 300px; height: 300px; background: rgba(30, 41, 89, 0.3); top: -100px; right: -100px; }
-        .orb-2 { width: 250px; height: 250px; background: rgba(49, 46, 129, 0.3); bottom: -50px; left: -50px; animation-delay: 5s; }
-        @keyframes float {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            33% { transform: translate(30px, -50px) scale(1.1); }
-            66% { transform: translate(-20px, 30px) scale(0.9); }
         }
 
         .main-container {
@@ -61,7 +38,7 @@
             display: flex;
             flex-direction: column;
             padding: 12px;
-            padding-top: 80px;
+            padding-top: 70px;
         }
 
         .floating-header {
@@ -70,16 +47,14 @@
             left: 12px;
             right: 12px;
             z-index: 100;
-            display: flex;
-            align-items: center;
+            display: flex;            align-items: center;
             justify-content: space-between;
             padding: 6px;
             background: rgba(15, 23, 60, 0.85);
-            backdrop-filter: blur(25px) saturate(180%);
+            backdrop-filter: blur(25px);
             border: 1px solid rgba(49, 46, 129, 0.5);
             border-radius: 18px;
             gap: 6px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
         }
 
         .header-circle {
@@ -96,8 +71,9 @@
             flex-shrink: 0;
             position: relative;
         }
+
         .header-circle:active { transform: scale(0.9); background: rgba(49, 46, 129, 0.8); }
-        .header-circle i { font-size: 16px; color: #a5b4fc; }
+        .header-circle svg { width: 18px; height: 18px; fill: #a5b4fc; }
 
         .header-circle .notif-badge {
             position: absolute;
@@ -120,15 +96,14 @@
             flex: 1;
             height: 40px;
             background: rgba(30, 41, 89, 0.5);
-            border: 1px solid rgba(49, 46, 129, 0.5);
-            border-radius: 12px;
+            border: 1px solid rgba(49, 46, 129, 0.5);            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
         .logo-text {
-            font-size: 22px;
+            font-size: 20px;
             font-weight: 900;
             background: linear-gradient(135deg, #e0e7ff, #a5b4fc);
             -webkit-background-clip: text;
@@ -146,7 +121,24 @@
             text-align: center;
             overflow-y: auto;
         }
+
         .welcome-section.hidden { display: none; }
+
+        .character-logo {
+            width: 70px;
+            height: 70px;
+            border-radius: 16px;
+            object-fit: cover;
+            margin-bottom: 15px;
+            border: 2px solid rgba(99, 102, 241, 0.5);
+            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.3);
+            animation: logoFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes logoFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
 
         .sparkle-icon {
             width: 60px;
@@ -154,7 +146,6 @@
             margin-bottom: 12px;
             animation: sparkleFloat 3s ease-in-out infinite;
         }
-
         .sparkle-icon svg { width: 100%; height: 100%; }
 
         @keyframes sparkleFloat {
@@ -163,7 +154,7 @@
         }
 
         .welcome-title {
-            font-size: 24px;
+            font-size: 22px;
             font-weight: 900;
             margin-bottom: 6px;
             background: linear-gradient(135deg, #e0e7ff, #a5b4fc);
@@ -194,69 +185,69 @@
             padding: 12px;
             margin-bottom: 10px;
             background: rgba(10, 15, 40, 0.6);
-            backdrop-filter: blur(15px);            border-radius: 20px;
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
             border: 1px solid rgba(49, 46, 129, 0.3);
         }
 
-        .message { margin-bottom: 14px; animation: messageSlide 0.4s ease; }
+        .message { margin-bottom: 10px; animation: messageSlide 0.3s ease; }
 
         @keyframes messageSlide {
-            from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }        }
 
-        .message-time { font-size: 10px; color: #6366f1; margin-bottom: 5px; }
+        .message-time { font-size: 9px; color: #6366f1; margin-bottom: 3px; }
 
         .message-content {
-            background: rgba(30, 41, 89, 0.5);
-            backdrop-filter: blur(10px);
+            background: rgba(20, 30, 70, 0.6);
             border: 1px solid rgba(49, 46, 129, 0.4);
-            padding: 10px 14px;
-            border-radius: 14px;
-            font-size: 13px;
-            line-height: 1.6;
+            padding: 8px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            line-height: 1.5;
             word-wrap: break-word;
             color: #c7d2fe;
+            max-width: 85%;
         }
 
         .message.own { text-align: left; }
         .message.own .message-content {
             background: rgba(49, 46, 129, 0.6);
             border-color: rgba(99, 102, 241, 0.5);
+            margin-right: auto;
+            margin-left: 0;
         }
 
         .ai-bubble {
-            position: relative;
             background: rgba(20, 30, 70, 0.7);
-            backdrop-filter: blur(10px);
             border: 1px solid rgba(49, 46, 129, 0.4);
-            border-radius: 14px;
+            border-radius: 12px;
             overflow: hidden;
+            max-width: 85%;
         }
 
         .ai-bubble-label {
             display: flex;
             align-items: center;
-            gap: 6px;
-            padding: 8px 12px 0;
-            font-size: 10px;
+            gap: 4px;
+            padding: 6px 10px 0;
+            font-size: 9px;
             font-weight: 700;
             color: #6366f1;
             letter-spacing: 1px;
         }
-        .ai-bubble-label i { font-size: 11px; color: #818cf8; }
+
+        .ai-bubble-label svg { width: 10px; height: 10px; fill: #818cf8; }
 
         .ai-bubble-text {
-            padding: 6px 12px 10px;
-            font-size: 13px;
-            line-height: 1.6;
-            color: #c7d2fe;
-            word-wrap: break-word;
+            padding: 4px 10px 8px;
+            font-size: 12px;
+            line-height: 1.5;
+            color: #c7d2fe;            word-wrap: break-word;
         }
 
         .ai-bubble-copy {
-            position: relative;
-            height: 30px;
+            height: 26px;
             background: rgba(30, 41, 89, 0.6);
             border-top: 1px solid rgba(49, 46, 129, 0.4);
             display: flex;
@@ -266,68 +257,67 @@
             transition: all 0.3s ease;
             opacity: 0;
             transform: translateY(-5px);
-            gap: 6px;
+            gap: 4px;
         }
 
         .ai-bubble-copy.visible { opacity: 1; transform: translateY(0); }
-        .ai-bubble-copy:active { background: rgba(49, 46, 129, 0.8); transform: scale(0.98); }
+        .ai-bubble-copy:active { background: rgba(49, 46, 129, 0.8); }
         .ai-bubble-copy.copied { background: rgba(34, 197, 94, 0.3); }
 
-        .copy-icon { color: #a5b4fc; font-size: 12px; }
-        .copy-text { color: #a5b4fc; font-size: 11px; font-weight: 700; letter-spacing: 0.5px; }
+        .copy-icon { width: 10px; height: 10px; fill: #a5b4fc; }
+        .copy-text { color: #a5b4fc; font-size: 10px; font-weight: 700; }
 
-        .input-section { padding: 8px 0; flex-shrink: 0; }
+        .input-section { padding: 6px 0; flex-shrink: 0; }
 
         .input-card {
             background: rgba(15, 23, 60, 0.85);
             backdrop-filter: blur(25px);
             border: 1px solid rgba(49, 46, 129, 0.5);
-            border-radius: 20px;
-            padding: 10px 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            border-radius: 18px;
+            padding: 8px 10px;
         }
 
-        .input-wrapper { display: flex; align-items: center; gap: 8px; }
+        .input-wrapper { display: flex; align-items: center; gap: 6px; }
 
         .message-input {
             flex: 1;
             background: rgba(20, 30, 70, 0.6);
-            border: 1px solid rgba(49, 46, 129, 0.4);            border-radius: 12px;
-            padding: 10px 14px;
+            border: 1px solid rgba(49, 46, 129, 0.4);
+            border-radius: 10px;
+            padding: 8px 12px;
             color: #c7d2fe;
             font-family: 'Tajawal', sans-serif;
-            font-size: 13px;
+            font-size: 12px;
             outline: none;
         }
 
         .message-input::placeholder { color: #6366f1; }
         .message-input:focus { background: rgba(30, 41, 89, 0.6); border-color: rgba(99, 102, 241, 0.6); }
-
         .send-btn {
-            width: 38px;
-            height: 38px;
-            border-radius: 12px;
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
             background: linear-gradient(135deg, #4f46e5, #6366f1);
-            border: 1px solid rgba(99, 102, 241, 0.6);
+            border: none;
             color: #fff;
-            font-size: 15px;
+            font-size: 14px;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
-            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
         }
 
-        .send-btn:active { transform: scale(0.88); background: linear-gradient(135deg, #4338ca, #4f46e5); }
+        .send-btn:active { transform: scale(0.9); }
         .send-btn:disabled { opacity: 0.5; }
+        .send-btn svg { width: 16px; height: 16px; fill: #fff; }
 
-        .loading-container { display: flex; align-items: center; justify-content: center; padding: 20px; }
+        .loading-container { display: flex; align-items: center; justify-content: center; padding: 15px; }
 
         .loading-spinner {
-            width: 32px;
-            height: 32px;
-            border: 3px solid rgba(99, 102, 241, 0.2);
+            width: 24px;
+            height: 24px;
+            border: 2px solid rgba(99, 102, 241, 0.2);
             border-top-color: #6366f1;
             border-radius: 50%;
             animation: spin 1s linear infinite;
@@ -337,11 +327,12 @@
 
         .cursor {
             display: inline-block;
-            width: 2px;
-            height: 16px;
+            width: 1.5px;
+            height: 14px;
             background: #6366f1;
             margin-right: 2px;
-            animation: blink 0.8s infinite;            vertical-align: middle;
+            animation: blink 0.8s infinite;
+            vertical-align: middle;
         }
 
         @keyframes blink {
@@ -350,8 +341,7 @@
         }
 
         .bottom-sheet-overlay {
-            position: fixed;
-            top: 0;
+            position: fixed;            top: 0;
             left: 0;
             right: 0;
             bottom: 0;
@@ -370,7 +360,7 @@
             max-width: 600px;
             max-height: 75vh;
             background: rgba(15, 23, 60, 0.95);
-            backdrop-filter: blur(25px) saturate(180%);
+            backdrop-filter: blur(25px);
             border: 1px solid rgba(49, 46, 129, 0.5);
             border-radius: 25px 25px 0 0;
             padding: 20px;
@@ -391,32 +381,31 @@
             padding-bottom: 12px;
             border-bottom: 1px solid rgba(49, 46, 129, 0.4);
         }
+
         .sheet-title {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 700;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             color: #e0e7ff;
         }
-
-        .sheet-title i { color: #6366f1; }
+        .sheet-title svg { width: 16px; height: 16px; fill: #6366f1; }
 
         .sheet-close {
-            width: 32px;
-            height: 32px;
+            width: 28px;
+            height: 28px;
             border-radius: 50%;
             background: rgba(30, 41, 89, 0.6);
             border: 1px solid rgba(49, 46, 129, 0.5);
-            color: #a5b4fc;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            font-size: 14px;
         }
 
         .sheet-close:active { transform: scale(0.9); background: rgba(49, 46, 129, 0.8); }
+        .sheet-close svg { width: 12px; height: 12px; fill: #a5b4fc; }
 
         .sheet-handle {
             width: 40px;
@@ -429,127 +418,165 @@
         .char-list-item {
             display: flex;
             align-items: center;
-            gap: 12px;
-            padding: 14px 16px;
+            gap: 10px;
+            padding: 12px 14px;
             background: rgba(20, 30, 70, 0.5);
             border: 1px solid rgba(49, 46, 129, 0.4);
-            border-radius: 16px;
-            margin-bottom: 10px;
+            border-radius: 14px;
+            margin-bottom: 8px;
             cursor: pointer;
             transition: all 0.3s;
-            text-align: right;
         }
+
         .char-list-item:active { transform: scale(0.97); background: rgba(30, 41, 89, 0.7); }
         .char-list-item.active { background: rgba(49, 46, 129, 0.6); border-color: rgba(99, 102, 241, 0.6); }
 
         .char-list-icon {
-            width: 44px;
-            height: 44px;
-            border-radius: 12px;
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
             background: rgba(30, 41, 89, 0.7);
             border: 1px solid rgba(49, 46, 129, 0.5);
             display: flex;
             align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            color: #a5b4fc;
-            flex-shrink: 0;
+            justify-content: center;            flex-shrink: 0;
+            overflow: hidden;
         }
 
-        .char-list-item.active .char-list-icon { background: #4f46e5; border-color: #6366f1; color: #fff; }
+        .char-list-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .char-list-icon svg { width: 18px; height: 18px; fill: #a5b4fc; }
+
+        .char-list-item.active .char-list-icon { background: #4f46e5; border-color: #6366f1; }
+        .char-list-item.active .char-list-icon svg { fill: #fff; }
 
         .char-list-info { flex: 1; text-align: right; min-width: 0; }
-        .char-list-name { font-size: 14px; font-weight: 700; color: #e0e7ff; margin-bottom: 3px; }
-        .char-list-desc { font-size: 11px; color: #818cf8; line-height: 1.4; }
+        .char-list-name { font-size: 13px; font-weight: 700; color: #e0e7ff; margin-bottom: 2px; }
+        .char-list-desc { font-size: 10px; color: #818cf8; line-height: 1.3; }
 
         .char-list-check {
-            width: 24px;
-            height: 24px;
+            width: 20px;
+            height: 20px;
             border-radius: 50%;
             background: rgba(30, 41, 89, 0.7);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 12px;
-            color: #a5b4fc;
             opacity: 0;
             transition: all 0.3s;
             flex-shrink: 0;
         }
 
-        .char-list-item.active .char-list-check { opacity: 1; background: #4f46e5; color: #fff; }
+        .char-list-item.active .char-list-check { opacity: 1; background: #4f46e5; }
+        .char-list-check svg { width: 10px; height: 10px; fill: #fff; }
 
         .notif-item {
             background: rgba(20, 30, 70, 0.5);
             border: 1px solid rgba(49, 46, 129, 0.4);
-            border-radius: 14px;
-            padding: 14px 16px;
-            margin-bottom: 10px;
+            border-radius: 12px;
+            padding: 12px 14px;
+            margin-bottom: 8px;
         }
 
-        .notif-title { font-size: 13px; font-weight: 700; margin-bottom: 4px; color: #e0e7ff; display: flex; align-items: center; gap: 8px; }
-        .notif-title i { color: #6366f1; font-size: 14px; }        .notif-text { font-size: 12px; color: #818cf8; line-height: 1.5; }
-        .notif-time { font-size: 10px; color: #6366f1; margin-top: 6px; }
+        .notif-title { font-size: 12px; font-weight: 700; margin-bottom: 3px; color: #e0e7ff; display: flex; align-items: center; gap: 6px; }
+        .notif-title svg { width: 12px; height: 12px; fill: #6366f1; }
+        .notif-text { font-size: 11px; color: #818cf8; line-height: 1.4; }
+        .notif-time { font-size: 9px; color: #6366f1; margin-top: 4px; }
+
+        /* Character selector buttons under input */
+        .char-selector {            display: flex;
+            gap: 6px;
+            padding: 8px 0;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        .char-selector::-webkit-scrollbar { display: none; }
+
+        .char-selector-btn {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 6px 10px;
+            background: rgba(20, 30, 70, 0.5);
+            border: 1px solid rgba(49, 46, 129, 0.4);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .char-selector-btn:active { transform: scale(0.95); }
+        .char-selector-btn.active { background: rgba(49, 46, 129, 0.6); border-color: rgba(99, 102, 241, 0.6); }
+
+        .char-selector-btn img {
+            width: 20px;
+            height: 20px;
+            border-radius: 6px;
+            object-fit: cover;
+        }
+
+        .char-selector-btn svg { width: 14px; height: 14px; fill: #a5b4fc; }
+        .char-selector-btn.active svg { fill: #fff; }
+
+        .char-selector-name { font-size: 10px; font-weight: 700; color: #c7d2fe; }
+        .char-selector-btn.active .char-selector-name { color: #fff; }
 
         @media (min-width: 768px) {
-            .main-container { max-width: 700px; margin: 0 auto; padding: 20px; padding-top: 90px; }
+            .main-container { max-width: 700px; margin: 0 auto; padding: 20px; padding-top: 80px; }
             .floating-header { left: 20px; right: 20px; top: 20px; }
-            .welcome-title { font-size: 30px; }
-            .logo-text { font-size: 24px; }
+            .welcome-title { font-size: 28px; }
+            .logo-text { font-size: 22px; }
             .header-circle { width: 44px; height: 44px; }
             .logo-center { height: 44px; }
         }
-
-        @supports (padding: max(0px)) {
-            .main-container {
-                padding-left: max(12px, env(safe-area-inset-left));
-                padding-right: max(12px, env(safe-area-inset-right));
-                padding-bottom: max(12px, env(safe-area-inset-bottom));
-            }
-            .floating-header {
-                top: max(12px, env(safe-area-inset-top));
-                left: max(12px, env(safe-area-inset-left));
-                right: max(12px, env(safe-area-inset-right));
-            }
-        }
     </style>
 </head>
-<body>
-    <div class="bg-animation"></div>
-    <div class="orb orb-1"></div>
-    <div class="orb orb-2"></div>
+<body>    <div class="bg-animation"></div>
 
     <header class="floating-header">
         <div class="header-circle" onclick="openCharactersSheet()">
-            <i class="fas fa-users"></i>
+            <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
         </div>
         <div class="logo-center">
             <span class="logo-text">EVILE</span>
         </div>
         <div class="header-circle" onclick="openNotificationsSheet()">
-            <i class="fas fa-bell"></i>
+            <svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6z"/></svg>
             <span class="notif-badge" id="notifBadge" style="display: none;">0</span>
         </div>
     </header>
 
     <div class="main-container">
         <div class="welcome-section" id="welcomeSection">
-            <div class="sparkle-icon">
-                <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M50 5 L55 40 L90 45 L55 50 L50 85 L45 50 L10 45 L45 40 Z" 
-                          fill="#6366f1" stroke="#a5b4fc" stroke-width="1.5" stroke-linejoin="round"/>                </svg>
+            <div id="welcomeLogo">
+                <div class="sparkle-icon">
+                    <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M50 5 L55 40 L90 45 L55 50 L50 85 L45 50 L10 45 L45 40 Z" 
+                              fill="#6366f1" stroke="#a5b4fc" stroke-width="1.5" stroke-linejoin="round"/>
+                    </svg>
+                </div>
             </div>
-            <h1 class="welcome-title">ابنِ أفكارك مع EVILE</h1>
-            <p class="welcome-subtitle">اضغط على أيقونة الشخصيات لاختيار شخصية وابدأ محادثة إبداعية</p>
+            <h1 class="welcome-title" id="welcomeTitle">ابنِ أفكارك مع EVILE</h1>
+            <p class="welcome-subtitle" id="welcomeSubtitle">اضغط على أيقونة الشخصيات لاختيار شخصية وابدأ محادثة إبداعية</p>
 
             <div class="input-section" style="width: 100%; max-width: 340px;">
                 <div class="input-card">
                     <div class="input-wrapper">
                         <input type="text" class="message-input" id="welcomeInput" placeholder="اكتب رسالتك..." onkeypress="handleWelcomeKey(event)">
-                        <button class="send-btn" onclick="sendWelcomeMessage()"><i class="fas fa-paper-plane"></i></button>
+                        <button class="send-btn" onclick="sendWelcomeMessage()">
+                            <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+                        </button>
                     </div>
                 </div>
             </div>
+
+            <div class="char-selector" id="charSelector"></div>
         </div>
 
         <div class="chat-section" id="chatSection">
@@ -559,7 +586,8 @@
                 <div class="input-card">
                     <div class="input-wrapper">
                         <input type="text" class="message-input" id="chatInput" placeholder="اكتب رسالتك..." onkeypress="handleChatKey(event)">
-                        <button class="send-btn" id="sendBtn" onclick="sendChatMessage()"><i class="fas fa-paper-plane"></i></button>
+                        <button class="send-btn" id="sendBtn" onclick="sendChatMessage()">                            <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -571,11 +599,11 @@
             <div class="sheet-handle"></div>
             <div class="sheet-header">
                 <div class="sheet-title">
-                    <i class="fas fa-users"></i>
+                    <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
                     الشخصيات
                 </div>
                 <button class="sheet-close" onclick="closeSheet('charactersSheet')">
-                    <i class="fas fa-times"></i>
+                    <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
                 </button>
             </div>
             <div id="charactersList"></div>
@@ -586,11 +614,12 @@
         <div class="bottom-sheet" onclick="event.stopPropagation()">
             <div class="sheet-handle"></div>
             <div class="sheet-header">
-                <div class="sheet-title">                    <i class="fas fa-bell"></i>
+                <div class="sheet-title">
+                    <svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6z"/></svg>
                     الإشعارات
                 </div>
                 <button class="sheet-close" onclick="closeSheet('notificationsSheet')">
-                    <i class="fas fa-times"></i>
+                    <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
                 </button>
             </div>
             <div id="notificationsList"></div>
@@ -605,23 +634,57 @@
         let isFirstMessage = true;
         let isProcessing = false;
 
+        function renderCharSelector() {
+            const selector = document.getElementById('charSelector');            selector.innerHTML = characters.map(char => `
+                <div class="char-selector-btn ${char.callback_key === currentCharacter ? 'active' : ''}" 
+                     onclick="selectCharacter('${char.callback_key}')">
+                    ${char.logo_url ? `<img src="${char.logo_url}" alt="${char.name}">` : 
+                    `<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>`}
+                    <span class="char-selector-name">${char.name}</span>
+                </div>
+            `).join('');
+        }
+
+        function updateWelcomeDisplay() {
+            const char = characters.find(c => c.callback_key === currentCharacter);
+            const logoContainer = document.getElementById('welcomeLogo');
+            const title = document.getElementById('welcomeTitle');
+            const subtitle = document.getElementById('welcomeSubtitle');
+            
+            if (char) {
+                if (char.logo_url) {
+                    logoContainer.innerHTML = `<img src="${char.logo_url}" class="character-logo" alt="${char.name}">`;
+                } else {
+                    logoContainer.innerHTML = `
+                        <div class="sparkle-icon">
+                            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M50 5 L55 40 L90 45 L55 50 L50 85 L45 50 L10 45 L45 40 Z" 
+                                      fill="#6366f1" stroke="#a5b4fc" stroke-width="1.5" stroke-linejoin="round"/>
+                            </svg>
+                        </div>`;
+                }
+                title.textContent = char.name;
+                subtitle.textContent = char.description;
+            }
+        }
+
         function renderCharacters() {
             const list = document.getElementById('charactersList');
             list.innerHTML = characters.map(char => `
                 <div class="char-list-item ${char.callback_key === currentCharacter ? 'active' : ''}" 
                      onclick="selectCharacter('${char.callback_key}')">
                     <div class="char-list-icon">
-                        <i class="fas fa-${char.callback_key === 'logo_maker' ? 'palette' : 'pen-fancy'}"></i>
+                        ${char.logo_url ? `<img src="${char.logo_url}" alt="${char.name}">` : 
+                        `<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>`}
                     </div>
                     <div class="char-list-info">
                         <div class="char-list-name">${char.name}</div>
                         <div class="char-list-desc">${char.description}</div>
                     </div>
                     <div class="char-list-check">
-                        <i class="fas fa-check"></i>
+                        <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
                     </div>
-                </div>
-            `).join('');
+                </div>            `).join('');
         }
 
         function renderNotifications() {
@@ -629,21 +692,22 @@
             const badge = document.getElementById('notifBadge');
             
             if (notifications.length === 0) {
-                list.innerHTML = '<p style="text-align: center; color: #6366f1; padding: 40px 20px;"><i class="fas fa-bell-slash" style="font-size: 40px; opacity: 0.5; display: block; margin-bottom: 10px;"></i>لا توجد إشعارات</p>';
+                list.innerHTML = '<p style="text-align: center; color: #6366f1; padding: 40px 20px;">لا توجد إشعارات</p>';
                 badge.style.display = 'none';
                 return;
             }
             
             badge.textContent = notifications.length;
-            badge.style.display = 'flex';            
+            badge.style.display = 'flex';
+            
             list.innerHTML = notifications.map(notif => `
                 <div class="notif-item">
                     <div class="notif-title">
-                        <i class="fas fa-bell"></i>
+                        <svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
                         ${notif.title}
                     </div>
                     <div class="notif-text">${notif.text}</div>
-                    <div class="notif-time"><i class="fas fa-clock" style="margin-left: 4px;"></i>${notif.created_at}</div>
+                    <div class="notif-time">${notif.created_at}</div>
                 </div>
             `).join('');
         }
@@ -669,9 +733,10 @@
             }
         }
 
-        function selectCharacter(charKey) {
-            currentCharacter = charKey;
+        function selectCharacter(charKey) {            currentCharacter = charKey;
+            renderCharSelector();
             renderCharacters();
+            updateWelcomeDisplay();
             setTimeout(() => closeSheet('charactersSheet'), 200);
             
             const char = characters.find(c => c.callback_key === charKey);
@@ -684,6 +749,7 @@
         function sendWelcomeMessage() {
             sendMessage('welcome');
         }
+
         function sendChatMessage() {
             sendMessage('chat');
         }
@@ -716,8 +782,7 @@
                     body: JSON.stringify({ character: currentCharacter, message: message })
                 });
                 
-                const data = await response.json();
-                removeLoading();
+                const data = await response.json();                removeLoading();
                 
                 if (data.response) {
                     await streamResponse(data.response);
@@ -733,7 +798,8 @@
             if (sendBtn) sendBtn.disabled = false;
         }
 
-        function streamResponse(text) {            return new Promise((resolve) => {
+        function streamResponse(text) {
+            return new Promise((resolve) => {
                 const container = document.getElementById('messagesContainer');
                 const time = new Date().toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' });
                 
@@ -747,7 +813,7 @@
                 
                 const label = document.createElement('div');
                 label.className = 'ai-bubble-label';
-                label.innerHTML = '<i class="fas fa-robot"></i><span>AI</span>';
+                label.innerHTML = '<svg viewBox="0 0 24 24"><path d="M21 10.5V9a1 1 0 0 0-1-1h-2.17a4 4 0 0 0-7.66 0H8a1 1 0 0 0-1 1v1.5a3.5 3.5 0 0 0 0 7v1.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-1.5a3.5 3.5 0 0 0 0-7zM12 6a2 2 0 0 1 2 2H10a2 2 0 0 1 2-2zm-5 8a1.5 1.5 0 1 1 1.5-1.5A1.5 1.5 0 0 1 7 14zm10 0a1.5 1.5 0 1 1 1.5-1.5 1.5 1.5 0 0 1-1.5 1.5z"/></svg><span>AI</span>';
                 bubble.appendChild(label);
                 
                 const textEl = document.createElement('div');
@@ -756,7 +822,7 @@
                 
                 const copyBtn = document.createElement('div');
                 copyBtn.className = 'ai-bubble-copy';
-                copyBtn.innerHTML = '<i class="fas fa-copy copy-icon"></i><span class="copy-text">نسخ</span>';
+                copyBtn.innerHTML = '<svg class="copy-icon" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg><span class="copy-text">نسخ</span>';
                 copyBtn.onclick = () => copyBubbleContent(copyBtn, textEl.textContent);
                 bubble.appendChild(copyBtn);
                 
@@ -765,8 +831,7 @@
                 const cursor = document.createElement('span');
                 cursor.className = 'cursor';
                 textEl.appendChild(cursor);
-                
-                let index = 0;
+                                let index = 0;
                 const interval = setInterval(() => {
                     if (index < text.length) {
                         const char = text.charAt(index);
@@ -782,15 +847,16 @@
                         resolve();
                     }
                 }, 12);
-            });        }
+            });
+        }
 
         function copyBubbleContent(button, text) {
             navigator.clipboard.writeText(text).then(() => {
                 button.classList.add('copied');
-                button.innerHTML = '<i class="fas fa-check copy-icon"></i><span class="copy-text">تم النسخ</span>';
+                button.innerHTML = '<svg class="copy-icon" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg><span class="copy-text">تم النسخ</span>';
                 setTimeout(() => {
                     button.classList.remove('copied');
-                    button.innerHTML = '<i class="fas fa-copy copy-icon"></i><span class="copy-text">نسخ</span>';
+                    button.innerHTML = '<svg class="copy-icon" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg><span class="copy-text">نسخ</span>';
                 }, 1500);
             });
         }
@@ -814,7 +880,6 @@
             container.appendChild(loadingDiv);
             container.scrollTop = container.scrollHeight;
         }
-
         function removeLoading() {
             const loadingMsg = document.getElementById('loadingMessage');
             if (loadingMsg) loadingMsg.remove();
@@ -831,9 +896,12 @@
         }
 
         function handleChatKey(event) {
-            if (event.key === 'Enter' && !isProcessing) sendChatMessage();        }
+            if (event.key === 'Enter' && !isProcessing) sendChatMessage();
+        }
 
+        renderCharSelector();
         renderNotifications();
+        updateWelcomeDisplay();
     </script>
 </body>
 </html>
