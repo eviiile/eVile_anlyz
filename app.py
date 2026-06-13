@@ -245,7 +245,8 @@ def login():
     return render_template('login.html')
 
 @app.route('/admin/logout')
-def logout():    session.clear()
+def logout():
+    session.clear()
     return redirect(url_for('login'))
 
 @app.route('/admin')
