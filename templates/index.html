@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EVILE - الرئيسية</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background: #0a0e27;
+            min-height: 100vh;
+            min-height: 100dvh;
+            color: #e0e7ff;
+            overflow: hidden;
+        }
+
+        .bg-animation {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(99, 102, 241, 0.12) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(129, 140, 248, 0.08) 0%, transparent 50%);
+            filter: blur(80px);
+        }
+
+        .main-container {
+            width: 100%;
+            height: 100vh;
+            height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            padding: 12px;
+            padding-top: 80px;
+        }
+
+        .floating-header {
+            position: fixed;            top: 12px;
+            left: 12px;
+            right: 12px;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 6px;
+            background: rgba(99, 102, 241, 0.18);
+            backdrop-filter: blur(25px) saturate(180%);
+            border: 1px solid rgba(129, 140, 248, 0.3);
+            border-radius: 18px;
+            gap: 6px;
+        }
+
+        .header-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: rgba(99, 102, 241, 0.25);
+            border: 1px solid rgba(129, 140, 248, 0.35);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            flex-shrink: 0;
+            position: relative;
+        }
+
+        .header-circle:active {
+            transform: scale(0.9);
+            background: rgba(99, 102, 241, 0.4);
+        }
+
+        .header-circle i {
+            font-size: 16px;
+            color: #c7d2fe;
+        }
+
+        .logo-center {
+            flex: 1;
+            height: 40px;
+            background: rgba(99, 102, 241, 0.2);
+            border: 1px solid rgba(129, 140, 248, 0.3);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .logo-text {
+            font-size: 22px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #e0e7ff, #c7d2fe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 3px;
+        }
+
+        .welcome-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 15px;
+            text-align: center;
+        }
+
+        .sparkle-icon {
+            width: 60px;
+            height: 60px;
+            margin-bottom: 12px;
+        }
+
+        .welcome-title {
+            font-size: 24px;
+            font-weight: 900;
+            margin-bottom: 6px;
+            background: linear-gradient(135deg, #e0e7ff, #c7d2fe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .welcome-subtitle {
+            font-size: 12px;
+            color: #a5b4fc;
+            max-width: 260px;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .input-section {
+            width: 100%;
+            max-width: 340px;
+        }
+
+        .input-card {
+            background: rgba(99, 102, 241, 0.12);            backdrop-filter: blur(25px);
+            border: 1px solid rgba(129, 140, 248, 0.25);
+            border-radius: 20px;
+            padding: 10px 12px;
+        }
+
+        .input-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .message-input {
+            flex: 1;
+            background: rgba(99, 102, 241, 0.15);
+            border: 1px solid rgba(129, 140, 248, 0.25);
+            border-radius: 12px;
+            padding: 10px 14px;
+            color: #e0e7ff;
+            font-family: 'Tajawal', sans-serif;
+            font-size: 13px;
+            outline: none;
+        }
+
+        .send-btn {
+            width: 38px;
+            height: 38px;
+            border-radius: 12px;
+            background: #6366f1;
+            border: none;
+            color: #e0e7ff;
+            font-size: 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @media (min-width: 768px) {
+            .main-container {
+                max-width: 700px;
+                margin: 0 auto;
+                padding: 20px;
+                padding-top: 90px;
+            }
+
+            .floating-header {
+                left: 20px;
+                right: 20px;
+                top: 20px;            }
+
+            .welcome-title {
+                font-size: 30px;
+            }
+
+            .logo-text {
+                font-size: 24px;
+            }
+
+            .header-circle {
+                width: 44px;
+                height: 44px;
+            }
+
+            .logo-center {
+                height: 44px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+
+    <header class="floating-header">
+        <div class="header-circle">
+            <i class="fas fa-users"></i>
+        </div>
+        <div class="logo-center">
+            <span class="logo-text">EVILE</span>
+        </div>
+        <div class="header-circle">
+            <i class="fas fa-bell"></i>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <div class="welcome-section">
+            <div class="sparkle-icon">
+                <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M50 5 L55 40 L90 45 L55 50 L50 85 L45 50 L10 45 L45 40 Z" 
+                          fill="#818cf8" stroke="#c7d2fe" stroke-width="1.5" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <h1 class="welcome-title">ابنِ أفكارك مع EVILE</h1>
+            <p class="welcome-subtitle">اضغط على أيقونة الشخصيات لاختيار شخصية وابدأ محادثة إبداعية</p>
+
+            <div class="input-section">
+                <div class="input-card">
+                    <div class="input-wrapper">                        <input type="text" class="message-input" placeholder="اكتب رسالتك...">
+                        <button class="send-btn"><i class="fas fa-paper-plane"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Load characters and notifications from API
+        async function loadData() {
+            try {
+                const [charsRes, notifsRes] = await Promise.all([
+                    fetch('/api/characters'),
+                    fetch('/api/notifications')
+                ]);
+                const characters = await charsRes.json();
+                const notifications = await notifsRes.json();
+                
+                console.log('Characters:', characters);
+                console.log('Notifications:', notifications);
+            } catch (error) {
+                console.error('Error loading data:', error);
+            }
+        }
+
+        loadData();
+    </script>
+</body>
+</html>
