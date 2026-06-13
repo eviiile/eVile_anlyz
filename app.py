@@ -7,8 +7,10 @@ from flask import Flask, render_template, request, redirect, url_for, session, f
 app = Flask(__name__)
 app.secret_key = os.getenv('SECRET_KEY', 'evile-secret-key-2026')
 
+# قراءة من متغيرات البيئة
 ADMIN_PASSWORD = os.getenv('ADMIN_PASSWORD', 'evile2026')
-OPENROUTER_API_KEY = os.getenv('OPENROUTER_API_KEY', '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')
+OPENROUTER_API_KEY = os.getenv('OPENROUTER_API_KEY', '')
+OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions"
 DATABASE = 'evile.db'
 
 logging.basicConfig(level=logging.INFO)
@@ -45,8 +47,8 @@ def init_db():
             ('كاتب محتوى', 'كاتب محترف لقنوات تيليجرام',
              'أنت الآن كاتب محتوى محترف لقنوات تيليجرام، ممنوع تماماً استخدام أي إيموجي. طبّق أفضل تقنيات كتابة النصوص القوية والجذابة (Copywriting).',
              'content_writer'))
-    conn.commit()
-    conn.close()
+    conn.commit()    conn.close()
+
 def admin_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
@@ -57,7 +59,13 @@ def admin_required(f):
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    conn = get_db()
+    characters = conn.execute('SELECT * FROM characters ORDER BY id').fetchall()
+    notifications = conn.execute('SELECT * FROM notifications ORDER BY id DESC').fetchall()
+    conn.close()
+    return render_template('index.html', 
+                         characters=[dict(c) for c in characters],
+                         notifications=[dict(n) for n in notifications])
 
 @app.route('/admin/login', methods=['GET', 'POST'])
 def login():
@@ -82,12 +90,13 @@ def admin_panel():
     characters = conn.execute('SELECT * FROM characters ORDER BY id DESC').fetchall()
     notifications = conn.execute('SELECT * FROM notifications ORDER BY id DESC').fetchall()
     conn.close()
-    return render_template('admin.html', characters=characters, notifications=notifications)
+    return render_template('admin.html', 
+                         characters=[dict(c) for c in characters],
+                         notifications=[dict(n) for n in notifications])
 
 @app.route('/admin/character/add', methods=['POST'])
 @admin_required
-def add_character():
-    name = request.form.get('name')
+def add_character():    name = request.form.get('name')
     description = request.form.get('description')
     prompt = request.form.get('prompt')
     callback_key = request.form.get('callback_key', name.lower().replace(' ', '_'))
@@ -96,7 +105,8 @@ def add_character():
         conn = get_db()
         try:
             conn.execute(
-                "INSERT INTO characters (name, description, prompt, callback_key) VALUES (?, ?, ?, ?)",                (name, description, prompt, callback_key)
+                "INSERT INTO characters (name, description, prompt, callback_key) VALUES (?, ?, ?, ?)",
+                (name, description, prompt, callback_key)
             )
             conn.commit()
             flash('تمت إضافة الشخصية بنجاح', 'success')
@@ -135,7 +145,6 @@ def delete_character(char_id):
     conn.close()
     flash('تم حذف الشخصية', 'success')
     return redirect(url_for('admin_panel'))
-
 @app.route('/admin/notification/add', methods=['POST'])
 @admin_required
 def add_notification():
@@ -174,6 +183,43 @@ def api_notifications():
     notifications = conn.execute('SELECT * FROM notifications ORDER BY id DESC').fetchall()
     conn.close()
     return jsonify([dict(n) for n in notifications])
+
+@app.route('/api/chat', methods=['POST'])
+def api_chat():
+    import aiohttp
+    data = request.json
+    character_key = data.get('character', 'logo_maker')
+    message = data.get('message', '')
+    
+    conn = get_db()
+    character = conn.execute("SELECT * FROM characters WHERE callback_key=?", (character_key,)).fetchone()
+    conn.close()
+        if not character:
+        return jsonify({'error': 'Character not found'}), 404
+    
+    headers = {
+        'Authorization': f'Bearer {OPENROUTER_API_KEY}',
+        'Content-Type': 'application/json',
+        'HTTP-Referer': request.url_root,
+        'X-Title': 'EVILE'
+    }
+    
+    payload = {
+        'model': 'openrouter/auto',
+        'messages': [
+            {'role': 'system', 'content': character['prompt']},
+            {'role': 'user', 'content': message}
+        ],
+        'temperature': 0.7
+    }
+    
+    try:
+        import requests
+        response = requests.post(OPENROUTER_URL, json=payload, headers=headers)
+        result = response.json()
+        return jsonify({'response': result['choices'][0]['message']['content']})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
     init_db()
