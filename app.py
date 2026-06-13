@@ -96,7 +96,8 @@ def init_db():
                  'content_writer', '')
             )
         
-        conn.commit()        cur.close()
+        conn.commit()
+        cur.close()
         conn.close()
         logger.info("Database initialized successfully")
         
