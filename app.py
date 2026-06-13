@@ -96,7 +96,8 @@ def admin_panel():
 @app.route('/admin/character/add', methods=['POST'])
 @admin_required
 def add_character():
-    name = request.form.get('name')    description = request.form.get('description')
+    name = request.form.get('name')
+    description = request.form.get('description')
     prompt = request.form.get('prompt')
     callback_key = request.form.get('callback_key', name.lower().replace(' ', '_'))
     
