@@ -11,10 +11,10 @@
         
         body {
             font-family: 'Tajawal', sans-serif;
-            background: #0a0e27;
+            background: #050816;
             min-height: 100vh;
             min-height: 100dvh;
-            color: #e0e7ff;
+            color: #c7d2fe;
             overflow: hidden;
             touch-action: manipulation;
         }
@@ -27,8 +27,8 @@
             left: 0;
             z-index: -1;
             background: 
-                radial-gradient(circle at 20% 80%, rgba(99, 102, 241, 0.12) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(129, 140, 248, 0.08) 0%, transparent 50%);
+                radial-gradient(circle at 20% 80%, rgba(30, 41, 89, 0.4) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(49, 46, 129, 0.3) 0%, transparent 50%);
             filter: blur(80px);
             animation: bgPulse 15s ease-in-out infinite;
         }
@@ -46,8 +46,8 @@
             animation: float 20s infinite ease-in-out;
         }
 
-        .orb-1 { width: 300px; height: 300px; background: rgba(99, 102, 241, 0.06); top: -100px; right: -100px; }
-        .orb-2 { width: 250px; height: 250px; background: rgba(129, 140, 248, 0.06); bottom: -50px; left: -50px; animation-delay: 5s; }
+        .orb-1 { width: 300px; height: 300px; background: rgba(30, 41, 89, 0.3); top: -100px; right: -100px; }
+        .orb-2 { width: 250px; height: 250px; background: rgba(49, 46, 129, 0.3); bottom: -50px; left: -50px; animation-delay: 5s; }
         @keyframes float {
             0%, 100% { transform: translate(0, 0) scale(1); }
             33% { transform: translate(30px, -50px) scale(1.1); }
@@ -74,19 +74,20 @@
             align-items: center;
             justify-content: space-between;
             padding: 6px;
-            background: rgba(99, 102, 241, 0.18);
+            background: rgba(15, 23, 60, 0.85);
             backdrop-filter: blur(25px) saturate(180%);
-            border: 1px solid rgba(129, 140, 248, 0.3);
+            border: 1px solid rgba(49, 46, 129, 0.5);
             border-radius: 18px;
             gap: 6px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
         }
 
         .header-circle {
             width: 40px;
             height: 40px;
             border-radius: 12px;
-            background: rgba(99, 102, 241, 0.25);
-            border: 1px solid rgba(129, 140, 248, 0.35);
+            background: rgba(30, 41, 89, 0.6);
+            border: 1px solid rgba(49, 46, 129, 0.6);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -95,8 +96,8 @@
             flex-shrink: 0;
             position: relative;
         }
-
-        .header-circle:active { transform: scale(0.9); background: rgba(99, 102, 241, 0.4); }        .header-circle i { font-size: 16px; color: #c7d2fe; }
+        .header-circle:active { transform: scale(0.9); background: rgba(49, 46, 129, 0.8); }
+        .header-circle i { font-size: 16px; color: #a5b4fc; }
 
         .header-circle .notif-badge {
             position: absolute;
@@ -111,15 +112,15 @@
             justify-content: center;
             font-size: 9px;
             font-weight: bold;
-            color: #e0e7ff;
-            border: 2px solid #0a0e27;
+            color: #fff;
+            border: 2px solid #050816;
         }
 
         .logo-center {
             flex: 1;
             height: 40px;
-            background: rgba(99, 102, 241, 0.2);
-            border: 1px solid rgba(129, 140, 248, 0.3);
+            background: rgba(30, 41, 89, 0.5);
+            border: 1px solid rgba(49, 46, 129, 0.5);
             border-radius: 12px;
             display: flex;
             align-items: center;
@@ -129,7 +130,7 @@
         .logo-text {
             font-size: 22px;
             font-weight: 900;
-            background: linear-gradient(135deg, #e0e7ff, #c7d2fe);
+            background: linear-gradient(135deg, #e0e7ff, #a5b4fc);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             letter-spacing: 3px;
@@ -165,14 +166,14 @@
             font-size: 24px;
             font-weight: 900;
             margin-bottom: 6px;
-            background: linear-gradient(135deg, #e0e7ff, #c7d2fe);
+            background: linear-gradient(135deg, #e0e7ff, #a5b4fc);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
         .welcome-subtitle {
             font-size: 12px;
-            color: #a5b4fc;
+            color: #818cf8;
             max-width: 260px;
             line-height: 1.5;
             margin-bottom: 20px;
@@ -192,9 +193,9 @@
             overflow-y: auto;
             padding: 12px;
             margin-bottom: 10px;
-            background: rgba(99, 102, 241, 0.06);
-            backdrop-filter: blur(15px);
-            border-radius: 20px;            border: 1px solid rgba(129, 140, 248, 0.15);
+            background: rgba(10, 15, 40, 0.6);
+            backdrop-filter: blur(15px);            border-radius: 20px;
+            border: 1px solid rgba(49, 46, 129, 0.3);
         }
 
         .message { margin-bottom: 14px; animation: messageSlide 0.4s ease; }
@@ -204,31 +205,31 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .message-time { font-size: 10px; color: #818cf8; margin-bottom: 5px; }
+        .message-time { font-size: 10px; color: #6366f1; margin-bottom: 5px; }
 
         .message-content {
-            background: rgba(99, 102, 241, 0.12);
+            background: rgba(30, 41, 89, 0.5);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(129, 140, 248, 0.2);
+            border: 1px solid rgba(49, 46, 129, 0.4);
             padding: 10px 14px;
             border-radius: 14px;
             font-size: 13px;
             line-height: 1.6;
             word-wrap: break-word;
-            color: #e0e7ff;
+            color: #c7d2fe;
         }
 
         .message.own { text-align: left; }
         .message.own .message-content {
-            background: rgba(99, 102, 241, 0.3);
-            border-color: rgba(129, 140, 248, 0.35);
+            background: rgba(49, 46, 129, 0.6);
+            border-color: rgba(99, 102, 241, 0.5);
         }
 
         .ai-bubble {
             position: relative;
-            background: rgba(99, 102, 241, 0.12);
+            background: rgba(20, 30, 70, 0.7);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(129, 140, 248, 0.2);
+            border: 1px solid rgba(49, 46, 129, 0.4);
             border-radius: 14px;
             overflow: hidden;
         }
@@ -240,24 +241,24 @@
             padding: 8px 12px 0;
             font-size: 10px;
             font-weight: 700;
-            color: #818cf8;
+            color: #6366f1;
             letter-spacing: 1px;
         }
-        .ai-bubble-label i { font-size: 11px; color: #a5b4fc; }
+        .ai-bubble-label i { font-size: 11px; color: #818cf8; }
 
         .ai-bubble-text {
             padding: 6px 12px 10px;
             font-size: 13px;
             line-height: 1.6;
-            color: #e0e7ff;
+            color: #c7d2fe;
             word-wrap: break-word;
         }
 
         .ai-bubble-copy {
             position: relative;
             height: 30px;
-            background: rgba(99, 102, 241, 0.25);
-            border-top: 1px solid rgba(129, 140, 248, 0.2);
+            background: rgba(30, 41, 89, 0.6);
+            border-top: 1px solid rgba(49, 46, 129, 0.4);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -265,57 +266,60 @@
             transition: all 0.3s ease;
             opacity: 0;
             transform: translateY(-5px);
+            gap: 6px;
         }
 
         .ai-bubble-copy.visible { opacity: 1; transform: translateY(0); }
-        .ai-bubble-copy:active { background: rgba(99, 102, 241, 0.4); transform: scale(0.98); }
-        .ai-bubble-copy.copied { background: rgba(99, 102, 241, 0.5); }
+        .ai-bubble-copy:active { background: rgba(49, 46, 129, 0.8); transform: scale(0.98); }
+        .ai-bubble-copy.copied { background: rgba(34, 197, 94, 0.3); }
 
-        .copy-icon { color: #c7d2fe; font-size: 12px; margin-left: 6px; }
-        .copy-text { color: #c7d2fe; font-size: 11px; font-weight: 700; letter-spacing: 0.5px; }
+        .copy-icon { color: #a5b4fc; font-size: 12px; }
+        .copy-text { color: #a5b4fc; font-size: 11px; font-weight: 700; letter-spacing: 0.5px; }
 
         .input-section { padding: 8px 0; flex-shrink: 0; }
 
         .input-card {
-            background: rgba(99, 102, 241, 0.12);
+            background: rgba(15, 23, 60, 0.85);
             backdrop-filter: blur(25px);
-            border: 1px solid rgba(129, 140, 248, 0.25);
+            border: 1px solid rgba(49, 46, 129, 0.5);
             border-radius: 20px;
             padding: 10px 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
         }
 
         .input-wrapper { display: flex; align-items: center; gap: 8px; }
 
         .message-input {
             flex: 1;
-            background: rgba(99, 102, 241, 0.15);
-            border: 1px solid rgba(129, 140, 248, 0.25);
-            border-radius: 12px;
+            background: rgba(20, 30, 70, 0.6);
+            border: 1px solid rgba(49, 46, 129, 0.4);            border-radius: 12px;
             padding: 10px 14px;
-            color: #e0e7ff;            font-family: 'Tajawal', sans-serif;
+            color: #c7d2fe;
+            font-family: 'Tajawal', sans-serif;
             font-size: 13px;
             outline: none;
         }
 
-        .message-input::placeholder { color: #818cf8; }
-        .message-input:focus { background: rgba(99, 102, 241, 0.25); border-color: rgba(129, 140, 248, 0.4); }
+        .message-input::placeholder { color: #6366f1; }
+        .message-input:focus { background: rgba(30, 41, 89, 0.6); border-color: rgba(99, 102, 241, 0.6); }
 
         .send-btn {
             width: 38px;
             height: 38px;
             border-radius: 12px;
-            background: #6366f1;
-            border: 1px solid rgba(129, 140, 248, 0.4);
-            color: #e0e7ff;
+            background: linear-gradient(135deg, #4f46e5, #6366f1);
+            border: 1px solid rgba(99, 102, 241, 0.6);
+            color: #fff;
             font-size: 15px;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
         }
 
-        .send-btn:active { transform: scale(0.88); background: #4f46e5; }
+        .send-btn:active { transform: scale(0.88); background: linear-gradient(135deg, #4338ca, #4f46e5); }
         .send-btn:disabled { opacity: 0.5; }
 
         .loading-container { display: flex; align-items: center; justify-content: center; padding: 20px; }
@@ -323,8 +327,8 @@
         .loading-spinner {
             width: 32px;
             height: 32px;
-            border: 3px solid rgba(129, 140, 248, 0.2);
-            border-top-color: #818cf8;
+            border: 3px solid rgba(99, 102, 241, 0.2);
+            border-top-color: #6366f1;
             border-radius: 50%;
             animation: spin 1s linear infinite;
         }
@@ -335,13 +339,13 @@
             display: inline-block;
             width: 2px;
             height: 16px;
-            background: #818cf8;
+            background: #6366f1;
             margin-right: 2px;
-            animation: blink 0.8s infinite;
-            vertical-align: middle;
+            animation: blink 0.8s infinite;            vertical-align: middle;
         }
 
-        @keyframes blink {            0%, 50% { opacity: 1; }
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
             51%, 100% { opacity: 0; }
         }
 
@@ -351,7 +355,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(10, 14, 39, 0.8);
+            background: rgba(5, 8, 22, 0.9);
             backdrop-filter: blur(5px);
             z-index: 1000;
             display: none;
@@ -365,9 +369,9 @@
             width: 100%;
             max-width: 600px;
             max-height: 75vh;
-            background: rgba(99, 102, 241, 0.15);
+            background: rgba(15, 23, 60, 0.95);
             backdrop-filter: blur(25px) saturate(180%);
-            border: 1px solid rgba(129, 140, 248, 0.25);
+            border: 1px solid rgba(49, 46, 129, 0.5);
             border-radius: 25px 25px 0 0;
             padding: 20px;
             animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -385,26 +389,26 @@
             justify-content: space-between;
             margin-bottom: 15px;
             padding-bottom: 12px;
-            border-bottom: 1px solid rgba(129, 140, 248, 0.2);
+            border-bottom: 1px solid rgba(49, 46, 129, 0.4);
         }
-
         .sheet-title {
             font-size: 18px;
-            font-weight: 700;            display: flex;
+            font-weight: 700;
+            display: flex;
             align-items: center;
             gap: 8px;
             color: #e0e7ff;
         }
 
-        .sheet-title i { color: #a5b4fc; }
+        .sheet-title i { color: #6366f1; }
 
         .sheet-close {
             width: 32px;
             height: 32px;
             border-radius: 50%;
-            background: rgba(99, 102, 241, 0.2);
-            border: 1px solid rgba(129, 140, 248, 0.3);
-            color: #c7d2fe;
+            background: rgba(30, 41, 89, 0.6);
+            border: 1px solid rgba(49, 46, 129, 0.5);
+            color: #a5b4fc;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -412,12 +416,12 @@
             font-size: 14px;
         }
 
-        .sheet-close:active { transform: scale(0.9); background: rgba(99, 102, 241, 0.35); }
+        .sheet-close:active { transform: scale(0.9); background: rgba(49, 46, 129, 0.8); }
 
         .sheet-handle {
             width: 40px;
             height: 4px;
-            background: rgba(129, 140, 248, 0.4);
+            background: rgba(99, 102, 241, 0.5);
             border-radius: 4px;
             margin: 0 auto 15px;
         }
@@ -427,68 +431,68 @@
             align-items: center;
             gap: 12px;
             padding: 14px 16px;
-            background: rgba(99, 102, 241, 0.1);
-            border: 1px solid rgba(129, 140, 248, 0.2);
+            background: rgba(20, 30, 70, 0.5);
+            border: 1px solid rgba(49, 46, 129, 0.4);
             border-radius: 16px;
             margin-bottom: 10px;
             cursor: pointer;
             transition: all 0.3s;
             text-align: right;
         }
+        .char-list-item:active { transform: scale(0.97); background: rgba(30, 41, 89, 0.7); }
+        .char-list-item.active { background: rgba(49, 46, 129, 0.6); border-color: rgba(99, 102, 241, 0.6); }
 
-        .char-list-item:active { transform: scale(0.97); background: rgba(99, 102, 241, 0.2); }
-        .char-list-item.active { background: rgba(99, 102, 241, 0.3); border-color: rgba(129, 140, 248, 0.5); }
-
-        .char-list-icon {            width: 44px;
+        .char-list-icon {
+            width: 44px;
             height: 44px;
             border-radius: 12px;
-            background: rgba(99, 102, 241, 0.3);
-            border: 1px solid rgba(129, 140, 248, 0.3);
+            background: rgba(30, 41, 89, 0.7);
+            border: 1px solid rgba(49, 46, 129, 0.5);
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 20px;
-            color: #c7d2fe;
+            color: #a5b4fc;
             flex-shrink: 0;
         }
 
-        .char-list-item.active .char-list-icon { background: #6366f1; border-color: #6366f1; }
+        .char-list-item.active .char-list-icon { background: #4f46e5; border-color: #6366f1; color: #fff; }
 
         .char-list-info { flex: 1; text-align: right; min-width: 0; }
         .char-list-name { font-size: 14px; font-weight: 700; color: #e0e7ff; margin-bottom: 3px; }
-        .char-list-desc { font-size: 11px; color: #a5b4fc; line-height: 1.4; }
+        .char-list-desc { font-size: 11px; color: #818cf8; line-height: 1.4; }
 
         .char-list-check {
             width: 24px;
             height: 24px;
             border-radius: 50%;
-            background: rgba(99, 102, 241, 0.3);
+            background: rgba(30, 41, 89, 0.7);
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 12px;
-            color: #c7d2fe;
+            color: #a5b4fc;
             opacity: 0;
             transition: all 0.3s;
             flex-shrink: 0;
         }
 
-        .char-list-item.active .char-list-check { opacity: 1; background: #6366f1; }
+        .char-list-item.active .char-list-check { opacity: 1; background: #4f46e5; color: #fff; }
 
         .notif-item {
-            background: rgba(99, 102, 241, 0.1);
-            border: 1px solid rgba(129, 140, 248, 0.2);
+            background: rgba(20, 30, 70, 0.5);
+            border: 1px solid rgba(49, 46, 129, 0.4);
             border-radius: 14px;
             padding: 14px 16px;
             margin-bottom: 10px;
         }
 
         .notif-title { font-size: 13px; font-weight: 700; margin-bottom: 4px; color: #e0e7ff; display: flex; align-items: center; gap: 8px; }
-        .notif-title i { color: #a5b4fc; font-size: 14px; }
-        .notif-text { font-size: 12px; color: #a5b4fc; line-height: 1.5; }
-        .notif-time { font-size: 10px; color: #818cf8; margin-top: 6px; }
+        .notif-title i { color: #6366f1; font-size: 14px; }        .notif-text { font-size: 12px; color: #818cf8; line-height: 1.5; }
+        .notif-time { font-size: 10px; color: #6366f1; margin-top: 6px; }
 
-        @media (min-width: 768px) {            .main-container { max-width: 700px; margin: 0 auto; padding: 20px; padding-top: 90px; }
+        @media (min-width: 768px) {
+            .main-container { max-width: 700px; margin: 0 auto; padding: 20px; padding-top: 90px; }
             .floating-header { left: 20px; right: 20px; top: 20px; }
             .welcome-title { font-size: 30px; }
             .logo-text { font-size: 24px; }
@@ -533,11 +537,11 @@
             <div class="sparkle-icon">
                 <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M50 5 L55 40 L90 45 L55 50 L50 85 L45 50 L10 45 L45 40 Z" 
-                          fill="#818cf8" stroke="#c7d2fe" stroke-width="1.5" stroke-linejoin="round"/>
-                </svg>
+                          fill="#6366f1" stroke="#a5b4fc" stroke-width="1.5" stroke-linejoin="round"/>                </svg>
             </div>
             <h1 class="welcome-title">ابنِ أفكارك مع EVILE</h1>
             <p class="welcome-subtitle">اضغط على أيقونة الشخصيات لاختيار شخصية وابدأ محادثة إبداعية</p>
+
             <div class="input-section" style="width: 100%; max-width: 340px;">
                 <div class="input-card">
                     <div class="input-wrapper">
@@ -582,11 +586,11 @@
         <div class="bottom-sheet" onclick="event.stopPropagation()">
             <div class="sheet-handle"></div>
             <div class="sheet-header">
-                <div class="sheet-title">
-                    <i class="fas fa-bell"></i>
+                <div class="sheet-title">                    <i class="fas fa-bell"></i>
                     الإشعارات
                 </div>
-                <button class="sheet-close" onclick="closeSheet('notificationsSheet')">                    <i class="fas fa-times"></i>
+                <button class="sheet-close" onclick="closeSheet('notificationsSheet')">
+                    <i class="fas fa-times"></i>
                 </button>
             </div>
             <div id="notificationsList"></div>
@@ -625,21 +629,21 @@
             const badge = document.getElementById('notifBadge');
             
             if (notifications.length === 0) {
-                list.innerHTML = '<p style="text-align: center; color: #818cf8; padding: 40px 20px;">لا توجد إشعارات</p>';
+                list.innerHTML = '<p style="text-align: center; color: #6366f1; padding: 40px 20px;"><i class="fas fa-bell-slash" style="font-size: 40px; opacity: 0.5; display: block; margin-bottom: 10px;"></i>لا توجد إشعارات</p>';
                 badge.style.display = 'none';
                 return;
             }
             
             badge.textContent = notifications.length;
-            badge.style.display = 'flex';
-            
+            badge.style.display = 'flex';            
             list.innerHTML = notifications.map(notif => `
                 <div class="notif-item">
-                    <div class="notif-title">                        <i class="fas fa-bell"></i>
+                    <div class="notif-title">
+                        <i class="fas fa-bell"></i>
                         ${notif.title}
                     </div>
                     <div class="notif-text">${notif.text}</div>
-                    <div class="notif-time">${notif.created_at}</div>
+                    <div class="notif-time"><i class="fas fa-clock" style="margin-left: 4px;"></i>${notif.created_at}</div>
                 </div>
             `).join('');
         }
@@ -680,10 +684,10 @@
         function sendWelcomeMessage() {
             sendMessage('welcome');
         }
-
         function sendChatMessage() {
             sendMessage('chat');
         }
+
         async function sendMessage(source) {
             if (isProcessing) return;
             
@@ -729,11 +733,11 @@
             if (sendBtn) sendBtn.disabled = false;
         }
 
-        function streamResponse(text) {
-            return new Promise((resolve) => {
+        function streamResponse(text) {            return new Promise((resolve) => {
                 const container = document.getElementById('messagesContainer');
                 const time = new Date().toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' });
-                                const messageDiv = document.createElement('div');
+                
+                const messageDiv = document.createElement('div');
                 messageDiv.className = 'message';
                 messageDiv.innerHTML = `<span class="message-time">${time}</span>`;
                 container.appendChild(messageDiv);
@@ -778,11 +782,11 @@
                         resolve();
                     }
                 }, 12);
-            });
-        }
+            });        }
 
         function copyBubbleContent(button, text) {
-            navigator.clipboard.writeText(text).then(() => {                button.classList.add('copied');
+            navigator.clipboard.writeText(text).then(() => {
+                button.classList.add('copied');
                 button.innerHTML = '<i class="fas fa-check copy-icon"></i><span class="copy-text">تم النسخ</span>';
                 setTimeout(() => {
                     button.classList.remove('copied');
@@ -827,10 +831,9 @@
         }
 
         function handleChatKey(event) {
-            if (event.key === 'Enter' && !isProcessing) sendChatMessage();
-        }
+            if (event.key === 'Enter' && !isProcessing) sendChatMessage();        }
 
-        // Initialize
-        renderNotifications();    </script>
+        renderNotifications();
+    </script>
 </body>
 </html>
