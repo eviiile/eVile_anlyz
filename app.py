@@ -10,15 +10,11 @@ from flask import Flask, render_template, request, redirect, url_for, session, f
 try:
     import psycopg
     from psycopg.rows import dict_row
-    from psycopg.pool import ConnectionPool
     PSYCOPG_VERSION = 3
 except ImportError:
-    try:
-        import psycopg2 as psycopg
-        from psycopg2.extras import RealDictCursor
-        PSYCOPG_VERSION = 2
-    except ImportError:
-        raise RuntimeError("Database driver not installed")
+    import psycopg2 as psycopg
+    from psycopg2.extras import RealDictCursor as dict_row
+    PSYCOPG_VERSION = 2
 
 app = Flask(__name__)
 app.secret_key = os.getenv('SECRET_KEY', 'evile-secret-key-2026')
@@ -34,55 +30,27 @@ DATABASE_URL = os.getenv('DATABASE_URL', 'postgresql://evile_site_user:yxWlZVZsC
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-db_pool = None
 _characters_cache = {'data': None, 'timestamp': 0}
 CACHE_TTL = 300
-
-
-def init_pool():
-    global db_pool
-    if PSYCOPG_VERSION == 3:
-        try:
-            db_pool = ConnectionPool(DATABASE_URL, min_size=2, max_size=10, open=True)
-            logger.info("Connection pool initialized (psycopg3)")
-        except Exception as e:
-            logger.error(f"Pool initialization error: {e}")
-            db_pool = None
-    else:
-        logger.info("Connection pool not used for psycopg2")
-
 
 @contextmanager
 def get_db():
     conn = None
     cur = None
     try:
-        if db_pool and PSYCOPG_VERSION == 3:
-            conn = db_pool.getconn()
-            cur = conn.cursor(row_factory=dict_row)
-            yield cur
-            conn.commit()
-        else:
-            conn = psycopg.connect(DATABASE_URL)
-            if PSYCOPG_VERSION == 3:
-                cur = conn.cursor(row_factory=dict_row)
-            else:
-                cur = conn.cursor(cursor_factory=RealDictCursor)
-            yield cur
-            conn.commit()
+        conn = psycopg.connect(DATABASE_URL)
+        cur = conn.cursor()
+        yield cur
+        conn.commit()
     except Exception as e:
         if conn:
             conn.rollback()
         logger.error(f"Database error: {str(e)}")
         raise
-    finally:
-        if cur:
+    finally:        if cur:
             cur.close()
-        if conn and db_pool and PSYCOPG_VERSION == 3:
-            db_pool.putconn(conn)
-        elif conn:
+        if conn:
             conn.close()
-
 
 def init_db():
     try:
@@ -95,24 +63,20 @@ def init_db():
                 callback_key TEXT UNIQUE NOT NULL,
                 logo_url TEXT DEFAULT ''
             )''')
-
             cur.execute('''CREATE TABLE IF NOT EXISTS notifications (
                 id SERIAL PRIMARY KEY,
                 title TEXT NOT NULL,
                 text TEXT NOT NULL,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )''')
-
             cur.execute('''CREATE TABLE IF NOT EXISTS users (
                 id SERIAL PRIMARY KEY,
                 telegram_id TEXT UNIQUE NOT NULL,
                 is_subscribed BOOLEAN DEFAULT FALSE,
                 last_active TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )''')
-
             cur.execute("SELECT COUNT(*) FROM characters")
             count = cur.fetchone()[0]
-
             if count == 0:
                 cur.execute(
                     "INSERT INTO characters (name, description, prompt, callback_key, logo_url) VALUES (%s, %s, %s, %s, %s)",
@@ -131,16 +95,13 @@ def init_db():
         logger.error(f"Database initialization error: {e}")
         raise
 
-
 def update_user_activity(telegram_id):
-    if not telegram_id:
-        return
+    if not telegram_id:        return
     try:
         with get_db() as cur:
             cur.execute("UPDATE users SET last_active = CURRENT_TIMESTAMP WHERE telegram_id = %s", (telegram_id,))
     except Exception as e:
         logger.error(f"Update activity error: {e}")
-
 
 def check_telegram_subscription(telegram_id):
     try:
@@ -156,7 +117,6 @@ def check_telegram_subscription(telegram_id):
         logger.error(f"Telegram API Error: {e}")
         return False
 
-
 def admin_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
@@ -165,13 +125,11 @@ def admin_required(f):
         return f(*args, **kwargs)
     return decorated
 
-
 @app.route('/')
 def index():
     telegram_id = session.get('telegram_id')
     if telegram_id:
         update_user_activity(telegram_id)
-
     try:
         with get_db() as cur:
             cur.execute('SELECT * FROM characters ORDER BY id')
@@ -181,41 +139,32 @@ def index():
     except Exception as e:
         logger.error(f"Index error: {e}")
         characters, notifications = [], []
-
     channel_url = f"https://t.me/{TELEGRAM_CHANNEL_ID.replace('@', '')}"
     return render_template('index.html',
                          characters=characters,
                          notifications=notifications,
                          telegram_id=telegram_id,
                          channel_url=channel_url)
-
-
 @app.route('/register', methods=['POST'])
 def register():
     try:
         telegram_id = request.form.get('telegram_id', '').strip()
         if not telegram_id or not telegram_id.isdigit():
             return jsonify({'success': False, 'message': 'معرّف غير صحيح'}), 400
-
         with get_db() as cur:
             cur.execute(
                 "INSERT INTO users (telegram_id) VALUES (%s) ON CONFLICT (telegram_id) DO UPDATE SET last_active = CURRENT_TIMESTAMP",
                 (telegram_id,)
             )
-
         session['telegram_id'] = telegram_id
         session.permanent = True
-
         is_sub = check_telegram_subscription(telegram_id)
-
         with get_db() as cur:
             cur.execute("UPDATE users SET is_subscribed = %s WHERE telegram_id = %s", (is_sub, telegram_id))
-
         return jsonify({'success': True, 'subscribed': is_sub})
     except Exception as e:
         logger.error(f"Register error: {e}")
         return jsonify({'success': False, 'message': str(e)}), 500
-
 
 @app.route('/api/verify_subscription', methods=['POST'])
 def api_verify_subscription():
@@ -223,18 +172,13 @@ def api_verify_subscription():
         telegram_id = session.get('telegram_id')
         if not telegram_id:
             return jsonify({'success': False, 'subscribed': False}), 401
-
         is_sub = check_telegram_subscription(telegram_id)
-
         with get_db() as cur:
-            cur.execute("UPDATE users SET is_subscribed = %s, last_active = CURRENT_TIMESTAMP WHERE telegram_id = %s",
-                       (is_sub, telegram_id))
-
+            cur.execute("UPDATE users SET is_subscribed = %s, last_active = CURRENT_TIMESTAMP WHERE telegram_id = %s", (is_sub, telegram_id))
         return jsonify({'success': is_sub, 'subscribed': is_sub})
     except Exception as e:
         logger.error(f"Verify error: {e}")
         return jsonify({'success': False, 'subscribed': False}), 500
-
 
 @app.route('/api/active_users')
 def api_active_users():
@@ -248,18 +192,15 @@ def api_active_users():
         logger.error(f"Active users error: {e}")
         return jsonify({'count': 0})
 
-
 @app.route('/keepalive')
 def keepalive():
-    try:
-        with get_db() as cur:
+    try:        with get_db() as cur:
             cur.execute("SELECT COUNT(*) FROM users")
             result = cur.fetchone()
             count = result[0] if result else 0
         return jsonify({'status': 'alive', 'users': count})
     except Exception as e:
         return jsonify({'status': 'error'}), 500
-
 
 @app.route('/health')
 def health_check():
@@ -276,7 +217,6 @@ def health_check():
     except Exception as e:
         return jsonify({'status': 'unhealthy', 'error': str(e)}), 500
 
-
 @app.route('/admin/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -286,12 +226,10 @@ def login():
         flash('كلمة المرور غير صحيحة', 'error')
     return render_template('login.html')
 
-
 @app.route('/admin/logout')
 def logout():
     session.clear()
     return redirect(url_for('login'))
-
 
 @app.route('/admin')
 @admin_required
@@ -305,14 +243,9 @@ def admin_panel():
             cur.execute('SELECT COUNT(*) FROM users')
             result = cur.fetchone()
             users_count = result[0] if result else 0
-    except Exception as e:
-        logger.error(f"Admin panel error: {e}")
+    except Exception as e:        logger.error(f"Admin panel error: {e}")
         characters, notifications, users_count = [], [], 0
-    return render_template('admin.html',
-                         characters=characters,
-                         notifications=notifications,
-                         users_count=users_count)
-
+    return render_template('admin.html', characters=characters, notifications=notifications, users_count=users_count)
 
 @app.route('/admin/character/add', methods=['POST'])
 @admin_required
@@ -325,15 +258,12 @@ def add_character():
     if name and description and prompt:
         try:
             with get_db() as cur:
-                cur.execute(
-                    "INSERT INTO characters (name, description, prompt, callback_key, logo_url) VALUES (%s, %s, %s, %s, %s)",
-                    (name, description, prompt, callback_key, logo_url)
-                )
+                cur.execute("INSERT INTO characters (name, description, prompt, callback_key, logo_url) VALUES (%s, %s, %s, %s, %s)",
+                    (name, description, prompt, callback_key, logo_url))
             flash('تمت إضافة الشخصية بنجاح', 'success')
         except Exception as e:
             flash('مفتاح الشخصية موجود مسبقاً' if 'unique' in str(e).lower() else str(e), 'error')
     return redirect(url_for('admin_panel'))
-
 
 @app.route('/admin/character/<int:char_id>/edit', methods=['POST'])
 @admin_required
@@ -345,15 +275,12 @@ def edit_character(char_id):
     if name and description and prompt:
         try:
             with get_db() as cur:
-                cur.execute(
-                    "UPDATE characters SET name=%s, description=%s, prompt=%s, logo_url=%s WHERE id=%s",
-                    (name, description, prompt, logo_url, char_id)
-                )
+                cur.execute("UPDATE characters SET name=%s, description=%s, prompt=%s, logo_url=%s WHERE id=%s",
+                    (name, description, prompt, logo_url, char_id))
             flash('تم تعديل الشخصية بنجاح', 'success')
         except Exception as e:
             flash(str(e), 'error')
     return redirect(url_for('admin_panel'))
-
 
 @app.route('/admin/character/<int:char_id>/delete')
 @admin_required
@@ -365,8 +292,6 @@ def delete_character(char_id):
     except Exception as e:
         flash(str(e), 'error')
     return redirect(url_for('admin_panel'))
-
-
 @app.route('/admin/notification/add', methods=['POST'])
 @admin_required
 def add_notification():
@@ -381,7 +306,6 @@ def add_notification():
             flash(str(e), 'error')
     return redirect(url_for('admin_panel'))
 
-
 @app.route('/admin/notification/<int:notif_id>/delete')
 @admin_required
 def delete_notification(notif_id):
@@ -393,13 +317,11 @@ def delete_notification(notif_id):
         flash(str(e), 'error')
     return redirect(url_for('admin_panel'))
 
-
 @app.route('/api/characters')
 def api_characters():
     now = time.time()
     if _characters_cache['data'] and (now - _characters_cache['timestamp']) < CACHE_TTL:
         return jsonify(_characters_cache['data'])
-
     try:
         with get_db() as cur:
             cur.execute('SELECT * FROM characters ORDER BY id')
@@ -411,7 +333,6 @@ def api_characters():
         logger.error(f"API characters error: {e}")
         return jsonify([])
 
-
 @app.route('/api/notifications')
 def api_notifications():
     try:
@@ -421,8 +342,6 @@ def api_notifications():
     except Exception as e:
         logger.error(f"API notifications error: {e}")
         return jsonify([])
-
-
 @app.route('/api/chat', methods=['POST'])
 def api_chat():
     data = request.json
@@ -437,7 +356,6 @@ def api_chat():
         return jsonify({'error': str(e)}), 500
     if not character:
         return jsonify({'error': 'Character not found'}), 404
-
     headers = {
         'Authorization': f'Bearer {OPENROUTER_API_KEY}',
         'Content-Type': 'application/json',
@@ -460,8 +378,6 @@ def api_chat():
         logger.error(f"API chat error: {e}")
         return jsonify({'error': str(e)}), 500
 
-
 if __name__ == '__main__':
-    init_pool()
     init_db()
     app.run(host='0.0.0.0', port=int(os.getenv('PORT', 5000)), debug=False)
