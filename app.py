@@ -7,7 +7,6 @@ from flask import Flask, render_template, request, redirect, url_for, session, f
 app = Flask(__name__)
 app.secret_key = os.getenv('SECRET_KEY', 'evile-secret-key-2026')
 
-# قراءة من متغيرات البيئة
 ADMIN_PASSWORD = os.getenv('ADMIN_PASSWORD', 'evile2026')
 OPENROUTER_API_KEY = os.getenv('OPENROUTER_API_KEY', '')
 OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions"
@@ -41,15 +40,14 @@ def init_db():
     if count == 0:
         conn.execute("INSERT INTO characters (name, description, prompt, callback_key) VALUES (?, ?, ?, ?)",
             ('لوجو ميكر', 'مصمم برومبتات شعارات احترافية',
-             'Receive any keywords in the format "Name + Element" and generate one single, ready-to-use English prompt (2-4 concise sentences): act like a master logo designer, analyze and refine intelligently, mention each element once only, determine letter orientation with fluidity, integrate the element seamlessly into the name so it becomes part of the letters, maintain strong visual balance so the logo is memorable and impactful, allow one or multiple solid colors on plain white background, strictly 2D with thin graphic letterforms.',
+             'Receive any keywords in the format "Name + Element" and generate one single, ready-to-use English prompt (2-4 concise sentences).',
              'logo_maker'))
         conn.execute("INSERT INTO characters (name, description, prompt, callback_key) VALUES (?, ?, ?, ?)",
             ('كاتب محتوى', 'كاتب محترف لقنوات تيليجرام',
-             'أنت الآن كاتب محتوى محترف لقنوات تيليجرام، ممنوع تماماً استخدام أي إيموجي. طبّق أفضل تقنيات كتابة النصوص القوية والجذابة (Copywriting).',
+             'أنت الآن كاتب محتوى محترف لقنوات تيليجرام، ممنوع تماماً استخدام أي إيموجي.',
              'content_writer'))
     conn.commit()
     conn.close()
-
 def admin_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
@@ -97,8 +95,8 @@ def admin_panel():
 
 @app.route('/admin/character/add', methods=['POST'])
 @admin_required
-def add_character():    name = request.form.get('name')
-    description = request.form.get('description')
+def add_character():
+    name = request.form.get('name')    description = request.form.get('description')
     prompt = request.form.get('prompt')
     callback_key = request.form.get('callback_key', name.lower().replace(' ', '_'))
     
@@ -146,8 +144,8 @@ def delete_character(char_id):
     conn.close()
     flash('تم حذف الشخصية', 'success')
     return redirect(url_for('admin_panel'))
-@app.route('/admin/notification/add', methods=['POST'])
-@admin_required
+
+@app.route('/admin/notification/add', methods=['POST'])@admin_required
 def add_notification():
     title = request.form.get('title')
     text = request.form.get('text')
@@ -187,7 +185,6 @@ def api_notifications():
 
 @app.route('/api/chat', methods=['POST'])
 def api_chat():
-    import aiohttp
     data = request.json
     character_key = data.get('character', 'logo_maker')
     message = data.get('message', '')
@@ -195,9 +192,9 @@ def api_chat():
     conn = get_db()
     character = conn.execute("SELECT * FROM characters WHERE callback_key=?", (character_key,)).fetchone()
     conn.close()
-        if not character:
-        return jsonify({'error': 'Character not found'}), 404
     
+    if not character:
+        return jsonify({'error': 'Character not found'}), 404    
     headers = {
         'Authorization': f'Bearer {OPENROUTER_API_KEY}',
         'Content-Type': 'application/json',
