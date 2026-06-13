@@ -33,7 +33,6 @@ def get_db():
 def init_db():
     conn = get_db()
     cur = conn.cursor()
-
     cur.execute('''CREATE TABLE IF NOT EXISTS characters (
         id SERIAL PRIMARY KEY,
         name TEXT NOT NULL,
@@ -42,22 +41,18 @@ def init_db():
         callback_key TEXT UNIQUE NOT NULL,
         logo_url TEXT DEFAULT ''
     )''')
-
     cur.execute('''CREATE TABLE IF NOT EXISTS notifications (
         id SERIAL PRIMARY KEY,
         title TEXT NOT NULL,
         text TEXT NOT NULL,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )''')
-
     cur.execute('''CREATE TABLE IF NOT EXISTS users (
         id SERIAL PRIMARY KEY,
         telegram_id TEXT UNIQUE NOT NULL,
         is_subscribed BOOLEAN DEFAULT FALSE,
         last_active TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )''')
-
-    # Insert default characters if empty
     cur.execute("SELECT COUNT(*) FROM characters")
     count = cur.fetchone()[0]
     if count == 0:
@@ -69,7 +64,6 @@ def init_db():
             ('كاتب محتوى', 'كاتب محترف لقنوات تيليجرام',
              'أنت الآن كاتب محتوى محترف لقنوات تيليجرام، ممنوع تماماً استخدام أي إيموجي. طبّق أفضل تقنيات كتابة النصوص القوية والجذابة (Copywriting).',
              'content_writer', ''))
-
     conn.commit()
     cur.close()
     conn.close()
@@ -101,8 +95,6 @@ def check_telegram_subscription(telegram_id):
         logger.error(f"Telegram API Error: {e}")
         return False
 
-# ==================== Auth Decorator ====================
-
 def admin_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
@@ -118,21 +110,19 @@ def index():
     telegram_id = session.get('telegram_id')
     if telegram_id:
         update_user_activity(telegram_id)
-
     try:
         conn = get_db()
         cur = conn.cursor(cursor_factory=RealDictCursor)
         cur.execute('SELECT * FROM characters ORDER BY id')
-        characters = [dict(row) for row in cur.fetchall()]
+        characters = cur.fetchall()
         cur.execute('SELECT * FROM notifications ORDER BY id DESC')
-        notifications = [dict(row) for row in cur.fetchall()]
+        notifications = cur.fetchall()
         cur.close()
         conn.close()
     except Exception as e:
         logger.error(f"Index error: {e}")
         characters = []
         notifications = []
-
     return render_template('index.html',
                          characters=characters,
                          notifications=notifications,
@@ -144,7 +134,6 @@ def register():
     telegram_id = request.form.get('telegram_id', '').strip()
     if not telegram_id or not telegram_id.isdigit():
         return jsonify({'success': False, 'message': 'الرجاء إدخال معرّف تيليجرام صحيح (أرقام فقط)'}), 400
-
     try:
         conn = get_db()
         cur = conn.cursor()
@@ -152,12 +141,8 @@ def register():
         conn.commit()
         cur.close()
         conn.close()
-
         session['telegram_id'] = telegram_id
-
-        # Check subscription immediately
         is_sub = check_telegram_subscription(telegram_id)
-
         if is_sub:
             try:
                 conn = get_db()
@@ -180,9 +165,7 @@ def api_verify_subscription():
     telegram_id = session.get('telegram_id')
     if not telegram_id:
         return jsonify({'success': False, 'message': 'غير مسجل'}), 401
-
     is_sub = check_telegram_subscription(telegram_id)
-
     try:
         conn = get_db()
         cur = conn.cursor()
@@ -192,7 +175,6 @@ def api_verify_subscription():
         conn.close()
     except Exception as e:
         logger.error(f"Verify subscription error: {e}")
-
     if is_sub:
         return jsonify({'success': True, 'subscribed': True})
     return jsonify({'success': False, 'subscribed': False, 'message': 'لم يتم الاشتراك بعد'})
@@ -213,7 +195,6 @@ def api_active_users():
 
 @app.route('/keepalive')
 def keepalive():
-    """Endpoint للحفاظ على نشاط الموقع - يتم استدعاؤه من خدمة خارجية"""
     try:
         conn = get_db()
         cur = conn.cursor()
@@ -224,8 +205,6 @@ def keepalive():
         return jsonify({'status': 'alive', 'users': count, 'time': datetime.now().isoformat()})
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)}), 500
-
-# ==================== Admin Routes ====================
 
 @app.route('/admin/login', methods=['GET', 'POST'])
 def login():
@@ -250,9 +229,9 @@ def admin_panel():
         conn = get_db()
         cur = conn.cursor(cursor_factory=RealDictCursor)
         cur.execute('SELECT * FROM characters ORDER BY id DESC')
-        characters = [dict(row) for row in cur.fetchall()]
+        characters = cur.fetchall()
         cur.execute('SELECT * FROM notifications ORDER BY id DESC')
-        notifications = [dict(row) for row in cur.fetchall()]
+        notifications = cur.fetchall()
         cur.execute('SELECT COUNT(*) FROM users')
         users_count = cur.fetchone()[0]
         cur.close()
@@ -262,7 +241,6 @@ def admin_panel():
         characters = []
         notifications = []
         users_count = 0
-
     return render_template('admin.html',
                          characters=characters,
                          notifications=notifications,
@@ -276,7 +254,6 @@ def add_character():
     prompt = request.form.get('prompt')
     callback_key = request.form.get('callback_key', name.lower().replace(' ', '_'))
     logo_url = request.form.get('logo_url', '')
-
     if name and description and prompt:
         try:
             conn = get_db()
@@ -293,7 +270,6 @@ def add_character():
             flash('مفتاح الشخصية موجود مسبقاً', 'error')
         except Exception as e:
             flash(f'خطأ: {str(e)}', 'error')
-
     return redirect(url_for('admin_panel'))
 
 @app.route('/admin/character/<int:char_id>/edit', methods=['POST'])
@@ -303,7 +279,6 @@ def edit_character(char_id):
     description = request.form.get('description')
     prompt = request.form.get('prompt')
     logo_url = request.form.get('logo_url', '')
-
     if name and description and prompt:
         try:
             conn = get_db()
@@ -318,7 +293,6 @@ def edit_character(char_id):
             flash('تم تعديل الشخصية بنجاح', 'success')
         except Exception as e:
             flash(f'خطأ: {str(e)}', 'error')
-
     return redirect(url_for('admin_panel'))
 
 @app.route('/admin/character/<int:char_id>/delete')
@@ -369,15 +343,13 @@ def delete_notification(notif_id):
         flash(f'خطأ: {str(e)}', 'error')
     return redirect(url_for('admin_panel'))
 
-# ==================== API Routes ====================
-
 @app.route('/api/characters')
 def api_characters():
     try:
         conn = get_db()
         cur = conn.cursor(cursor_factory=RealDictCursor)
         cur.execute('SELECT * FROM characters ORDER BY id')
-        characters = [dict(row) for row in cur.fetchall()]
+        characters = cur.fetchall()
         cur.close()
         conn.close()
         return jsonify(characters)
@@ -390,7 +362,7 @@ def api_notifications():
         conn = get_db()
         cur = conn.cursor(cursor_factory=RealDictCursor)
         cur.execute('SELECT * FROM notifications ORDER BY id DESC')
-        notifications = [dict(row) for row in cur.fetchall()]
+        notifications = cur.fetchall()
         cur.close()
         conn.close()
         return jsonify(notifications)
@@ -402,7 +374,6 @@ def api_chat():
     data = request.json
     character_key = data.get('character', 'logo_maker')
     message = data.get('message', '')
-
     try:
         conn = get_db()
         cur = conn.cursor(cursor_factory=RealDictCursor)
@@ -413,17 +384,14 @@ def api_chat():
     except Exception as e:
         logger.error(f"Get character error: {e}")
         return jsonify({'error': 'Database error'}), 500
-
     if not character:
         return jsonify({'error': 'Character not found'}), 404
-
     headers = {
         'Authorization': f'Bearer {OPENROUTER_API_KEY}',
         'Content-Type': 'application/json',
         'HTTP-Referer': request.url_root,
         'X-Title': 'EVILE'
     }
-
     payload = {
         'model': 'openrouter/auto',
         'messages': [
@@ -432,7 +400,6 @@ def api_chat():
         ],
         'temperature': 0.7
     }
-
     try:
         response = requests.post(OPENROUTER_URL, json=payload, headers=headers, timeout=30)
         result = response.json()
@@ -440,8 +407,6 @@ def api_chat():
     except Exception as e:
         logger.error(f"API Error: {e}")
         return jsonify({'error': str(e)}), 500
-
-# ==================== Main ====================
 
 if __name__ == '__main__':
     init_db()
