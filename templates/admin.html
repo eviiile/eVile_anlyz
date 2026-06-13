@@ -48,19 +48,9 @@
             border-radius: 20px;
             padding: 25px;
             margin-bottom: 30px;        }
-        .section h2 {
-            margin-bottom: 20px;
-            color: #a5b4fc;
-            font-size: 20px;
-        }
+        .section h2 { margin-bottom: 20px; color: #a5b4fc; font-size: 20px; }
         .form-group { margin-bottom: 15px; }
-        label {
-            display: block;
-            margin-bottom: 8px;
-            color: #818cf8;
-            font-size: 13px;
-            font-weight: 700;
-        }
+        label { display: block; margin-bottom: 8px; color: #818cf8; font-size: 13px; font-weight: 700; }
         input, textarea {
             width: 100%;
             padding: 12px;
@@ -89,14 +79,9 @@
             display: inline-block;
         }
         .btn:hover { background: #4338ca; }
-        .btn-danger {
-            background: rgba(239, 68, 68, 0.3);
-            border: 1px solid rgba(239, 68, 68, 0.5);
-        }
+        .btn-danger { background: rgba(239, 68, 68, 0.3); border: 1px solid rgba(239, 68, 68, 0.5); }
         .btn-danger:hover { background: rgba(239, 68, 68, 0.5); }
-        .btn-edit {
-            background: rgba(234, 179, 8, 0.3);
-            border: 1px solid rgba(234, 179, 8, 0.5);        }
+        .btn-edit { background: rgba(234, 179, 8, 0.3); border: 1px solid rgba(234, 179, 8, 0.5); }
         .btn-edit:hover { background: rgba(234, 179, 8, 0.5); }
         .item-card {
             background: rgba(20, 30, 70, 0.5);
@@ -111,8 +96,7 @@
         .flash {
             padding: 15px;
             background: rgba(34, 197, 94, 0.3);
-            border: 1px solid rgba(34, 197, 94, 0.5);
-            border-radius: 10px;
+            border: 1px solid rgba(34, 197, 94, 0.5);            border-radius: 10px;
             margin-bottom: 20px;
         }
         .flash.error { background: rgba(239, 68, 68, 0.3); border-color: rgba(239, 68, 68, 0.5); }
@@ -142,10 +126,10 @@
         {% endif %}
     {% endwith %}
 
-    <!-- Characters Section -->
     <div class="section">
         <h2>الشخصيات</h2>
-                <form method="POST" action="/admin/character/add" id="characterForm">
+        
+        <form method="POST" action="/admin/character/add" id="characterForm">
             <input type="hidden" name="edit_id" id="editId" value="">
             <div class="grid">
                 <div class="form-group">
@@ -161,8 +145,7 @@
                 <label>الوصف</label>
                 <input type="text" name="description" id="charDesc" required>
             </div>
-            <div class="form-group">
-                <label>شعار الصورة (رابط PNG)</label>
+            <div class="form-group">                <label>شعار الصورة (رابط PNG)</label>
                 <input type="url" name="logo_url" id="charLogo" placeholder="https://example.com/logo.png">
                 <img id="logoPreview" class="char-logo-preview" style="display: none;" alt="معاينة الشعار">
             </div>
@@ -193,8 +176,8 @@
         {% endfor %}
     </div>
 
-    <!-- Notifications Section -->
-    <div class="section">        <h2>الإشعارات</h2>
+    <div class="section">
+        <h2>الإشعارات</h2>
         
         <form method="POST" action="/admin/notification/add">
             <div class="form-group">
@@ -211,8 +194,7 @@
         <hr style="margin: 30px 0; border-color: rgba(49, 46, 129, 0.3);">
 
         <h3 style="margin-bottom: 20px; color: #a5b4fc;">الإشعارات الحالية</h3>
-        {% for notif in notifications %}
-        <div class="item-card">
+        {% for notif in notifications %}        <div class="item-card">
             <h3>{{ notif.title }}</h3>
             <p>{{ notif.text }}</p>
             <div class="item-actions">
@@ -243,7 +225,8 @@
             document.getElementById('cancelBtn').style.display = 'inline-block';
             
             const form = document.getElementById('characterForm');
-            form.action = '/admin/character/' + id + '/edit';            
+            form.action = '/admin/character/' + id + '/edit';
+            
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
@@ -256,13 +239,11 @@
             document.getElementById('characterForm').action = '/admin/character/add';
         }
 
-        // Preview logo on input
         document.getElementById('charLogo').addEventListener('input', function(e) {
             const logoPreview = document.getElementById('logoPreview');
             if (e.target.value) {
                 logoPreview.src = e.target.value;
-                logoPreview.style.display = 'block';
-            } else {
+                logoPreview.style.display = 'block';            } else {
                 logoPreview.style.display = 'none';
             }
         });
