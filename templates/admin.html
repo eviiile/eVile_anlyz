@@ -5,14 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>لوحة التحكم - EVILE</title>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Tajawal', sans-serif;
-            background: #0a0e27;
+            background: #050816;
             min-height: 100vh;
-            color: #e0e7ff;
+            color: #c7d2fe;
             padding: 20px;
         }
         .header {
@@ -20,17 +19,17 @@
             justify-content: space-between;
             align-items: center;
             padding: 20px;
-            background: rgba(99, 102, 241, 0.15);
+            background: rgba(15, 23, 60, 0.85);
             backdrop-filter: blur(25px);
-            border: 1px solid rgba(129, 140, 248, 0.3);
+            border: 1px solid rgba(49, 46, 129, 0.5);
             border-radius: 20px;
             margin-bottom: 30px;
         }
         .header h1 {
-            background: linear-gradient(135deg, #e0e7ff, #c7d2fe);
+            background: linear-gradient(135deg, #e0e7ff, #a5b4fc);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            font-size: 28px;
+            font-size: 24px;
         }
         .logout-btn {
             padding: 10px 20px;
@@ -41,54 +40,46 @@
             text-decoration: none;
             transition: all 0.3s;
         }
-        .logout-btn:hover {
-            background: rgba(239, 68, 68, 0.5);
-        }
+        .logout-btn:hover { background: rgba(239, 68, 68, 0.5); }
         .section {
-            background: rgba(99, 102, 241, 0.1);
+            background: rgba(15, 23, 60, 0.6);
             backdrop-filter: blur(20px);
-            border: 1px solid rgba(129, 140, 248, 0.25);            border-radius: 20px;
+            border: 1px solid rgba(49, 46, 129, 0.4);
+            border-radius: 20px;
             padding: 25px;
-            margin-bottom: 30px;
-        }
+            margin-bottom: 30px;        }
         .section h2 {
             margin-bottom: 20px;
-            color: #c7d2fe;
-            font-size: 22px;
+            color: #a5b4fc;
+            font-size: 20px;
         }
-        .form-group {
-            margin-bottom: 15px;
-        }
+        .form-group { margin-bottom: 15px; }
         label {
             display: block;
             margin-bottom: 8px;
-            color: #a5b4fc;
-            font-size: 14px;
+            color: #818cf8;
+            font-size: 13px;
+            font-weight: 700;
         }
         input, textarea {
             width: 100%;
             padding: 12px;
-            background: rgba(99, 102, 241, 0.2);
-            border: 1px solid rgba(129, 140, 248, 0.3);
+            background: rgba(20, 30, 70, 0.6);
+            border: 1px solid rgba(49, 46, 129, 0.4);
             border-radius: 10px;
-            color: #e0e7ff;
+            color: #c7d2fe;
             font-family: 'Tajawal', sans-serif;
             font-size: 14px;
             outline: none;
         }
-        textarea {
-            min-height: 100px;
-            resize: vertical;
-        }
-        input:focus, textarea:focus {
-            border-color: rgba(129, 140, 248, 0.6);
-        }
+        textarea { min-height: 100px; resize: vertical; }
+        input:focus, textarea:focus { border-color: rgba(99, 102, 241, 0.6); }
         .btn {
             padding: 12px 24px;
-            background: #6366f1;
+            background: #4f46e5;
             border: none;
             border-radius: 10px;
-            color: #e0e7ff;
+            color: #fff;
             font-family: 'Tajawal', sans-serif;
             font-size: 14px;
             font-weight: 700;
@@ -96,46 +87,27 @@
             transition: all 0.3s;
             text-decoration: none;
             display: inline-block;
-        }        .btn:hover {
-            background: #4f46e5;
         }
+        .btn:hover { background: #4338ca; }
         .btn-danger {
             background: rgba(239, 68, 68, 0.3);
             border: 1px solid rgba(239, 68, 68, 0.5);
         }
-        .btn-danger:hover {
-            background: rgba(239, 68, 68, 0.5);
-        }
+        .btn-danger:hover { background: rgba(239, 68, 68, 0.5); }
         .btn-edit {
             background: rgba(234, 179, 8, 0.3);
-            border: 1px solid rgba(234, 179, 8, 0.5);
-        }
-        .btn-edit:hover {
-            background: rgba(234, 179, 8, 0.5);
-        }
+            border: 1px solid rgba(234, 179, 8, 0.5);        }
+        .btn-edit:hover { background: rgba(234, 179, 8, 0.5); }
         .item-card {
-            background: rgba(99, 102, 241, 0.15);
-            border: 1px solid rgba(129, 140, 248, 0.25);
+            background: rgba(20, 30, 70, 0.5);
+            border: 1px solid rgba(49, 46, 129, 0.4);
             border-radius: 15px;
             padding: 20px;
             margin-bottom: 15px;
         }
-        .item-card h3 {
-            color: #e0e7ff;
-            margin-bottom: 10px;
-            font-size: 18px;
-        }
-        .item-card p {
-            color: #a5b4fc;
-            font-size: 13px;
-            margin-bottom: 10px;
-            line-height: 1.6;
-        }
-        .item-actions {
-            display: flex;
-            gap: 10px;
-            margin-top: 15px;
-        }
+        .item-card h3 { color: #e0e7ff; margin-bottom: 10px; font-size: 16px; }
+        .item-card p { color: #818cf8; font-size: 12px; margin-bottom: 8px; line-height: 1.6; }
+        .item-actions { display: flex; gap: 10px; margin-top: 15px; }
         .flash {
             padding: 15px;
             background: rgba(34, 197, 94, 0.3);
@@ -143,19 +115,17 @@
             border-radius: 10px;
             margin-bottom: 20px;
         }
-        .flash.error {
-            background: rgba(239, 68, 68, 0.3);
-            border-color: rgba(239, 68, 68, 0.5);        }
-        .grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
+        .flash.error { background: rgba(239, 68, 68, 0.3); border-color: rgba(239, 68, 68, 0.5); }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .char-logo-preview {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            object-fit: cover;
+            border: 1px solid rgba(49, 46, 129, 0.5);
+            margin-top: 10px;
         }
-        @media (max-width: 768px) {
-            .grid {
-                grid-template-columns: 1fr;
-            }
-        }
+        @media (max-width: 768px) { .grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
@@ -174,39 +144,49 @@
 
     <!-- Characters Section -->
     <div class="section">
-        <h2><i class="fas fa-users"></i> الشخصيات</h2>
-        
-        <form method="POST" action="/admin/character/add">
+        <h2>الشخصيات</h2>
+                <form method="POST" action="/admin/character/add" id="characterForm">
+            <input type="hidden" name="edit_id" id="editId" value="">
             <div class="grid">
                 <div class="form-group">
                     <label>اسم الشخصية</label>
-                    <input type="text" name="name" required>
+                    <input type="text" name="name" id="charName" required>
                 </div>
                 <div class="form-group">
                     <label>مفتاح الشخصية (callback_key)</label>
-                    <input type="text" name="callback_key" required placeholder="logo_maker">
+                    <input type="text" name="callback_key" id="charKey" required placeholder="logo_maker">
                 </div>
             </div>
             <div class="form-group">
                 <label>الوصف</label>
-                <input type="text" name="description" required>
+                <input type="text" name="description" id="charDesc" required>
+            </div>
+            <div class="form-group">
+                <label>شعار الصورة (رابط PNG)</label>
+                <input type="url" name="logo_url" id="charLogo" placeholder="https://example.com/logo.png">
+                <img id="logoPreview" class="char-logo-preview" style="display: none;" alt="معاينة الشعار">
             </div>
             <div class="form-group">
                 <label>البرومبت (System Prompt)</label>
-                <textarea name="prompt" required></textarea>
-            </div>            <button type="submit" class="btn">إضافة شخصية</button>
+                <textarea name="prompt" id="charPrompt" required></textarea>
+            </div>
+            <button type="submit" class="btn" id="submitBtn">إضافة شخصية</button>
+            <button type="button" class="btn btn-danger" id="cancelBtn" style="display: none; margin-right: 10px;" onclick="cancelEdit()">إلغاء</button>
         </form>
 
-        <hr style="margin: 30px 0; border-color: rgba(129, 140, 248, 0.2);">
+        <hr style="margin: 30px 0; border-color: rgba(49, 46, 129, 0.3);">
 
-        <h3 style="margin-bottom: 20px; color: #c7d2fe;">الشخصيات الحالية</h3>
+        <h3 style="margin-bottom: 20px; color: #a5b4fc;">الشخصيات الحالية</h3>
         {% for char in characters %}
         <div class="item-card">
             <h3>{{ char.name }}</h3>
+            {% if char.logo_url %}
+            <img src="{{ char.logo_url }}" class="char-logo-preview" alt="{{ char.name }}">
+            {% endif %}
             <p><strong>الوصف:</strong> {{ char.description }}</p>
             <p><strong>البرومبت:</strong> {{ char.prompt[:100] }}...</p>
             <div class="item-actions">
-                <button class="btn btn-edit" onclick="editCharacter({{ char.id }}, '{{ char.name }}', '{{ char.description }}', '{{ char.prompt }}')">تعديل</button>
+                <button class="btn btn-edit" onclick="editCharacter({{ char.id }}, '{{ char.name }}', '{{ char.description }}', '{{ char.prompt }}', '{{ char.callback_key }}', '{{ char.logo_url or '' }}')">تعديل</button>
                 <a href="/admin/character/{{ char.id }}/delete" class="btn btn-danger" onclick="return confirm('هل أنت متأكد؟')">حذف</a>
             </div>
         </div>
@@ -214,8 +194,7 @@
     </div>
 
     <!-- Notifications Section -->
-    <div class="section">
-        <h2><i class="fas fa-bell"></i> الإشعارات</h2>
+    <div class="section">        <h2>الإشعارات</h2>
         
         <form method="POST" action="/admin/notification/add">
             <div class="form-group">
@@ -229,9 +208,9 @@
             <button type="submit" class="btn">إرسال إشعار</button>
         </form>
 
-        <hr style="margin: 30px 0; border-color: rgba(129, 140, 248, 0.2);">
+        <hr style="margin: 30px 0; border-color: rgba(49, 46, 129, 0.3);">
 
-        <h3 style="margin-bottom: 20px; color: #c7d2fe;">الإشعارات الحالية</h3>
+        <h3 style="margin-bottom: 20px; color: #a5b4fc;">الإشعارات الحالية</h3>
         {% for notif in notifications %}
         <div class="item-card">
             <h3>{{ notif.title }}</h3>
@@ -243,25 +222,50 @@
         {% endfor %}
     </div>
 
-    <script>        function editCharacter(id, name, description, prompt) {
-            const newName = prompt('اسم الشخصية:', name);
-            if (newName === null) return;
-            const newDesc = prompt('الوصف:', description);
-            if (newDesc === null) return;
-            const newPrompt = prompt('البرومبت:', prompt);
-            if (newPrompt === null) return;
+    <script>
+        function editCharacter(id, name, description, prompt, callback_key, logo_url) {
+            document.getElementById('editId').value = id;
+            document.getElementById('charName').value = name;
+            document.getElementById('charDesc').value = description;
+            document.getElementById('charPrompt').value = prompt;
+            document.getElementById('charKey').value = callback_key;
+            document.getElementById('charLogo').value = logo_url;
             
-            const form = document.createElement('form');
-            form.method = 'POST';
-            form.action = '/admin/character/' + id + '/edit';
-            form.innerHTML = `
-                <input type="hidden" name="name" value="${newName}">
-                <input type="hidden" name="description" value="${newDesc}">
-                <input type="hidden" name="prompt" value="${newPrompt}">
-            `;
-            document.body.appendChild(form);
-            form.submit();
+            const logoPreview = document.getElementById('logoPreview');
+            if (logo_url) {
+                logoPreview.src = logo_url;
+                logoPreview.style.display = 'block';
+            } else {
+                logoPreview.style.display = 'none';
+            }
+            
+            document.getElementById('submitBtn').textContent = 'حفظ التعديلات';
+            document.getElementById('cancelBtn').style.display = 'inline-block';
+            
+            const form = document.getElementById('characterForm');
+            form.action = '/admin/character/' + id + '/edit';            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
+
+        function cancelEdit() {
+            document.getElementById('characterForm').reset();
+            document.getElementById('editId').value = '';
+            document.getElementById('submitBtn').textContent = 'إضافة شخصية';
+            document.getElementById('cancelBtn').style.display = 'none';
+            document.getElementById('logoPreview').style.display = 'none';
+            document.getElementById('characterForm').action = '/admin/character/add';
+        }
+
+        // Preview logo on input
+        document.getElementById('charLogo').addEventListener('input', function(e) {
+            const logoPreview = document.getElementById('logoPreview');
+            if (e.target.value) {
+                logoPreview.src = e.target.value;
+                logoPreview.style.display = 'block';
+            } else {
+                logoPreview.style.display = 'none';
+            }
+        });
     </script>
 </body>
 </html>
