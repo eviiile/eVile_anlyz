@@ -187,19 +187,21 @@
             color: #aaa;
             max-width: 280px;
             line-height: 1.5;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
         }
+        
+        /* حقل الكتابة: مستطيل مثل الهيدر */
         .welcome-input-card {
             width: 100%;
             max-width: 340px;
-            margin-bottom: 30px;
+            margin-bottom: 12px; /* أقرب إلى الأزرار */
         }
         .input-card {
             background: rgba(20,20,35,0.85);
             backdrop-filter: blur(25px);
             border: 1px solid rgba(150,150,150,0.3);
-            border-radius: 24px;
-            padding: 4px 4px 4px 12px;
+            border-radius: 18px; /* نفس درجة استدارة الهيدر */
+            padding: 6px 6px 6px 12px;
         }
         .input-wrapper {
             display: flex;
@@ -210,17 +212,19 @@
             flex: 1;
             background: transparent;
             border: none;
-            padding: 10px 0;
+            padding: 8px 0;
             color: #eee;
             font-family: 'Tajawal', sans-serif;
             font-size: 13px;
             outline: none;
         }
         .message-input::placeholder { color: #888; }
+        
+        /* زر الإرسال: مربع مثل زر الإشعارات */
         .send-btn {
-            width: 36px;
-            height: 36px;
-            border-radius: 20px;
+            width: 34px;
+            height: 34px;
+            border-radius: 10px; /* زوايا دائرية بسيطة مثل أزرار الهيدر */
             background: linear-gradient(135deg, #6b7280, #4b5563);
             border: none;
             display: flex;
@@ -242,20 +246,26 @@
         }
         @keyframes spin { to { transform: rotate(360deg); } }
 
+        /* أزرار الشخصيات (carousel لا نهائي) */
+        .char-selector-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
+            margin: 8px 0 16px 0;
+        }
         .char-selector {
             display: flex;
-            gap: 8px;
-            padding: 8px 0;
-            overflow-x: auto;
-            scrollbar-width: thin;
-            width: 100%;
-            justify-content: center;
+            gap: 10px;
+            padding: 6px 0;
+            width: max-content;
         }
         .char-selector-btn {
             display: flex;
             align-items: center;
             gap: 6px;
-            padding: 6px 12px;
+            padding: 6px 14px;
             background: rgba(30,30,45,0.7);
             backdrop-filter: blur(20px);
             border: 1px solid rgba(150,150,150,0.3);
@@ -285,7 +295,42 @@
             color: #ddd;
         }
 
-        /* ========== CHAT SECTION (لم يتغير تصميمه) ========== */
+        /* المستطيل الأفقي للتواصل */
+        .social-section {
+            width: 100%;
+            max-width: 340px;
+            margin-top: 16px;
+            padding: 12px 16px;
+            background: rgba(20,20,35,0.5);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(150,150,150,0.3);
+            border-radius: 20px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+        .social-icon {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+            color: #ccc;
+            font-size: 10px;
+            transition: all 0.2s;
+        }
+        .social-icon:active { transform: scale(0.95); }
+        .social-icon svg {
+            width: 28px;
+            height: 28px;
+            fill: #ccc;
+        }
+        .social-icon span {
+            font-size: 10px;
+            color: #aaa;
+        }
+
+        /* ========== CHAT SECTION (بدون تغيير) ========== */
         .chat-section {
             flex: 1;
             display: none;
@@ -383,7 +428,7 @@
         .home-btn:active { transform: scale(0.9); background: rgba(80,80,100,0.7); }
         .home-btn svg { width: 16px; height: 16px; fill: #ccc; }
 
-        /* ========== BOTTOM SHEETS (شخصيات + إشعارات) ========== */
+        /* ========== BOTTOM SHEETS ========== */
         .bottom-sheet-overlay {
             position: fixed; top: 0; left: 0; right: 0; bottom: 0;
             background: rgba(0,0,0,0.9);
@@ -397,7 +442,7 @@
         .bottom-sheet {
             width: 100%;
             max-width: 600px;
-            max-height: 75vh;
+            max-height: 80vh;
             background: rgba(15,15,25,0.95);
             backdrop-filter: blur(25px);
             border: 1px solid rgba(150,150,150,0.3);
@@ -456,7 +501,7 @@
             flex-direction: column;
             gap: 10px;
             overflow-y: auto;
-            max-height: 55vh;
+            max-height: 50vh;
         }
         .char-list-item {
             display: flex;
@@ -533,13 +578,13 @@
             fill: white;
         }
 
-        /* قائمة الإشعارات (نفس تصميم الشخصيات) */
+        /* قائمة الإشعارات */
         .notifications-list {
             display: flex;
             flex-direction: column;
             gap: 10px;
             overflow-y: auto;
-            max-height: 55vh;
+            max-height: 50vh;
         }
         .notif-item {
             display: flex;
@@ -588,6 +633,27 @@
             font-size: 10px;
             color: #888;
             margin-top: 6px;
+        }
+
+        /* شريط التواصل في القوائم السفلية */
+        .sheet-social {
+            margin-top: 16px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(150,150,150,0.3);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+        .sheet-social .social-icon {
+            flex-direction: row;
+            gap: 6px;
+        }
+        .sheet-social .social-icon svg {
+            width: 22px;
+            height: 22px;
+        }
+        .sheet-social .social-icon span {
+            font-size: 11px;
         }
 
         @media (min-width: 768px) {
@@ -659,7 +725,27 @@
                     </div>
                 </div>
             </div>
-            <div class="char-selector" id="charSelector"></div>
+
+            <!-- أزرار الشخصيات (carousel لا نهائي) -->
+            <div class="char-selector-wrapper" id="charSelectorWrapper">
+                <div class="char-selector" id="charSelector"></div>
+            </div>
+
+            <!-- مستطيل التواصل الاجتماعي -->
+            <div class="social-section">
+                <a href="https://t.me/Evile_Prompts" target="_blank" class="social-icon" rel="noopener noreferrer">
+                    <svg viewBox="0 0 24 24"><path d="M22 2L2 9l7.2 2.6L12 21l3-8 7-3-3-7-6 3-3-7-9 4 7 3 3 7 4-9 3-5z"/></svg>
+                    <span>تيليجرام</span>
+                </a>
+                <a href="https://www.instagram.com/bla6c7?igsh=MWR4ZTR5ZXZ5a2p0dw==" target="_blank" class="social-icon" rel="noopener noreferrer">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 2.99 1.34 2.99 3S13.66 11 12 11 9.01 9.66 9.01 8 10.34 5 12 5zm0 14c-2.33 0-4.31-1.46-5.11-3.5h10.22c-.8 2.04-2.78 3.5-5.11 3.5z"/></svg>
+                    <span>إنستغرام</span>
+                </a>
+                <a href="https://t.me/@OlIiIl7" target="_blank" class="social-icon" rel="noopener noreferrer">
+                    <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4V4c0-1.1-.9-2-2-2z"/></svg>
+                    <span>الدعم</span>
+                </a>
+            </div>
         </div>
 
         <!-- واجهة الدردشة -->
@@ -697,10 +783,25 @@
                 اضغط على أي شخصية لاختيارها والبدء بالمحادثة
             </div>
             <div id="charactersList" class="characters-list"></div>
+            <!-- شريط التواصل داخل القائمة -->
+            <div class="sheet-social">
+                <a href="https://t.me/Evile_Prompts" target="_blank" class="social-icon" rel="noopener noreferrer">
+                    <svg viewBox="0 0 24 24"><path d="M22 2L2 9l7.2 2.6L12 21l3-8 7-3-3-7-6 3-3-7-9 4 7 3 3 7 4-9 3-5z"/></svg>
+                    <span>تيليجرام</span>
+                </a>
+                <a href="https://www.instagram.com/bla6c7?igsh=MWR4ZTR5ZXZ5a2p0dw==" target="_blank" class="social-icon" rel="noopener noreferrer">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 2.99 1.34 2.99 3S13.66 11 12 11 9.01 9.66 9.01 8 10.34 5 12 5zm0 14c-2.33 0-4.31-1.46-5.11-3.5h10.22c-.8 2.04-2.78 3.5-5.11 3.5z"/></svg>
+                    <span>إنستغرام</span>
+                </a>
+                <a href="https://t.me/@OlIiIl7" target="_blank" class="social-icon" rel="noopener noreferrer">
+                    <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4V4c0-1.1-.9-2-2-2z"/></svg>
+                    <span>الدعم</span>
+                </a>
+            </div>
         </div>
     </div>
 
-    <!-- نافذة الإشعارات (بنفس تصميم الشخصيات) -->
+    <!-- نافذة الإشعارات -->
     <div class="bottom-sheet-overlay" id="notificationsSheet" onclick="closeSheetOnBackdrop(event, 'notificationsSheet')">
         <div class="bottom-sheet" onclick="event.stopPropagation()">
             <div class="sheet-header">
@@ -713,6 +814,21 @@
                 </button>
             </div>
             <div id="notificationsList" class="notifications-list"></div>
+            <!-- شريط التواصل داخل القائمة -->
+            <div class="sheet-social">
+                <a href="https://t.me/Evile_Prompts" target="_blank" class="social-icon" rel="noopener noreferrer">
+                    <svg viewBox="0 0 24 24"><path d="M22 2L2 9l7.2 2.6L12 21l3-8 7-3-3-7-6 3-3-7-9 4 7 3 3 7 4-9 3-5z"/></svg>
+                    <span>تيليجرام</span>
+                </a>
+                <a href="https://www.instagram.com/bla6c7?igsh=MWR4ZTR5ZXZ5a2p0dw==" target="_blank" class="social-icon" rel="noopener noreferrer">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 2.99 1.34 2.99 3S13.66 11 12 11 9.01 9.66 9.01 8 10.34 5 12 5zm0 14c-2.33 0-4.31-1.46-5.11-3.5h10.22c-.8 2.04-2.78 3.5-5.11 3.5z"/></svg>
+                    <span>إنستغرام</span>
+                </a>
+                <a href="https://t.me/@OlIiIl7" target="_blank" class="social-icon" rel="noopener noreferrer">
+                    <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4V4c0-1.1-.9-2-2-2z"/></svg>
+                    <span>الدعم</span>
+                </a>
+            </div>
         </div>
     </div>
 
@@ -731,7 +847,10 @@
         const splashSection = document.getElementById('splashSection');
         const welcomeSection = document.getElementById('welcomeSection');
         const chatSection = document.getElementById('chatSection');
+        const charSelectorWrapper = document.getElementById('charSelectorWrapper');
+        const charSelector = document.getElementById('charSelector');
 
+        // تهيئة العرض
         function initScreen() {
             if (telegramId) {
                 splashSection.classList.remove('active');
@@ -745,6 +864,7 @@
             }
         }
 
+        // تحديث المستخدمين النشطين
         function updateActiveUsers() {
             fetch('/api/active_users')
                 .then(res => res.json())
@@ -754,14 +874,46 @@
                 .catch(() => {});
         }
 
+        // دوال العرض
         function renderCharSelector() {
-            const selector = document.getElementById('charSelector');
-            selector.innerHTML = characters.map(char => `
-                <div class="char-selector-btn ${char.callback_key === currentCharacter ? 'active' : ''}" onclick="selectCharacter('${char.callback_key}')">
+            // إنشاء نسخة مكررة من الشخصيات لتحقيق الانزلاق اللانهائي
+            const duplicated = [...characters, ...characters, ...characters];
+            charSelector.innerHTML = duplicated.map(char => `
+                <div class="char-selector-btn ${char.callback_key === currentCharacter ? 'active' : ''}" data-key="${char.callback_key}">
                     ${char.logo_url ? `<img src="${char.logo_url}" alt="${char.name}">` : `<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/></svg>`}
                     <span class="char-selector-name">${char.name}</span>
                 </div>
             `).join('');
+            // إضافة مستمعي الأحداث للأزرار
+            document.querySelectorAll('.char-selector-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const key = btn.getAttribute('data-key');
+                    if (key) selectCharacter(key);
+                });
+            });
+            // إعادة تعيين موضع التمرير إلى المنتصف (للحصول على تأثير لانهائي)
+            if (charSelectorWrapper) {
+                const middle = (charSelector.scrollWidth - charSelectorWrapper.clientWidth) / 3;
+                charSelectorWrapper.scrollLeft = middle;
+            }
+        }
+
+        // معالجة الانزلاق اللانهائي
+        function setupInfiniteScroll() {
+            if (!charSelectorWrapper) return;
+            let scrollTimeout;
+            charSelectorWrapper.addEventListener('scroll', () => {
+                if (scrollTimeout) clearTimeout(scrollTimeout);
+                scrollTimeout = setTimeout(() => {
+                    const maxScroll = charSelector.scrollWidth - charSelectorWrapper.clientWidth;
+                    const threshold = charSelector.scrollWidth / 3;
+                    if (charSelectorWrapper.scrollLeft < threshold) {
+                        charSelectorWrapper.scrollLeft += threshold;
+                    } else if (charSelectorWrapper.scrollLeft > maxScroll - threshold) {
+                        charSelectorWrapper.scrollLeft -= threshold;
+                    }
+                }, 50);
+            });
         }
 
         function updateWelcomeDisplay() {
@@ -820,6 +972,7 @@
             `).join('');
         }
 
+        // دوال المساعدة والتسجيل (نفس السابق)
         function setButtonLoading(btn, loading) {
             if (!btn) return;
             if (loading) {
@@ -904,7 +1057,7 @@
             }
         }
 
-        // دوال الرسائل
+        // دوال الرسائل (نفس السابق)
         function addMessage(text, isOwn) {
             const container = document.getElementById('messagesContainer');
             const time = new Date().toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' });
@@ -1111,11 +1264,13 @@
             isFirstMessage = true;
         }
 
+        // بدء التشغيل
         document.addEventListener('DOMContentLoaded', () => {
             initScreen();
             updateActiveUsers();
             setInterval(updateActiveUsers, 30000);
             renderCharSelector();
+            setupInfiniteScroll();
             renderNotificationsSheet();
             updateWelcomeDisplay();
 
