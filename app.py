@@ -105,9 +105,10 @@ def index():
             latest_notification = cur.fetchone()
     except Exception as e:
         logger.error(f"Index error: {e}")
-        characters, latest_notification = [], None
+        characters = []
+        latest_notification = None
     channel_url = "https://t.me/Evile_Prompts"
-    instagram_url = "https://www.instagram.com/bla6c7?igsh=MWR4ZTR5ZXZ5a2p0dw=="
+    instagram_url = "https://www.instagram.com/bla6c7"
     return render_template('index.html',
                          characters=characters,
                          telegram_id=telegram_id,
