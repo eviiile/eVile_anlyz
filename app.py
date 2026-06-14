@@ -47,7 +47,8 @@ def get_db():
             conn.rollback()
         logger.error(f"Database error: {str(e)}")
         raise
-    finally:        if cur:
+    finally:
+        if cur:
             cur.close()
         if conn:
             conn.close()
@@ -96,7 +97,8 @@ def init_db():
         raise
 
 def update_user_activity(telegram_id):
-    if not telegram_id:        return
+    if not telegram_id:
+        return
     try:
         with get_db() as cur:
             cur.execute("UPDATE users SET last_active = CURRENT_TIMESTAMP WHERE telegram_id = %s", (telegram_id,))
@@ -145,6 +147,7 @@ def index():
                          notifications=notifications,
                          telegram_id=telegram_id,
                          channel_url=channel_url)
+
 @app.route('/register', methods=['POST'])
 def register():
     try:
@@ -192,16 +195,6 @@ def api_active_users():
         logger.error(f"Active users error: {e}")
         return jsonify({'count': 0})
 
-@app.route('/keepalive')
-def keepalive():
-    try:        with get_db() as cur:
-            cur.execute("SELECT COUNT(*) FROM users")
-            result = cur.fetchone()
-            count = result[0] if result else 0
-        return jsonify({'status': 'alive', 'users': count})
-    except Exception as e:
-        return jsonify({'status': 'error'}), 500
-
 @app.route('/health')
 def health_check():
     try:
@@ -243,7 +236,8 @@ def admin_panel():
             cur.execute('SELECT COUNT(*) FROM users')
             result = cur.fetchone()
             users_count = result[0] if result else 0
-    except Exception as e:        logger.error(f"Admin panel error: {e}")
+    except Exception as e:
+        logger.error(f"Admin panel error: {e}")
         characters, notifications, users_count = [], [], 0
     return render_template('admin.html', characters=characters, notifications=notifications, users_count=users_count)
 
@@ -292,6 +286,7 @@ def delete_character(char_id):
     except Exception as e:
         flash(str(e), 'error')
     return redirect(url_for('admin_panel'))
+
 @app.route('/admin/notification/add', methods=['POST'])
 @admin_required
 def add_notification():
@@ -342,6 +337,7 @@ def api_notifications():
     except Exception as e:
         logger.error(f"API notifications error: {e}")
         return jsonify([])
+
 @app.route('/api/chat', methods=['POST'])
 def api_chat():
     data = request.json
