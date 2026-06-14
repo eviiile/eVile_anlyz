@@ -45,9 +45,32 @@ def get_db():
         if conn:
             conn.close()
 
+def ensure_notification_columns(cur):
+    """إضافة الأعمدة المفقودة في جدول notifications إذا لم تكن موجودة"""
+    # التحقق من وجود عمود duration_hours
+    cur.execute("""
+        SELECT column_name 
+        FROM information_schema.columns 
+        WHERE table_name='notifications' AND column_name='duration_hours'
+    """)
+    if not cur.fetchone():
+        cur.execute("ALTER TABLE notifications ADD COLUMN duration_hours INTEGER DEFAULT 1")
+        logger.info("Added column duration_hours to notifications table")
+    
+    # التحقق من وجود عمود show_in_chat
+    cur.execute("""
+        SELECT column_name 
+        FROM information_schema.columns 
+        WHERE table_name='notifications' AND column_name='show_in_chat'
+    """)
+    if not cur.fetchone():
+        cur.execute("ALTER TABLE notifications ADD COLUMN show_in_chat BOOLEAN DEFAULT FALSE")
+        logger.info("Added column show_in_chat to notifications table")
+
 def init_db():
     try:
         with get_db() as cur:
+            # إنشاء الجداول إذا لم تكن موجودة
             cur.execute('''CREATE TABLE IF NOT EXISTS characters (
                 id SERIAL PRIMARY KEY,
                 name TEXT NOT NULL,
@@ -60,16 +83,18 @@ def init_db():
                 id SERIAL PRIMARY KEY,
                 title TEXT NOT NULL,
                 text TEXT NOT NULL,
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                duration_hours INTEGER DEFAULT 1,
-                show_in_chat BOOLEAN DEFAULT FALSE
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )''')
             cur.execute('''CREATE TABLE IF NOT EXISTS users (
                 id SERIAL PRIMARY KEY,
                 telegram_id TEXT UNIQUE NOT NULL,
                 last_active TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )''')
-            logger.info("Database initialized successfully")
+            
+            # إضافة الأعمدة المفقودة في جدول notifications (لتحديث القاعدة القديمة)
+            ensure_notification_columns(cur)
+            
+            logger.info("Database initialized/updated successfully")
     except Exception as e:
         logger.error(f"Database initialization error: {e}")
         raise
