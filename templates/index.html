@@ -189,7 +189,6 @@
             line-height: 1.5;
             margin-bottom: 24px;
         }
-        /* حقل الكتابة في الواجهة الرئيسية (أسفل الوصف) - مصغر */
         .welcome-input-card {
             width: 100%;
             max-width: 340px;
@@ -243,7 +242,6 @@
         }
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* أزرار الشخصيات المصغرة */
         .char-selector {
             display: flex;
             gap: 8px;
@@ -261,7 +259,7 @@
             background: rgba(30,30,45,0.7);
             backdrop-filter: blur(20px);
             border: 1px solid rgba(150,150,150,0.3);
-            border-radius: 40px;
+            border-radius: 32px;
             cursor: pointer;
             transition: all 0.2s;
             white-space: nowrap;
@@ -287,7 +285,7 @@
             color: #ddd;
         }
 
-        /* ========== CHAT SECTION (لم يتغير تصميمه نهائياً) ========== */
+        /* ========== CHAT SECTION (لم يتغير تصميمه) ========== */
         .chat-section {
             flex: 1;
             display: none;
@@ -385,7 +383,7 @@
         .home-btn:active { transform: scale(0.9); background: rgba(80,80,100,0.7); }
         .home-btn svg { width: 16px; height: 16px; fill: #ccc; }
 
-        /* باقي العناصر (القوائم السفلية، الإشعارات) بنفس التدرج الرمادي */
+        /* ========== BOTTOM SHEETS (شخصيات + إشعارات) ========== */
         .bottom-sheet-overlay {
             position: fixed; top: 0; left: 0; right: 0; bottom: 0;
             background: rgba(0,0,0,0.9);
@@ -407,27 +405,191 @@
             padding: 20px;
             animation: slideUp 0.4s ease;
             overflow-y: auto;
+            display: flex;
+            flex-direction: column;
         }
         @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+        
+        .sheet-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(150,150,150,0.3);
+        }
+        .sheet-title {
+            font-size: 16px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #ddd;
+        }
+        .sheet-title svg { width: 18px; height: 18px; fill: #aaa; }
+        .sheet-close {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(40,40,55,0.6);
+            border: 1px solid rgba(150,150,150,0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        .sheet-close svg { width: 14px; height: 14px; fill: #ccc; }
+        
+        .sheet-instruction {
+            font-size: 12px;
+            color: #aaa;
+            text-align: center;
+            margin-bottom: 16px;
+            padding: 8px;
+            background: rgba(30,30,45,0.5);
+            border-radius: 40px;
+        }
+        
+        /* قائمة الشخصيات */
+        .characters-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            overflow-y: auto;
+            max-height: 55vh;
+        }
         .char-list-item {
             display: flex;
             align-items: center;
-            gap: 10px;
-            padding: 12px 14px;
-            background: rgba(30,30,45,0.5);
+            gap: 12px;
+            padding: 12px 16px;
+            background: rgba(30,30,45,0.6);
             border: 1px solid rgba(150,150,150,0.3);
-            border-radius: 14px;
-            margin-bottom: 8px;
+            border-radius: 20px;
             cursor: pointer;
+            transition: all 0.2s;
+            width: 100%;
         }
-        .char-list-item.active { background: rgba(80,80,100,0.5); border-color: #aaa; }
+        .char-list-item:active { transform: scale(0.98); background: rgba(80,80,100,0.7); }
+        .char-list-item.active {
+            background: rgba(100,100,130,0.5);
+            border-color: #aaa;
+        }
+        .char-list-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 16px;
+            background: rgba(30,30,45,0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+        .char-list-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .char-list-icon svg {
+            width: 28px;
+            height: 28px;
+            fill: #ccc;
+        }
+        .char-list-info {
+            flex: 1;
+            text-align: right;
+        }
+        .char-list-name {
+            font-size: 15px;
+            font-weight: 700;
+            color: #eee;
+            margin-bottom: 4px;
+        }
+        .char-list-desc {
+            font-size: 11px;
+            color: #aaa;
+            line-height: 1.3;
+        }
+        .char-list-check {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: rgba(40,40,55,0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+        .char-list-item.active .char-list-check {
+            opacity: 1;
+            background: #6b7280;
+        }
+        .char-list-check svg {
+            width: 14px;
+            height: 14px;
+            fill: white;
+        }
+
+        /* قائمة الإشعارات (نفس تصميم الشخصيات) */
+        .notifications-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            overflow-y: auto;
+            max-height: 55vh;
+        }
         .notif-item {
-            background: rgba(30,30,45,0.5);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            background: rgba(30,30,45,0.6);
             border: 1px solid rgba(150,150,150,0.3);
-            border-radius: 12px;
-            padding: 12px 14px;
-            margin-bottom: 8px;
+            border-radius: 20px;
+            width: 100%;
         }
+        .notif-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: rgba(40,40,55,0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .notif-icon svg {
+            width: 22px;
+            height: 22px;
+            fill: #aaa;
+        }
+        .notif-content {
+            flex: 1;
+            text-align: right;
+        }
+        .notif-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #eee;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .notif-text {
+            font-size: 12px;
+            color: #bbb;
+            line-height: 1.4;
+        }
+        .notif-time {
+            font-size: 10px;
+            color: #888;
+            margin-top: 6px;
+        }
+
         @media (min-width: 768px) {
             .main-container { max-width: 700px; margin: 0 auto; padding: 20px; padding-top: 80px; }
             .floating-header { left: 20px; right: 20px; top: 20px; }
@@ -500,7 +662,7 @@
             <div class="char-selector" id="charSelector"></div>
         </div>
 
-        <!-- واجهة الدردشة (لم يتغير تصميمها ولا مكان حقل الكتابة) -->
+        <!-- واجهة الدردشة -->
         <div class="chat-section" id="chatSection">
             <div class="messages-container" id="messagesContainer"></div>
             <div class="input-section">
@@ -519,25 +681,38 @@
         </div>
     </div>
 
-    <!-- نوافذ القوائم السفلية (الشخصيات والإشعارات) -->
+    <!-- نافذة الشخصيات -->
     <div class="bottom-sheet-overlay" id="charactersSheet" onclick="closeSheetOnBackdrop(event, 'charactersSheet')">
         <div class="bottom-sheet" onclick="event.stopPropagation()">
-            <div class="sheet-handle"></div>
             <div class="sheet-header">
-                <div class="sheet-title"><svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg> الشخصيات</div>
-                <button class="sheet-close" onclick="closeSheet('charactersSheet')"><svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>
+                <div class="sheet-title">
+                    <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+                    الشخصيات
+                </div>
+                <button class="sheet-close" onclick="closeSheet('charactersSheet')">
+                    <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+                </button>
             </div>
-            <div id="charactersList"></div>
+            <div class="sheet-instruction">
+                اضغط على أي شخصية لاختيارها والبدء بالمحادثة
+            </div>
+            <div id="charactersList" class="characters-list"></div>
         </div>
     </div>
+
+    <!-- نافذة الإشعارات (بنفس تصميم الشخصيات) -->
     <div class="bottom-sheet-overlay" id="notificationsSheet" onclick="closeSheetOnBackdrop(event, 'notificationsSheet')">
         <div class="bottom-sheet" onclick="event.stopPropagation()">
-            <div class="sheet-handle"></div>
             <div class="sheet-header">
-                <div class="sheet-title"><svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg> الإشعارات</div>
-                <button class="sheet-close" onclick="closeSheet('notificationsSheet')"><svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>
+                <div class="sheet-title">
+                    <svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
+                    الإشعارات
+                </div>
+                <button class="sheet-close" onclick="closeSheet('notificationsSheet')">
+                    <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+                </button>
             </div>
-            <div id="notificationsList"></div>
+            <div id="notificationsList" class="notifications-list"></div>
         </div>
     </div>
 
@@ -557,7 +732,6 @@
         const welcomeSection = document.getElementById('welcomeSection');
         const chatSection = document.getElementById('chatSection');
 
-        // تهيئة العرض حسب وجود telegram_id
         function initScreen() {
             if (telegramId) {
                 splashSection.classList.remove('active');
@@ -571,7 +745,6 @@
             }
         }
 
-        // تحديث المستخدمين النشطين
         function updateActiveUsers() {
             fetch('/api/active_users')
                 .then(res => res.json())
@@ -581,7 +754,6 @@
                 .catch(() => {});
         }
 
-        // دوال العرض للشخصيات والإشعارات
         function renderCharSelector() {
             const selector = document.getElementById('charSelector');
             selector.innerHTML = characters.map(char => `
@@ -608,22 +780,27 @@
             }
         }
 
-        function renderCharacters() {
+        function renderCharactersSheet() {
             const list = document.getElementById('charactersList');
             list.innerHTML = characters.map(char => `
                 <div class="char-list-item ${char.callback_key === currentCharacter ? 'active' : ''}" onclick="selectCharacter('${char.callback_key}')">
-                    <div class="char-list-icon">${char.logo_url ? `<img src="${char.logo_url}" alt="${char.name}">` : `<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/></svg>`}</div>
-                    <div class="char-list-info"><div class="char-list-name">${char.name}</div><div class="char-list-desc">${char.description}</div></div>
+                    <div class="char-list-icon">
+                        ${char.logo_url ? `<img src="${char.logo_url}" alt="${char.name}">` : `<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/></svg>`}
+                    </div>
+                    <div class="char-list-info">
+                        <div class="char-list-name">${char.name}</div>
+                        <div class="char-list-desc">${char.description}</div>
+                    </div>
                     <div class="char-list-check"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
                 </div>
             `).join('');
         }
 
-        function renderNotifications() {
+        function renderNotificationsSheet() {
             const list = document.getElementById('notificationsList');
             const badge = document.getElementById('notifBadge');
             if (notifications.length === 0) {
-                list.innerHTML = '<p style="text-align: center; color: #888; padding: 40px 20px;">لا توجد إشعارات</p>';
+                list.innerHTML = '<div class="notif-item" style="justify-content: center; text-align: center;">لا توجد إشعارات</div>';
                 badge.style.display = 'none';
                 return;
             }
@@ -631,14 +808,18 @@
             badge.style.display = 'flex';
             list.innerHTML = notifications.map(notif => `
                 <div class="notif-item">
-                    <div class="notif-title"><svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>${notif.title}</div>
-                    <div class="notif-text">${notif.text}</div>
-                    <div class="notif-time">${notif.created_at}</div>
+                    <div class="notif-icon">
+                        <svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
+                    </div>
+                    <div class="notif-content">
+                        <div class="notif-title">${notif.title}</div>
+                        <div class="notif-text">${notif.text}</div>
+                        <div class="notif-time">${notif.created_at}</div>
+                    </div>
                 </div>
             `).join('');
         }
 
-        // دوال المساعدة
         function setButtonLoading(btn, loading) {
             if (!btn) return;
             if (loading) {
@@ -657,7 +838,6 @@
             setTimeout(() => errDiv.style.display = 'none', 4000);
         }
 
-        // التسجيل من splash
         async function performSplashRegister() {
             const idInput = document.getElementById('splashTelegramId');
             const id = idInput.value.trim();
@@ -680,7 +860,6 @@
                     if (data.subscribed) {
                         location.reload();
                     } else {
-                        // عرض نموذج الاشتراك المدمج
                         showInlineSubscription(id);
                     }
                 } else {
@@ -725,7 +904,7 @@
             }
         }
 
-        // دوال الرسائل والدردشة (نفس الأصل)
+        // دوال الرسائل
         function addMessage(text, isOwn) {
             const container = document.getElementById('messagesContainer');
             const time = new Date().toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' });
@@ -818,14 +997,12 @@
             });
         }
 
-        // إرسال الرسالة الرئيسية (من الترحيب)
         async function sendWelcomeMessage() {
             if (isProcessing) return;
             const input = document.getElementById('welcomeInput');
             const message = input.value.trim();
             if (!message) return;
 
-            // التحقق من الاشتراك قبل الدخول للدردشة
             if (isFirstMessage) {
                 const btn = document.getElementById('welcomeSendBtn');
                 setButtonLoading(btn, true);
@@ -833,7 +1010,6 @@
                     const subCheck = await fetch('/api/verify_subscription', { method: 'POST' }).then(r => r.json());
                     setButtonLoading(btn, false);
                     if (!subCheck.success) {
-                        // إذا لم يكن مشتركاً، نظهر نموذج الاشتراك في splash
                         showInlineSubscription(telegramId);
                         return;
                     }
@@ -880,7 +1056,7 @@
             const input = document.getElementById('chatInput');
             const message = input.value.trim();
             if (!message) return;
-            // نفس منطق الإرسال ولكن بدون تغيير الواجهة
+
             isProcessing = true;
             const sendBtn = document.getElementById('sendBtn');
             setButtonLoading(sendBtn, true);
@@ -912,17 +1088,16 @@
         function handleWelcomeKey(event) { if (event.key === 'Enter' && !isProcessing) sendWelcomeMessage(); }
         function handleChatKey(event) { if (event.key === 'Enter' && !isProcessing) sendChatMessage(); }
 
-        // دوال التنقل
-        function openCharactersSheet() { renderCharacters(); document.getElementById('charactersSheet').classList.add('active'); }
-        function openNotificationsSheet() { renderNotifications(); document.getElementById('notificationsSheet').classList.add('active'); document.getElementById('notifBadge').style.display = 'none'; }
+        function openCharactersSheet() { renderCharactersSheet(); document.getElementById('charactersSheet').classList.add('active'); }
+        function openNotificationsSheet() { renderNotificationsSheet(); document.getElementById('notificationsSheet').classList.add('active'); document.getElementById('notifBadge').style.display = 'none'; }
         function closeSheet(id) { document.getElementById(id).classList.remove('active'); }
         function closeSheetOnBackdrop(event, id) { if (event.target === event.currentTarget) closeSheet(id); }
         function selectCharacter(charKey) {
             currentCharacter = charKey;
             renderCharSelector();
-            renderCharacters();
+            renderCharactersSheet();
             updateWelcomeDisplay();
-            setTimeout(() => closeSheet('charactersSheet'), 200);
+            closeSheet('charactersSheet');
             const char = characters.find(c => c.callback_key === charKey);
             if (char) {
                 document.getElementById('welcomeInput').placeholder = `اكتب لـ ${char.name}...`;
@@ -936,16 +1111,14 @@
             isFirstMessage = true;
         }
 
-        // بدء التشغيل
         document.addEventListener('DOMContentLoaded', () => {
             initScreen();
             updateActiveUsers();
             setInterval(updateActiveUsers, 30000);
             renderCharSelector();
-            renderNotifications();
+            renderNotificationsSheet();
             updateWelcomeDisplay();
 
-            // ربط أحداث splash
             document.getElementById('splashRegisterBtn').onclick = performSplashRegister;
             document.getElementById('splashTelegramId').addEventListener('keypress', (e) => {
                 if (e.key === 'Enter') performSplashRegister();
