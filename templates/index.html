@@ -7,12 +7,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        /* جميع الأنماط السابقة مع إزالة أي أنماط خاصة بـ social-section */
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body {
             font-family: 'Tajawal', sans-serif;
             background: #0a0a0a;
-            min-height: 100vh;
             color: #e0e0e0;
             overflow: hidden;
             touch-action: manipulation;
@@ -94,8 +92,7 @@
             font-size: 28px;
             font-weight: 800;
             background: linear-gradient(135deg, #eee, #aaa);
-            -webkit-background-clip: text;
-            background-clip: text;
+            -webkit-background-clip: text; background-clip: text;
             color: transparent;
             margin-bottom: 16px;
         }
@@ -180,8 +177,7 @@
             font-weight: 800;
             margin-bottom: 6px;
             background: linear-gradient(135deg, #eee, #aaa);
-            -webkit-background-clip: text;
-            background-clip: text;
+            -webkit-background-clip: text; background-clip: text;
             color: transparent;
         }
         .welcome-subtitle {
@@ -627,7 +623,6 @@
     </div>
 
     <script>
-        // جميع المتغيرات والدوال كما هي (لم تتغير)
         const characters = {{ characters|tojson }};
         const notifications = {{ notifications|tojson }};
         let telegramId = {{ telegram_id|tojson }};
