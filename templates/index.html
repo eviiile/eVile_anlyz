@@ -7,6 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
+        /* جميع الأنماط السابقة مع إزالة أي أنماط خاصة بـ social-section */
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body {
             font-family: 'Tajawal', sans-serif;
@@ -24,7 +25,6 @@
         }
         .main-container { width: 100%; height: 100vh; height: 100dvh; display: flex; flex-direction: column; padding: 12px; padding-top: 70px; }
         
-        /* Floating Header */
         .floating-header {
             position: fixed; top: 12px; left: 12px; right: 12px; z-index: 100;
             display: flex; align-items: center; justify-content: space-between; padding: 6px;
@@ -63,7 +63,7 @@
         }
         .active-users-box i { font-size: 12px; color: #bbb; }
 
-        /* ========== SPLASH SCREEN ========== */
+        /* Splash Screen */
         .splash-section {
             flex: 1;
             display: none;
@@ -152,7 +152,7 @@
             padding: 8px 16px;
         }
 
-        /* ========== MAIN WELCOME ========== */
+        /* Main Welcome */
         .welcome-section {
             flex: 1;
             display: none;
@@ -191,8 +191,6 @@
             line-height: 1.4;
             margin-bottom: 16px;
         }
-        
-        /* حقل الكتابة */
         .welcome-input-card {
             width: 100%;
             max-width: 320px;
@@ -245,7 +243,7 @@
         }
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* شريط أزرار الشخصيات */
+        /* Character scroll */
         .char-scroll-container {
             position: relative;
             width: 100%;
@@ -293,40 +291,7 @@
             color: #ddd;
         }
 
-        /* مستطيل التواصل الاجتماعي (أيقونات واضحة) */
-        .social-section {
-            width: 100%;
-            max-width: 260px;
-            margin-top: 10px;
-            padding: 8px 12px;
-            background: rgba(20,20,35,0.5);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(150,150,150,0.3);
-            border-radius: 40px;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-        }
-        .social-icon {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 2px;
-            text-decoration: none;
-            font-size: 8px;
-            transition: all 0.2s;
-        }
-        .social-icon:active { transform: scale(0.95); }
-        .social-icon i { font-size: 22px; }
-        .social-icon.telegram i { color: #0088cc; }
-        .social-icon.instagram i { color: #e4405f; }
-        .social-icon.support i { color: #4a90e2; }
-        .social-icon span {
-            font-size: 8px;
-            color: #aaa;
-        }
-
-        /* ========== CHAT SECTION ========== */
+        /* Chat Section */
         .chat-section {
             flex: 1;
             display: none;
@@ -424,7 +389,7 @@
         .home-btn:active { transform: scale(0.9); background: rgba(80,80,100,0.7); }
         .home-btn i { font-size: 16px; color: #ccc; }
 
-        /* ========== BOTTOM SHEETS ========== */
+        /* Bottom Sheets */
         .bottom-sheet-overlay {
             position: fixed; top: 0; left: 0; right: 0; bottom: 0;
             background: rgba(0,0,0,0.9);
@@ -546,20 +511,6 @@
             background: #6b7280;
         }
         .char-list-check i { font-size: 12px; color: white; }
-        .sheet-social {
-            margin-top: 16px;
-            padding-top: 10px;
-            border-top: 1px solid rgba(150,150,150,0.3);
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-        }
-        .sheet-social .social-icon {
-            flex-direction: row;
-            gap: 4px;
-        }
-        .sheet-social .social-icon i { font-size: 18px; }
-        .sheet-social .social-icon span { font-size: 10px; }
 
         @media (min-width: 768px) {
             .main-container { max-width: 700px; margin: 0 auto; padding: 20px; padding-top: 80px; }
@@ -591,7 +542,7 @@
         <!-- Splash screen -->
         <div class="splash-section" id="splashSection">
             <div class="splash-icon">
-                <i class="fab fa-telegram-plane"></i>
+                <i class="fas fa-robot"></i>
             </div>
             <div class="splash-title">اشتراك إجباري</div>
             <div class="splash-text">ندعوك للانضمام إلى قناتنا على تليجرام لتتمكن من الوصول إلى موقعنا الخاص وتجربة أدوات توليد المحتوى</div>
@@ -631,22 +582,6 @@
                     <div class="char-selector" id="charSelector"></div>
                 </div>
             </div>
-
-            <!-- مستطيل التواصل الاجتماعي بأيقونات واضحة -->
-            <div class="social-section">
-                <a href="https://t.me/Evile_Prompts" target="_blank" class="social-icon telegram" rel="noopener noreferrer">
-                    <i class="fab fa-telegram-plane"></i>
-                    <span>تيليجرام</span>
-                </a>
-                <a href="https://www.instagram.com/bla6c7?igsh=MWR4ZTR5ZXZ5a2p0dw==" target="_blank" class="social-icon instagram" rel="noopener noreferrer">
-                    <i class="fab fa-instagram"></i>
-                    <span>إنستغرام</span>
-                </a>
-                <a href="https://t.me/@OlIiIl7" target="_blank" class="social-icon support" rel="noopener noreferrer">
-                    <i class="fas fa-headset"></i>
-                    <span>الدعم</span>
-                </a>
-            </div>
         </div>
 
         <!-- واجهة الدردشة -->
@@ -668,7 +603,7 @@
         </div>
     </div>
 
-    <!-- نوافذ القوائم السفلية -->
+    <!-- نافذة الشخصيات -->
     <div class="bottom-sheet-overlay" id="charactersSheet" onclick="closeSheetOnBackdrop(event, 'charactersSheet')">
         <div class="bottom-sheet" onclick="event.stopPropagation()">
             <div class="sheet-header">
@@ -677,13 +612,10 @@
             </div>
             <div class="sheet-instruction">اختر الشخصية المناسبة لمحادثتك</div>
             <div id="charactersList" class="characters-list"></div>
-            <div class="sheet-social">
-                <a href="https://t.me/Evile_Prompts" target="_blank" class="social-icon telegram"><i class="fab fa-telegram-plane"></i><span>تيليجرام</span></a>
-                <a href="https://www.instagram.com/bla6c7?igsh=MWR4ZTR5ZXZ5a2p0dw==" target="_blank" class="social-icon instagram"><i class="fab fa-instagram"></i><span>إنستغرام</span></a>
-                <a href="https://t.me/@OlIiIl7" target="_blank" class="social-icon support"><i class="fas fa-headset"></i><span>الدعم</span></a>
-            </div>
         </div>
     </div>
+
+    <!-- نافذة الإشعارات -->
     <div class="bottom-sheet-overlay" id="notificationsSheet" onclick="closeSheetOnBackdrop(event, 'notificationsSheet')">
         <div class="bottom-sheet" onclick="event.stopPropagation()">
             <div class="sheet-header">
@@ -691,16 +623,11 @@
                 <button class="sheet-close" onclick="closeSheet('notificationsSheet')"><i class="fas fa-times"></i></button>
             </div>
             <div id="notificationsList" class="notifications-list"></div>
-            <div class="sheet-social">
-                <a href="https://t.me/Evile_Prompts" target="_blank" class="social-icon telegram"><i class="fab fa-telegram-plane"></i><span>تيليجرام</span></a>
-                <a href="https://www.instagram.com/bla6c7?igsh=MWR4ZTR5ZXZ5a2p0dw==" target="_blank" class="social-icon instagram"><i class="fab fa-instagram"></i><span>إنستغرام</span></a>
-                <a href="https://t.me/@OlIiIl7" target="_blank" class="social-icon support"><i class="fas fa-headset"></i><span>الدعم</span></a>
-            </div>
         </div>
     </div>
 
     <script>
-        // نفس السكربت السابق مع تحديث أيقونات FontAwesome (لا حاجة لتغيير المنطق)
+        // جميع المتغيرات والدوال كما هي (لم تتغير)
         const characters = {{ characters|tojson }};
         const notifications = {{ notifications|tojson }};
         let telegramId = {{ telegram_id|tojson }};
@@ -830,7 +757,6 @@
             `).join('');
         }
 
-        // دوال التسجيل والاشتراك والدردشة (نفس السابق)
         function setButtonLoading(btn, loading) {
             if (!btn) return;
             if (loading) {
