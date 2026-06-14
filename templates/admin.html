@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>لوحة التحكم - EVILE</title>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -14,11 +15,7 @@
             color: #e0e0e0;
             padding: 20px;
         }
-        .admin-container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        /* الهيدر العلوي بالتبويبات */
+        .admin-container { max-width: 1200px; margin: 0 auto; }
         .admin-tabs {
             display: flex;
             flex-wrap: wrap;
@@ -40,14 +37,17 @@
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
+        .tab-btn i { font-size: 13px; }
         .tab-btn.active {
             background: rgba(100,100,130,0.5);
             border-color: #aaa;
             color: white;
         }
         .tab-btn:active { transform: scale(0.96); }
-        /* محتوى التبويبات */
         .tab-content {
             display: none;
             background: rgba(15,15,25,0.6);
@@ -57,23 +57,24 @@
             padding: 20px;
         }
         .tab-content.active { display: block; }
-        /* بطاقات وعناصر مصغرة */
         .section-title {
             font-size: 18px;
             font-weight: 700;
             margin-bottom: 16px;
             padding-right: 12px;
             border-right: 3px solid #aaa;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
+        .section-title i { font-size: 18px; color: #aaa; }
         .form-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 16px;
             margin-bottom: 20px;
         }
-        .form-group {
-            margin-bottom: 12px;
-        }
+        .form-group { margin-bottom: 12px; }
         label {
             display: block;
             margin-bottom: 4px;
@@ -94,10 +95,7 @@
             outline: none;
             border-color: #aaa;
         }
-        textarea {
-            min-height: 80px;
-            resize: vertical;
-        }
+        textarea { min-height: 80px; resize: vertical; }
         .btn {
             padding: 8px 16px;
             background: linear-gradient(135deg, #6b7280, #4b5563);
@@ -108,6 +106,9 @@
             font-size: 12px;
             cursor: pointer;
             transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
         }
         .btn-danger {
             background: linear-gradient(135deg, #8b5a5a, #6b3a3a);
@@ -139,6 +140,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            font-size: 20px;
         }
         .character-name {
             font-size: 15px;
@@ -159,10 +161,7 @@
             overflow-y: auto;
             margin-bottom: 12px;
         }
-        .card-actions {
-            display: flex;
-            gap: 8px;
-        }
+        .card-actions { display: flex; gap: 8px; }
         .notification-item {
             background: rgba(30,30,45,0.6);
             border: 1px solid rgba(150,150,150,0.3);
@@ -208,17 +207,15 @@
 </head>
 <body>
     <div class="admin-container">
-        <!-- تبويبات -->
         <div class="admin-tabs">
-            <button class="tab-btn active" data-tab="characters">👥 الشخصيات</button>
-            <button class="tab-btn" data-tab="notifications">🔔 الإشعارات</button>
-            <button class="tab-btn" data-tab="channels">📢 قنوات الاشتراك</button>
-            <button class="tab-btn" data-tab="banned">🚫 حظر المستخدمين</button>
+            <button class="tab-btn active" data-tab="characters"><i class="fas fa-users"></i> الشخصيات</button>
+            <button class="tab-btn" data-tab="notifications"><i class="fas fa-bell"></i> الإشعارات</button>
+            <button class="tab-btn" data-tab="channels"><i class="fas fa-chalkboard-user"></i> قنوات الاشتراك</button>
+            <button class="tab-btn" data-tab="banned"><i class="fas fa-ban"></i> حظر المستخدمين</button>
         </div>
 
-        <!-- تبويب الشخصيات -->
         <div id="tab-characters" class="tab-content active">
-            <div class="section-title">➕ إضافة شخصية جديدة</div>
+            <div class="section-title"><i class="fas fa-plus-circle"></i> إضافة شخصية جديدة</div>
             <form method="POST" action="/admin/character/add">
                 <div class="form-grid">
                     <div class="form-group"><label>اسم الشخصية</label><input type="text" name="name" required></div>
@@ -227,42 +224,41 @@
                     <div class="form-group"><label>البرومبت</label><textarea name="prompt" required></textarea></div>
                     <div class="form-group"><label>مفتاح الاستدعاء</label><input type="text" name="callback_key" placeholder="مثال: logo_maker"></div>
                 </div>
-                <button type="submit" class="btn">إضافة شخصية</button>
+                <button type="submit" class="btn"><i class="fas fa-save"></i> إضافة شخصية</button>
             </form>
 
-            <div class="section-title" style="margin-top: 30px;">👥 قائمة الشخصيات</div>
+            <div class="section-title" style="margin-top: 30px;"><i class="fas fa-list"></i> قائمة الشخصيات</div>
             <div class="characters-grid">
                 {% for char in characters %}
                 <div class="character-card">
                     <div class="character-header">
                         <div class="character-avatar">
-                            {% if char.logo_url %}<img src="{{ char.logo_url }}" width="40" height="40" style="border-radius:12px; object-fit:cover;">{% else %}🤖{% endif %}
+                            {% if char.logo_url %}<img src="{{ char.logo_url }}" width="40" height="40" style="border-radius:12px; object-fit:cover;">{% else %}<i class="fas fa-robot"></i>{% endif %}
                         </div>
                         <div class="character-name">{{ char.name }}</div>
                     </div>
                     <div class="character-desc">{{ char.description }}</div>
                     <div class="character-prompt">{{ char.prompt[:80] }}{% if char.prompt|length > 80 %}...{% endif %}</div>
                     <div class="card-actions">
-                        <button class="btn" onclick="openEditModal({{ char.id }}, '{{ char.name }}', '{{ char.description }}', `{{ char.prompt|replace('`', '\\`') }}`, '{{ char.logo_url }}')">تعديل</button>
-                        <button class="btn btn-danger" onclick="if(confirm('حذف الشخصية؟')) location.href='/admin/character/{{ char.id }}/delete'">حذف</button>
+                        <button class="btn" onclick="openEditModal({{ char.id }}, '{{ char.name }}', '{{ char.description }}', `{{ char.prompt|replace('`', '\\`') }}`, '{{ char.logo_url }}')"><i class="fas fa-edit"></i> تعديل</button>
+                        <button class="btn btn-danger" onclick="if(confirm('حذف الشخصية؟')) location.href='/admin/character/{{ char.id }}/delete'"><i class="fas fa-trash"></i> حذف</button>
                     </div>
                 </div>
                 {% endfor %}
             </div>
         </div>
 
-        <!-- تبويب الإشعارات -->
         <div id="tab-notifications" class="tab-content">
-            <div class="section-title">🔔 إرسال إشعار جديد</div>
+            <div class="section-title"><i class="fas fa-paper-plane"></i> إرسال إشعار جديد</div>
             <form method="POST" action="/admin/notification/add">
                 <div class="form-group"><label>العنوان</label><input type="text" name="title" required></div>
                 <div class="form-group"><label>النص</label><textarea name="text" required></textarea></div>
-                <button type="submit" class="btn">إرسال الإشعار</button>
+                <button type="submit" class="btn"><i class="fas fa-bell"></i> إرسال الإشعار</button>
             </form>
-            <div class="section-title" style="margin-top: 30px;">📢 الإشعارات المرسلة</div>
+            <div class="section-title" style="margin-top: 30px;"><i class="fas fa-history"></i> الإشعارات المرسلة</div>
             {% for notif in notifications %}
             <div class="notification-item">
-                <div class="notification-title">{{ notif.title }} <span style="font-size: 10px; color:#888;">({{ notif.created_at }})</span></div>
+                <div class="notification-title"><i class="fas fa-bell"></i> {{ notif.title }} <span style="font-size: 10px; color:#888;">({{ notif.created_at }})</span></div>
                 <div class="notification-text">{{ notif.text }}</div>
             </div>
             {% else %}
@@ -270,56 +266,51 @@
             {% endfor %}
         </div>
 
-        <!-- تبويب قنوات الاشتراك الإجباري -->
         <div id="tab-channels" class="tab-content">
-            <div class="section-title">📢 قنوات الاشتراك الإجباري</div>
+            <div class="section-title"><i class="fas fa-link"></i> قنوات الاشتراك الإجباري</div>
             <div style="background: rgba(30,30,45,0.6); border-radius: 16px; padding: 16px; margin-bottom: 20px;">
                 <p style="margin-bottom: 12px;"><strong>القناة الحالية:</strong> {{ channel_url }}</p>
                 <form method="POST" action="/admin/update_channel">
                     <div class="form-group"><label>رابط القناة (مع @)</label><input type="text" name="channel_id" value="{{ TELEGRAM_CHANNEL_ID }}" placeholder="@Evile_Prompts"></div>
-                    <button type="submit" class="btn">تحديث القناة</button>
+                    <button type="submit" class="btn"><i class="fas fa-sync-alt"></i> تحديث القناة</button>
                 </form>
             </div>
             <div style="background: rgba(30,30,45,0.6); border-radius: 16px; padding: 16px;">
-                <p><strong>رابط البوت:</strong> {{ bot_link }}</p>
+                <p><i class="fas fa-robot"></i> <strong>رابط البوت:</strong> {{ bot_link }}</p>
                 <p class="text-muted" style="font-size: 11px; color:#888;">تأكد من أن البوت مشرف في القناة للتحقق من الاشتراك.</p>
             </div>
         </div>
 
-        <!-- تبويب حظر المستخدمين -->
         <div id="tab-banned" class="tab-content">
-            <div class="section-title">🚫 حظر مستخدم</div>
+            <div class="section-title"><i class="fas fa-user-slash"></i> حظر مستخدم</div>
             <form method="POST" action="/admin/ban_user">
                 <div class="form-group"><label>معرف تيليجرام</label><input type="text" name="telegram_id" placeholder="أدخل المعرف المراد حظره" required></div>
-                <button type="submit" class="btn btn-danger">حظر المستخدم</button>
+                <button type="submit" class="btn btn-danger"><i class="fas fa-ban"></i> حظر المستخدم</button>
             </form>
-            <div class="section-title" style="margin-top: 30px;">📋 قائمة المحظورين</div>
+            <div class="section-title" style="margin-top: 30px;"><i class="fas fa-list-ul"></i> قائمة المحظورين</div>
             <div id="bannedList">
-                <!-- سيتم عرض المحظورين من الخادم -->
                 <p style="color:#888; text-align:center;">لا يوجد مستخدمون محظورون حالياً</p>
             </div>
         </div>
     </div>
 
-    <!-- Modal التعديل -->
     <div id="editModal" class="modal">
         <div class="modal-content">
             <div style="display:flex; justify-content:space-between; margin-bottom:16px;">
-                <h3>تعديل الشخصية</h3>
-                <button onclick="closeEditModal()" style="background:none; border:none; color:#aaa; font-size:20px;">&times;</button>
+                <h3><i class="fas fa-edit"></i> تعديل الشخصية</h3>
+                <button onclick="closeEditModal()" style="background:none; border:none; color:#aaa; font-size:20px;"><i class="fas fa-times"></i></button>
             </div>
             <form method="POST" id="editForm">
                 <div class="form-group"><label>اسم الشخصية</label><input type="text" name="name" id="editName" required></div>
                 <div class="form-group"><label>رابط الصورة</label><input type="url" name="logo_url" id="editImage"></div>
                 <div class="form-group"><label>وصف مختصر</label><input type="text" name="description" id="editDesc" required></div>
                 <div class="form-group"><label>البرومبت</label><textarea name="prompt" id="editPrompt" required></textarea></div>
-                <button type="submit" class="btn">حفظ التعديلات</button>
+                <button type="submit" class="btn"><i class="fas fa-save"></i> حفظ التعديلات</button>
             </form>
         </div>
     </div>
 
     <script>
-        // التبويبات
         document.querySelectorAll('.tab-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 const tabId = btn.getAttribute('data-tab');
@@ -330,7 +321,6 @@
             });
         });
 
-        // تعديل الشخصية
         function openEditModal(id, name, desc, prompt, image) {
             document.getElementById('editForm').action = `/admin/character/${id}/edit`;
             document.getElementById('editName').value = name;
