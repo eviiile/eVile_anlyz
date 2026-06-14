@@ -33,7 +33,7 @@
             padding: 12px;
             padding-top: 70px;
         }
-        /* Floating Header - النمط الزجاجي المرجعي */
+        /* Floating Header */
         .floating-header {
             position: fixed;
             top: 12px;
@@ -217,7 +217,6 @@
             overflow-y: auto;
         }
         .welcome-main.hidden { display: none; }
-        /* تكبير صورة الشخصية */
         .character-logo {
             width: 120px;
             height: 120px;
@@ -245,7 +244,6 @@
             line-height: 1.5;
             margin-bottom: 24px;
         }
-        /* حقل الكتابة المصغر - بنفس تصميم الهيدر */
         .welcome-input-card {
             width: 100%;
             max-width: 340px;
@@ -256,7 +254,7 @@
             backdrop-filter: blur(25px);
             border: 1px solid rgba(99, 102, 241, 0.4);
             border-radius: 24px;
-            padding: 4px 4px 4px 12px;   /* تقليل الحشو لتصغير الحقل */
+            padding: 4px 4px 4px 12px;
         }
         .input-wrapper {
             display: flex;
@@ -299,7 +297,6 @@
         }
         @keyframes spin { to { transform: rotate(360deg); } }
         
-        /* أزرار الشخصيات - بتصميم زجاجي مصغر */
         .char-selector {
             display: flex;
             gap: 8px;
@@ -342,14 +339,17 @@
             font-weight: 500;
         }
         
-        /* Chat section - input box at the BOTTOM with safe margin */
+        /* Chat section - input box at the BOTTOM with fixed positioning */
         .chat-section {
             flex: 1;
             display: none;
             flex-direction: column;
             overflow: hidden;
+            position: relative;
         }
-        .chat-section.active { display: flex; }
+        .chat-section.active {
+            display: flex;
+        }
         .messages-container {
             flex: 1;
             overflow-y: auto;
@@ -358,31 +358,50 @@
             backdrop-filter: blur(10px);
             border-radius: 24px;
             border: 1px solid rgba(99, 102, 241, 0.3);
-            margin-bottom: 17px;  /* رفع الحقل إلى 17 بكسل */
+            margin-top: 80px;
+            margin-bottom: 80px;
+            height: calc(100vh - 160px);
         }
         .chat-bottom-input {
-            flex-shrink: 0;
-            padding: 8px 0 12px 0;
-            padding-bottom: max(12px, env(safe-area-inset-bottom));
-            margin-bottom: env(safe-area-inset-bottom);
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 110;
+            padding: 12px;
+            background: rgba(15, 23, 60, 0.85);
+            backdrop-filter: blur(25px);
+            border-top: 1px solid rgba(99, 102, 241, 0.4);
         }
-        /* حقل الكتابة في الدردشة بنفس التصميم المصغر */
+        @supports (padding-bottom: env(safe-area-inset-bottom)) {
+            .chat-bottom-input {
+                padding-bottom: calc(12px + env(safe-area-inset-bottom));
+            }
+        }
         .chat-bottom-input .input-card {
+            background: transparent;
+            border: none;
+            padding: 0;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        .chat-bottom-input .input-wrapper {
             background: rgba(15, 23, 60, 0.85);
             backdrop-filter: blur(25px);
             border: 1px solid rgba(99, 102, 241, 0.4);
-            border-radius: 24px;
+            border-radius: 48px;
             padding: 4px 4px 4px 12px;
-        }
-        .chat-bottom-input .send-btn {
-            width: 36px;
-            height: 36px;
         }
         .chat-bottom-input .message-input {
             padding: 10px 0;
             font-size: 13px;
         }
+        .chat-bottom-input .send-btn {
+            width: 36px;
+            height: 36px;
+        }
         
+        /* Message styles */
         .message { margin-bottom: 16px; animation: fadeSlide 0.25s ease; }
         @keyframes fadeSlide { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
         .message-time { font-size: 10px; color: #06b6d4; margin-bottom: 4px; }
@@ -451,6 +470,7 @@
         .home-btn svg { width: 16px; height: 16px; fill: #a5b4fc; }
         .home-btn:active { transform: scale(0.94); }
         
+        /* Bottom sheets */
         .bottom-sheet-overlay {
             position: fixed; top: 0; left: 0; right: 0; bottom: 0;
             background: rgba(5,8,22,0.9);
@@ -495,11 +515,7 @@
         @media (min-width: 768px) {
             .main-container { max-width: 700px; margin: 0 auto; padding-top: 80px; }
             .floating-header { left: 20px; right: 20px; top: 20px; }
-        }
-        @supports (padding-bottom: env(safe-area-inset-bottom)) {
-            .chat-bottom-input {
-                padding-bottom: calc(12px + env(safe-area-inset-bottom));
-            }
+            .messages-container { margin-top: 90px; margin-bottom: 90px; }
         }
     </style>
 </head>
@@ -557,7 +573,7 @@
             <div class="char-selector" id="charSelector"></div>
         </div>
 
-        <!-- Chat section - input box at the BOTTOM -->
+        <!-- Chat section - input box at the BOTTOM with fixed positioning -->
         <div class="chat-section" id="chatSection">
             <div class="messages-container" id="messagesContainer"></div>
             <div class="chat-bottom-input">
@@ -585,7 +601,6 @@
     </div>
 
     <script>
-        // نفس الجافاسكريبت السابق (لم يتغير)
         const characters = {{ characters|tojson }};
         const notifications = {{ notifications|tojson }};
         let telegramId = {{ telegram_id|tojson }};
