@@ -5,11 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>تسجيل الدخول - EVILE Admin</title>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Tajawal', sans-serif;
-            background: linear-gradient(145deg, #0f172a 0%, #1e1b4b 100%);
+            background: linear-gradient(145deg, #0a0a0a 0%, #1a1a2a 100%);
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -25,7 +26,7 @@
             height: 200%;
             top: -50%;
             left: -50%;
-            background: radial-gradient(circle at 30% 40%, rgba(99, 102, 241, 0.15) 0%, transparent 60%);
+            background: radial-gradient(circle at 30% 40%, rgba(120,120,120,0.1) 0%, transparent 60%);
             animation: rotate 30s linear infinite;
             z-index: 0;
         }
@@ -36,59 +37,56 @@
         .login-card {
             position: relative;
             z-index: 1;
-            background: rgba(15, 23, 42, 0.8);
+            background: rgba(20,20,30,0.8);
             backdrop-filter: blur(20px);
             border-radius: 32px;
-            border: 1px solid rgba(99, 102, 241, 0.4);
+            border: 1px solid rgba(150,150,150,0.3);
             padding: 40px 32px;
             width: 100%;
             max-width: 420px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
             transition: transform 0.3s ease;
         }
         .login-card:hover { transform: translateY(-5px); }
         .logo { text-align: center; margin-bottom: 32px; }
         .logo-icon {
             width: 64px; height: 64px;
-            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            background: linear-gradient(135deg, #6b7280, #4b5563);
             border-radius: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
             margin: 0 auto 16px;
-            box-shadow: 0 10px 25px -5px rgba(99, 102, 241, 0.4);
         }
-        .logo-icon svg { width: 36px; height: 36px; fill: white; }
+        .logo-icon i { font-size: 36px; color: white; }
         h1 {
             font-size: 28px; font-weight: 800;
-            background: linear-gradient(135deg, #e0e7ff, #a5b4fc);
+            background: linear-gradient(135deg, #eee, #aaa);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
             margin-bottom: 8px;
         }
-        .subtitle { color: #818cf8; font-size: 14px; text-align: center; }
+        .subtitle { color: #aaa; font-size: 14px; text-align: center; }
         .form-group { margin-bottom: 24px; }
-        label { display: block; margin-bottom: 8px; color: #c7d2fe; font-weight: 500; font-size: 14px; }
+        label { display: block; margin-bottom: 8px; color: #bbb; font-weight: 500; font-size: 14px; }
         input {
             width: 100%; padding: 14px 18px;
-            background: rgba(30, 27, 75, 0.6);
-            border: 1px solid rgba(99, 102, 241, 0.3);
+            background: rgba(30,30,45,0.6);
+            border: 1px solid rgba(150,150,150,0.3);
             border-radius: 16px;
-            color: #e0e7ff;
+            color: #eee;
             font-size: 16px;
             font-family: 'Tajawal', sans-serif;
             transition: all 0.2s;
         }
         input:focus {
             outline: none;
-            border-color: #6366f1;
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
-            background: rgba(30, 27, 75, 0.8);
+            border-color: #aaa;
+            background: rgba(30,30,45,0.8);
         }
         .btn {
             width: 100%; padding: 14px;
-            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            background: linear-gradient(135deg, #6b7280, #4b5563);
             border: none;
             border-radius: 16px;
             color: white;
@@ -97,11 +95,11 @@
             cursor: pointer;
             transition: all 0.3s;
         }
-        .btn:hover { transform: translateY(-2px); box-shadow: 0 10px 25px -5px rgba(99, 102, 241, 0.5); }
+        .btn:hover { transform: translateY(-2px); filter: brightness(1.05); }
         .flash {
             padding: 12px;
-            background: rgba(239, 68, 68, 0.15);
-            border: 1px solid rgba(239, 68, 68, 0.5);
+            background: rgba(200,50,50,0.15);
+            border: 1px solid rgba(200,50,50,0.5);
             border-radius: 14px;
             color: #fca5a5;
             margin-bottom: 24px;
@@ -114,7 +112,7 @@
 <body>
     <div class="login-card">
         <div class="logo">
-            <div class="logo-icon"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg></div>
+            <div class="logo-icon"><i class="bi bi-shield-lock"></i></div>
             <h1>لوحة التحكم</h1>
             <div class="subtitle">EVILE Admin Panel</div>
         </div>
@@ -127,7 +125,7 @@
         {% endwith %}
         <form method="POST">
             <div class="form-group">
-                <label>🔐 كلمة المرور</label>
+                <label><i class="bi bi-key"></i> كلمة المرور</label>
                 <input type="password" name="password" required placeholder="••••••••">
             </div>
             <button type="submit" class="btn">دخول</button>
