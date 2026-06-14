@@ -70,23 +70,8 @@ def init_db():
                 is_subscribed BOOLEAN DEFAULT FALSE,
                 last_active TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )''')
-            cur.execute("SELECT COUNT(*) FROM characters")
-            row = cur.fetchone()
-            count = row['count'] if row else 0
-            if count == 0:
-                cur.execute(
-                    "INSERT INTO characters (name, description, prompt, callback_key, logo_url) VALUES (%s, %s, %s, %s, %s)",
-                    ('لوجو ميكر', 'مصمم برومبتات شعارات احترافية',
-                     'Receive any keywords in the format "Name + Element" and generate one single, ready-to-use English prompt (2-4 concise sentences): act like a master logo designer.',
-                     'logo_maker', 'https://i.ibb.co/XZ3SRWQN/x.jpg')
-                )
-                cur.execute(
-                    "INSERT INTO characters (name, description, prompt, callback_key, logo_url) VALUES (%s, %s, %s, %s, %s)",
-                    ('كاتب محتوى', 'كاتب محترف لقنوات تيليجرام',
-                     'أنت كاتب محتوى محترف لقنوات تيليجرام، ممنوع تماماً استخدام أي إيموجي.',
-                     'content_writer', 'https://i.ibb.co/wNwDgkmV/x.png')
-                )
-        logger.info("Database initialized successfully")
+            # لا نقوم بإضافة أي شخصيات افتراضية
+            logger.info("Database initialized successfully (no default characters)")
     except Exception as e:
         logger.error(f"Database initialization error: {e}")
         raise
