@@ -33,7 +33,7 @@
             padding: 12px;
             padding-top: 70px;
         }
-        /* Floating Header */
+        /* Floating Header - النمط الزجاجي المرجعي */
         .floating-header {
             position: fixed;
             top: 12px;
@@ -205,7 +205,7 @@
             border-radius: 40px;
         }
         
-        /* Main welcome section (registered user) - input field below title */
+        /* Main welcome section (registered user) */
         .welcome-main {
             flex: 1;
             display: flex;
@@ -217,12 +217,13 @@
             overflow-y: auto;
         }
         .welcome-main.hidden { display: none; }
+        /* تكبير صورة الشخصية */
         .character-logo {
-            width: 80px;
-            height: 80px;
-            border-radius: 24px;
+            width: 120px;
+            height: 120px;
+            border-radius: 32px;
             object-fit: cover;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
             border: 2px solid rgba(99, 102, 241, 0.6);
             box-shadow: 0 20px 35px -10px rgba(0,0,0,0.3);
             animation: float 3s ease-in-out infinite;
@@ -244,6 +245,7 @@
             line-height: 1.5;
             margin-bottom: 24px;
         }
+        /* حقل الكتابة المصغر - بنفس تصميم الهيدر */
         .welcome-input-card {
             width: 100%;
             max-width: 340px;
@@ -253,29 +255,29 @@
             background: rgba(15, 23, 60, 0.85);
             backdrop-filter: blur(25px);
             border: 1px solid rgba(99, 102, 241, 0.4);
-            border-radius: 48px;
-            padding: 6px 6px 6px 16px;
+            border-radius: 24px;
+            padding: 4px 4px 4px 12px;   /* تقليل الحشو لتصغير الحقل */
         }
         .input-wrapper {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
         }
         .message-input {
             flex: 1;
             background: transparent;
             border: none;
-            padding: 14px 0;
+            padding: 10px 0;
             color: #e0e7ff;
             font-family: 'Tajawal', sans-serif;
-            font-size: 14px;
+            font-size: 13px;
             outline: none;
         }
         .message-input::placeholder { color: #818cf8; }
         .send-btn {
-            width: 44px;
-            height: 44px;
-            border-radius: 40px;
+            width: 36px;
+            height: 36px;
+            border-radius: 20px;
             background: linear-gradient(135deg, #6366f1, #8b5cf6);
             border: none;
             display: flex;
@@ -286,10 +288,10 @@
         }
         .send-btn:disabled { opacity: 0.6; cursor: not-allowed; }
         .send-btn:active:not(:disabled) { transform: scale(0.94); }
-        .send-btn svg { width: 20px; height: 20px; fill: white; }
+        .send-btn svg { width: 16px; height: 16px; fill: white; }
         .spinner {
-            width: 20px;
-            height: 20px;
+            width: 16px;
+            height: 16px;
             border: 2px solid rgba(255,255,255,0.3);
             border-top-color: white;
             border-radius: 50%;
@@ -297,41 +299,47 @@
         }
         @keyframes spin { to { transform: rotate(360deg); } }
         
+        /* أزرار الشخصيات - بتصميم زجاجي مصغر */
         .char-selector {
             display: flex;
-            gap: 10px;
-            padding: 12px 0;
+            gap: 8px;
+            padding: 8px 0;
             overflow-x: auto;
             scrollbar-width: thin;
-            margin-top: 20px;
             width: 100%;
             justify-content: center;
         }
         .char-selector-btn {
             display: flex;
             align-items: center;
-            gap: 8px;
-            padding: 8px 16px;
-            background: rgba(20, 30, 70, 0.6);
+            gap: 6px;
+            padding: 6px 12px;
+            background: rgba(15, 23, 60, 0.7);
+            backdrop-filter: blur(20px);
             border: 1px solid rgba(99, 102, 241, 0.4);
             border-radius: 40px;
             cursor: pointer;
             transition: all 0.2s;
             white-space: nowrap;
+            font-size: 12px;
         }
         .char-selector-btn.active {
-            background: linear-gradient(135deg, rgba(99,102,241,0.4), rgba(139,92,246,0.4));
+            background: linear-gradient(135deg, rgba(99,102,241,0.5), rgba(139,92,246,0.5));
             border-color: #06b6d4;
         }
         .char-selector-btn img {
-            width: 24px;
-            height: 24px;
-            border-radius: 12px;
-        }
-        .char-selector-btn svg {
             width: 20px;
             height: 20px;
+            border-radius: 10px;
+        }
+        .char-selector-btn svg {
+            width: 16px;
+            height: 16px;
             fill: #a5b4fc;
+        }
+        .char-selector-name {
+            font-size: 12px;
+            font-weight: 500;
         }
         
         /* Chat section - input box at the BOTTOM with safe margin */
@@ -350,15 +358,31 @@
             backdrop-filter: blur(10px);
             border-radius: 24px;
             border: 1px solid rgba(99, 102, 241, 0.3);
-            margin-bottom: 12px;  /* 🔼 هذه الخاصية ترفع حقل الكتابة قليلاً عن الأسفل */
+            margin-bottom: 17px;  /* رفع الحقل إلى 17 بكسل */
         }
-        /* Input at the bottom with safe area */
         .chat-bottom-input {
             flex-shrink: 0;
             padding: 8px 0 12px 0;
             padding-bottom: max(12px, env(safe-area-inset-bottom));
             margin-bottom: env(safe-area-inset-bottom);
         }
+        /* حقل الكتابة في الدردشة بنفس التصميم المصغر */
+        .chat-bottom-input .input-card {
+            background: rgba(15, 23, 60, 0.85);
+            backdrop-filter: blur(25px);
+            border: 1px solid rgba(99, 102, 241, 0.4);
+            border-radius: 24px;
+            padding: 4px 4px 4px 12px;
+        }
+        .chat-bottom-input .send-btn {
+            width: 36px;
+            height: 36px;
+        }
+        .chat-bottom-input .message-input {
+            padding: 10px 0;
+            font-size: 13px;
+        }
+        
         .message { margin-bottom: 16px; animation: fadeSlide 0.25s ease; }
         @keyframes fadeSlide { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
         .message-time { font-size: 10px; color: #06b6d4; margin-bottom: 4px; }
@@ -414,9 +438,9 @@
         .copy-text { font-size: 11px; color: #a5b4fc; }
         
         .home-btn {
-            width: 44px;
-            height: 44px;
-            border-radius: 40px;
+            width: 36px;
+            height: 36px;
+            border-radius: 20px;
             background: rgba(30, 41, 89, 0.6);
             border: 1px solid rgba(99, 102, 241, 0.5);
             display: flex;
@@ -424,7 +448,7 @@
             justify-content: center;
             cursor: pointer;
         }
-        .home-btn svg { width: 20px; height: 20px; fill: #a5b4fc; }
+        .home-btn svg { width: 16px; height: 16px; fill: #a5b4fc; }
         .home-btn:active { transform: scale(0.94); }
         
         .bottom-sheet-overlay {
@@ -472,7 +496,6 @@
             .main-container { max-width: 700px; margin: 0 auto; padding-top: 80px; }
             .floating-header { left: 20px; right: 20px; top: 20px; }
         }
-        /* تحسينات للأجهزة ذات notch */
         @supports (padding-bottom: env(safe-area-inset-bottom)) {
             .chat-bottom-input {
                 padding-bottom: calc(12px + env(safe-area-inset-bottom));
@@ -518,7 +541,7 @@
 
         <!-- Main welcome section (registered user) -->
         <div class="welcome-main" id="welcomeMain">
-            <div id="welcomeLogo"><div class="character-logo" style="background:linear-gradient(135deg,#6366f1,#8b5cf6); border-radius: 24px; display: flex; align-items: center; justify-content: center;"><svg width="48" height="48" viewBox="0 0 24 24" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/></svg></div></div>
+            <div id="welcomeLogo"><div class="character-logo" style="background:linear-gradient(135deg,#6366f1,#8b5cf6); border-radius: 32px; display: flex; align-items: center; justify-content: center;"><svg width="64" height="64" viewBox="0 0 24 24" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/></svg></div></div>
             <h1 class="welcome-title" id="welcomeTitle">ابنِ أفكارك مع EVILE</h1>
             <p class="welcome-subtitle" id="welcomeSubtitle">اختر شخصية وابدأ محادثة إبداعية</p>
             <div class="welcome-input-card">
@@ -562,6 +585,7 @@
     </div>
 
     <script>
+        // نفس الجافاسكريبت السابق (لم يتغير)
         const characters = {{ characters|tojson }};
         const notifications = {{ notifications|tojson }};
         let telegramId = {{ telegram_id|tojson }};
@@ -724,7 +748,7 @@
             let div = document.createElement('div');
             div.id = 'typingLoader';
             div.className = 'message';
-            div.innerHTML = '<div class="loading-spinner" style="width:24px;height:24px;border:2px solid #06b6d4; border-top-color:transparent; border-radius:50%; animation:spin 0.8s linear infinite;"></div>';
+            div.innerHTML = '<div class="loading-spinner" style="width:20px;height:20px;border:2px solid #06b6d4; border-top-color:transparent; border-radius:50%; animation:spin 0.8s linear infinite;"></div>';
             container.appendChild(div);
             container.scrollTop = container.scrollHeight;
         }
@@ -822,7 +846,7 @@
             sel.innerHTML = characters.map(c => `
                 <div class="char-selector-btn ${c.callback_key === currentCharacter ? 'active' : ''}" onclick="selectCharacter('${c.callback_key}')">
                     ${c.logo_url ? `<img src="${c.logo_url}">` : '<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/></svg>'}
-                    <span>${c.name}</span>
+                    <span class="char-selector-name">${c.name}</span>
                 </div>
             `).join('');
         }
@@ -833,7 +857,7 @@
                 if (c.logo_url) {
                     logoDiv.innerHTML = `<img src="${c.logo_url}" class="character-logo">`;
                 } else {
-                    logoDiv.innerHTML = `<div class="character-logo" style="background:linear-gradient(135deg,#6366f1,#8b5cf6); border-radius:24px; display:flex; align-items:center; justify-content:center;"><svg width="48" height="48" viewBox="0 0 24 24" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/></svg></div>`;
+                    logoDiv.innerHTML = `<div class="character-logo" style="background:linear-gradient(135deg,#6366f1,#8b5cf6); border-radius:32px; display:flex; align-items:center; justify-content:center;"><svg width="64" height="64" viewBox="0 0 24 24" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/></svg></div>`;
                 }
                 document.getElementById('welcomeTitle').innerText = c.name;
                 document.getElementById('welcomeSubtitle').innerText = c.description;
