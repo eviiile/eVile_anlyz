@@ -7,92 +7,509 @@
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { font-family: 'Tajawal', sans-serif; background: #050816; min-height: 100vh; color: #c7d2fe; overflow: hidden; touch-action: manipulation; }
-        .bg-animation { position: fixed; width: 100%; height: 100%; top: 0; left: 0; z-index: -1; background: radial-gradient(circle at 20% 80%, rgba(30, 41, 89, 0.4) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(49, 46, 129, 0.3) 0%, transparent 50%); filter: blur(80px); }
-        .main-container { width: 100%; height: 100vh; display: flex; flex-direction: column; padding: 12px; padding-top: 70px; }
-        .floating-header { position: fixed; top: 12px; left: 12px; right: 12px; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 6px; background: rgba(15, 23, 60, 0.85); backdrop-filter: blur(25px); border: 1px solid rgba(49, 46, 129, 0.5); border-radius: 24px; gap: 8px; }
-        .header-circle { width: 44px; height: 44px; border-radius: 16px; background: rgba(30, 41, 89, 0.6); border: 1px solid rgba(49, 46, 129, 0.6); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; position: relative; }
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background: #050816;
+            min-height: 100vh;
+            color: #c7d2fe;
+            overflow: hidden;
+            touch-action: manipulation;
+        }
+        .bg-animation {
+            position: fixed;
+            width: 100%; height: 100%;
+            top: 0; left: 0;
+            z-index: -1;
+            background: radial-gradient(circle at 20% 80%, rgba(30, 41, 89, 0.4) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(49, 46, 129, 0.3) 0%, transparent 50%);
+            filter: blur(80px);
+        }
+        .main-container {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 12px;
+            padding-top: 70px;
+        }
+        /* Floating Header */
+        .floating-header {
+            position: fixed;
+            top: 12px;
+            left: 12px;
+            right: 12px;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 6px;
+            background: rgba(15, 23, 60, 0.85);
+            backdrop-filter: blur(25px);
+            border: 1px solid rgba(49, 46, 129, 0.5);
+            border-radius: 24px;
+            gap: 8px;
+        }
+        .header-circle {
+            width: 44px;
+            height: 44px;
+            border-radius: 16px;
+            background: rgba(30, 41, 89, 0.6);
+            border: 1px solid rgba(49, 46, 129, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+        }
         .header-circle:active { transform: scale(0.94); background: rgba(49, 46, 129, 0.8); }
         .header-circle svg { width: 20px; height: 20px; fill: #a5b4fc; }
-        .notif-badge { position: absolute; top: -4px; right: -4px; width: 18px; height: 18px; background: #ef4444; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: bold; color: #fff; border: 2px solid #050816; }
+        .notif-badge {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            width: 18px;
+            height: 18px;
+            background: #ef4444;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 9px;
+            font-weight: bold;
+            color: #fff;
+            border: 2px solid #050816;
+        }
         .logo-wrapper { flex: 1; display: flex; align-items: center; gap: 6px; }
-        .logo-center { flex: 1; height: 44px; background: rgba(30, 41, 89, 0.5); border: 1px solid rgba(49, 46, 129, 0.5); border-radius: 16px; display: flex; align-items: center; justify-content: center; }
-        .logo-text { font-size: 22px; font-weight: 900; background: linear-gradient(135deg, #e0e7ff, #a5b4fc); -webkit-background-clip: text; background-clip: text; color: transparent; letter-spacing: 2px; }
-        .active-users-box { height: 44px; padding: 0 12px; background: rgba(34, 197, 94, 0.2); border: 1px solid rgba(34, 197, 94, 0.5); border-radius: 16px; display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; color: #4ade80; }
+        .logo-center {
+            flex: 1;
+            height: 44px;
+            background: rgba(30, 41, 89, 0.5);
+            border: 1px solid rgba(49, 46, 129, 0.5);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .logo-text {
+            font-size: 22px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #e0e7ff, #a5b4fc);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: 2px;
+        }
+        .active-users-box {
+            height: 44px;
+            padding: 0 12px;
+            background: rgba(34, 197, 94, 0.2);
+            border: 1px solid rgba(34, 197, 94, 0.5);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            font-weight: 700;
+            color: #4ade80;
+        }
         .active-users-box svg { width: 16px; height: 16px; fill: #4ade80; }
-        .welcome-section { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; text-align: center; overflow-y: auto; }
+        /* Welcome Section - contains normal UI and forms */
+        .welcome-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            text-align: center;
+            overflow-y: auto;
+        }
         .welcome-section.hidden { display: none; }
-        .character-logo { width: 80px; height: 80px; border-radius: 24px; object-fit: cover; margin-bottom: 20px; border: 2px solid rgba(99, 102, 241, 0.6); box-shadow: 0 20px 35px -10px rgba(0,0,0,0.3); animation: float 3s ease-in-out infinite; }
+        .character-logo {
+            width: 80px;
+            height: 80px;
+            border-radius: 24px;
+            object-fit: cover;
+            margin-bottom: 20px;
+            border: 2px solid rgba(99, 102, 241, 0.6);
+            box-shadow: 0 20px 35px -10px rgba(0,0,0,0.3);
+            animation: float 3s ease-in-out infinite;
+        }
         @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
-        .welcome-title { font-size: 28px; font-weight: 800; background: linear-gradient(135deg, #e0e7ff, #a5b4fc); -webkit-background-clip: text; background-clip: text; color: transparent; margin-bottom: 8px; }
-        .welcome-subtitle { font-size: 14px; color: #818cf8; max-width: 280px; line-height: 1.5; margin-bottom: 24px; }
-        .chat-section { flex: 1; display: none; flex-direction: column; overflow: hidden; }
+        .welcome-title {
+            font-size: 28px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #e0e7ff, #a5b4fc);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 8px;
+        }
+        .welcome-subtitle {
+            font-size: 14px;
+            color: #818cf8;
+            max-width: 280px;
+            line-height: 1.5;
+            margin-bottom: 24px;
+        }
+        /* Forms container (register / subscription) */
+        .auth-container {
+            width: 100%;
+            max-width: 340px;
+            background: rgba(15, 23, 60, 0.7);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(99, 102, 241, 0.4);
+            border-radius: 28px;
+            padding: 24px;
+            margin-top: 16px;
+        }
+        .auth-icon {
+            width: 56px;
+            height: 56px;
+            margin: 0 auto 16px;
+            background: rgba(99, 102, 241, 0.2);
+            border-radius: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .auth-icon svg { width: 32px; height: 32px; fill: #a5b4fc; }
+        .auth-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #e0e7ff;
+        }
+        .auth-text {
+            font-size: 13px;
+            color: #818cf8;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+        .auth-input {
+            width: 100%;
+            padding: 14px;
+            background: rgba(20, 30, 70, 0.6);
+            border: 1px solid rgba(99, 102, 241, 0.4);
+            border-radius: 20px;
+            color: #c7d2fe;
+            font-size: 14px;
+            text-align: center;
+            margin-bottom: 16px;
+        }
+        .auth-input:focus { outline: none; border-color: #6366f1; }
+        .auth-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 8px;
+        }
+        .auth-btn {
+            flex: 1;
+            padding: 12px;
+            background: #4f46e5;
+            border: none;
+            border-radius: 20px;
+            color: white;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .auth-btn svg { width: 18px; height: 18px; fill: white; }
+        .auth-btn:active { transform: scale(0.97); }
+        .auth-btn.secondary { background: rgba(99, 102, 241, 0.4); }
+        .error-msg {
+            padding: 10px;
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.5);
+            border-radius: 16px;
+            color: #fca5a5;
+            font-size: 12px;
+            margin-bottom: 16px;
+        }
+        /* Chat Section */
+        .chat-section {
+            flex: 1;
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+        }
         .chat-section.active { display: flex; }
-        .messages-container { flex: 1; overflow-y: auto; padding: 16px; background: rgba(10, 15, 40, 0.5); backdrop-filter: blur(10px); border-radius: 24px; border: 1px solid rgba(49, 46, 129, 0.3); margin-bottom: 12px; }
+        .messages-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            background: rgba(10, 15, 40, 0.5);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            border: 1px solid rgba(49, 46, 129, 0.3);
+            margin-bottom: 12px;
+        }
         .message { margin-bottom: 16px; animation: fadeSlide 0.25s ease; }
         @keyframes fadeSlide { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
         .message-time { font-size: 10px; color: #6366f1; margin-bottom: 4px; }
-        .message-content { background: rgba(20, 30, 70, 0.7); border: 1px solid rgba(49, 46, 129, 0.4); padding: 10px 14px; border-radius: 18px; font-size: 14px; line-height: 1.5; max-width: 85%; }
+        .message-content {
+            background: rgba(20, 30, 70, 0.7);
+            border: 1px solid rgba(49, 46, 129, 0.4);
+            padding: 10px 14px;
+            border-radius: 18px;
+            font-size: 14px;
+            line-height: 1.5;
+            max-width: 85%;
+        }
         .message.own { text-align: left; }
-        .message.own .message-content { background: rgba(49, 46, 129, 0.7); margin-right: auto; margin-left: 0; }
-        .ai-bubble { background: rgba(20, 30, 70, 0.7); border: 1px solid rgba(49, 46, 129, 0.4); border-radius: 20px; overflow: hidden; max-width: 85%; }
-        .ai-bubble-label { display: flex; align-items: center; gap: 6px; padding: 8px 12px 0; font-size: 10px; font-weight: 700; color: #6366f1; }
+        .message.own .message-content {
+            background: rgba(49, 46, 129, 0.7);
+            margin-right: auto;
+            margin-left: 0;
+        }
+        .ai-bubble {
+            background: rgba(20, 30, 70, 0.7);
+            border: 1px solid rgba(49, 46, 129, 0.4);
+            border-radius: 20px;
+            overflow: hidden;
+            max-width: 85%;
+        }
+        .ai-bubble-label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 12px 0;
+            font-size: 10px;
+            font-weight: 700;
+            color: #6366f1;
+        }
+        .ai-bubble-label svg { width: 12px; height: 12px; fill: #6366f1; }
         .ai-bubble-text { padding: 6px 12px 12px; font-size: 14px; line-height: 1.5; }
-        .ai-bubble-copy { height: 32px; background: rgba(30, 41, 89, 0.6); border-top: 1px solid rgba(49, 46, 129, 0.4); display: flex; align-items: center; justify-content: center; gap: 6px; cursor: pointer; opacity: 0; transform: translateY(-5px); transition: all 0.2s; }
+        .ai-bubble-copy {
+            height: 32px;
+            background: rgba(30, 41, 89, 0.6);
+            border-top: 1px solid rgba(49, 46, 129, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            cursor: pointer;
+            opacity: 0;
+            transform: translateY(-5px);
+            transition: all 0.2s;
+        }
         .ai-bubble-copy.visible { opacity: 1; transform: translateY(0); }
-        .copy-icon { width: 12px; height: 12px; fill: #a5b4fc; }
+        .ai-bubble-copy svg { width: 12px; height: 12px; fill: #a5b4fc; }
         .copy-text { font-size: 11px; color: #a5b4fc; }
+        /* Input section */
         .input-section { padding: 4px 0; flex-shrink: 0; }
-        .input-card { background: rgba(15, 23, 60, 0.85); backdrop-filter: blur(25px); border: 1px solid rgba(49, 46, 129, 0.5); border-radius: 24px; padding: 8px 12px; }
-        .input-wrapper { display: flex; align-items: center; gap: 10px; }
-        .message-input { flex: 1; background: rgba(20, 30, 70, 0.6); border: 1px solid rgba(49, 46, 129, 0.4); border-radius: 18px; padding: 12px 16px; color: #c7d2fe; font-family: 'Tajawal', sans-serif; font-size: 14px; }
+        .input-card {
+            background: rgba(15, 23, 60, 0.85);
+            backdrop-filter: blur(25px);
+            border: 1px solid rgba(49, 46, 129, 0.5);
+            border-radius: 24px;
+            padding: 8px 12px;
+        }
+        .input-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .message-input {
+            flex: 1;
+            background: rgba(20, 30, 70, 0.6);
+            border: 1px solid rgba(49, 46, 129, 0.4);
+            border-radius: 18px;
+            padding: 12px 16px;
+            color: #c7d2fe;
+            font-family: 'Tajawal', sans-serif;
+            font-size: 14px;
+        }
         .message-input:focus { outline: none; border-color: #6366f1; }
-        .send-btn, .home-btn { width: 44px; height: 44px; border-radius: 18px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; border: none; }
-        .send-btn { background: linear-gradient(135deg, #4f46e5, #6366f1); }
+        .send-btn, .home-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            background: rgba(30, 41, 89, 0.6);
+        }
+        .send-btn {
+            background: linear-gradient(135deg, #4f46e5, #6366f1);
+        }
+        .send-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
         .home-btn { background: rgba(30, 41, 89, 0.6); border: 1px solid rgba(49, 46, 129, 0.5); }
         .send-btn:active, .home-btn:active { transform: scale(0.94); }
-        .char-selector { display: flex; gap: 10px; padding: 12px 0; overflow-x: auto; scrollbar-width: thin; margin-top: 20px; width: 100%; justify-content: center; }
-        .char-selector-btn { display: flex; align-items: center; gap: 8px; padding: 8px 16px; background: rgba(20, 30, 70, 0.6); border: 1px solid rgba(49, 46, 129, 0.4); border-radius: 40px; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
-        .char-selector-btn.active { background: rgba(99, 102, 241, 0.4); border-color: #6366f1; }
-        .char-selector-btn img { width: 24px; height: 24px; border-radius: 12px; }
-        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(5, 8, 22, 0.96); backdrop-filter: blur(12px); z-index: 2000; display: none; align-items: center; justify-content: center; }
-        .modal-overlay.active { display: flex; }
-        .modal-box { background: rgba(15, 23, 60, 0.95); border: 1px solid rgba(99, 102, 241, 0.4); border-radius: 32px; padding: 28px; width: 90%; max-width: 360px; text-align: center; }
-        .modal-title { font-size: 22px; font-weight: 800; margin-bottom: 16px; }
-        .modal-input { width: 100%; padding: 14px; background: rgba(20,30,70,0.6); border: 1px solid rgba(99,102,241,0.4); border-radius: 20px; color: #c7d2fe; text-align: center; margin-bottom: 16px; }
-        .modal-btn { width: 100%; padding: 14px; background: #4f46e5; border-radius: 20px; color: white; font-weight: 700; margin-bottom: 12px; border: none; cursor: pointer; }
-        .bottom-sheet-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(5,8,22,0.9); backdrop-filter: blur(8px); z-index: 1000; display: none; align-items: flex-end; justify-content: center; }
+        .send-btn svg, .home-btn svg { width: 20px; height: 20px; fill: white; }
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        /* Character selector */
+        .char-selector {
+            display: flex;
+            gap: 10px;
+            padding: 12px 0;
+            overflow-x: auto;
+            scrollbar-width: thin;
+            margin-top: 20px;
+            width: 100%;
+            justify-content: center;
+        }
+        .char-selector-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: rgba(20, 30, 70, 0.6);
+            border: 1px solid rgba(49, 46, 129, 0.4);
+            border-radius: 40px;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        .char-selector-btn.active {
+            background: rgba(99, 102, 241, 0.4);
+            border-color: #6366f1;
+        }
+        .char-selector-btn img {
+            width: 24px;
+            height: 24px;
+            border-radius: 12px;
+        }
+        .char-selector-btn svg {
+            width: 20px;
+            height: 20px;
+            fill: #a5b4fc;
+        }
+        /* Bottom sheets */
+        .bottom-sheet-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(5,8,22,0.9);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            display: none;
+            align-items: flex-end;
+            justify-content: center;
+        }
         .bottom-sheet-overlay.active { display: flex; }
-        .bottom-sheet { width: 100%; max-width: 600px; max-height: 70vh; background: rgba(15,23,60,0.96); backdrop-filter: blur(20px); border-radius: 28px 28px 0 0; padding: 20px; overflow-y: auto; animation: slideUp 0.3s ease; }
+        .bottom-sheet {
+            width: 100%;
+            max-width: 600px;
+            max-height: 70vh;
+            background: rgba(15,23,60,0.96);
+            backdrop-filter: blur(20px);
+            border-radius: 28px 28px 0 0;
+            padding: 20px;
+            overflow-y: auto;
+            animation: slideUp 0.3s ease;
+        }
         @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-        .char-list-item { display: flex; align-items: center; gap: 14px; padding: 14px; background: rgba(20,30,70,0.5); border-radius: 20px; margin-bottom: 10px; cursor: pointer; }
+        .char-list-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px;
+            background: rgba(20,30,70,0.5);
+            border-radius: 20px;
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
         .char-list-item.active { background: rgba(99,102,241,0.3); border: 1px solid #6366f1; }
-        @media (min-width: 768px) { .main-container { max-width: 700px; margin: 0 auto; padding-top: 80px; } .floating-header { left: 20px; right: 20px; top: 20px; } }
+        .notif-item {
+            background: rgba(20,30,70,0.5);
+            border: 1px solid rgba(99,102,241,0.3);
+            border-radius: 16px;
+            padding: 14px;
+            margin-bottom: 12px;
+        }
+        @media (min-width: 768px) {
+            .main-container { max-width: 700px; margin: 0 auto; padding-top: 80px; }
+            .floating-header { left: 20px; right: 20px; top: 20px; }
+        }
     </style>
 </head>
 <body>
     <div class="bg-animation"></div>
     <header class="floating-header">
-        <div class="header-circle" onclick="openCharactersSheet()"><svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg></div>
-        <div class="logo-wrapper"><div class="logo-center"><span class="logo-text">EVILE</span></div><div class="active-users-box"><svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg><span id="activeCount">0</span></div></div>
-        <div class="header-circle" onclick="openNotificationsSheet()"><svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6z"/></svg><span class="notif-badge" id="notifBadge" style="display: none;">0</span></div>
+        <div class="header-circle" onclick="openCharactersSheet()">
+            <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+        </div>
+        <div class="logo-wrapper">
+            <div class="logo-center"><span class="logo-text">EVILE</span></div>
+            <div class="active-users-box">
+                <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+                <span id="activeCount">0</span>
+            </div>
+        </div>
+        <div class="header-circle" onclick="openNotificationsSheet()">
+            <svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
+            <span class="notif-badge" id="notifBadge" style="display: none;">0</span>
+        </div>
     </header>
+
     <div class="main-container">
+        <!-- Welcome Section: contains normal UI and dynamic auth forms -->
         <div class="welcome-section" id="welcomeSection">
-            <div id="welcomeLogo"><div class="sparkle-icon">✨</div></div>
+            <div id="welcomeLogo"><div class="character-logo" style="background: #6366f1; border-radius: 24px; display: flex; align-items: center; justify-content: center;"><svg width="48" height="48" viewBox="0 0 24 24" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg></div></div>
             <h1 class="welcome-title" id="welcomeTitle">ابنِ أفكارك مع EVILE</h1>
             <p class="welcome-subtitle" id="welcomeSubtitle">اختر شخصية وابدأ محادثة إبداعية</p>
-            <div class="input-section" style="width:100%; max-width:340px;"><div class="input-card"><div class="input-wrapper"><input type="text" class="message-input" id="welcomeInput" placeholder="اكتب رسالتك..." onkeypress="handleWelcomeKey(event)"><button class="send-btn" onclick="sendWelcomeMessage()"><svg viewBox="0 0 24 24" width="20" height="20" fill="white"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg></button></div></div></div>
+            <div class="input-section" style="width:100%; max-width:340px;">
+                <div class="input-card">
+                    <div class="input-wrapper">
+                        <input type="text" class="message-input" id="welcomeInput" placeholder="اكتب رسالتك..." onkeypress="handleWelcomeKey(event)">
+                        <button class="send-btn" id="welcomeSendBtn" onclick="sendWelcomeMessage()">
+                            <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
             <div class="char-selector" id="charSelector"></div>
+            <!-- Dynamic auth forms will be injected here if needed -->
+            <div id="authPlaceholder"></div>
         </div>
-        <div class="chat-section" id="chatSection"><div class="messages-container" id="messagesContainer"></div><div class="input-section"><div class="input-card"><div class="input-wrapper"><button class="home-btn" onclick="goHome()"><svg viewBox="0 0 24 24" width="18" height="18" fill="#a5b4fc"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg></button><input type="text" class="message-input" id="chatInput" placeholder="اكتب رسالتك..." onkeypress="handleChatKey(event)"><button class="send-btn" id="sendBtn" onclick="sendChatMessage()"><svg viewBox="0 0 24 24" width="20" height="20" fill="white"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg></button></div></div></div></div>
+
+        <div class="chat-section" id="chatSection">
+            <div class="messages-container" id="messagesContainer"></div>
+            <div class="input-section">
+                <div class="input-card">
+                    <div class="input-wrapper">
+                        <button class="home-btn" onclick="goHome()">
+                            <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+                        </button>
+                        <input type="text" class="message-input" id="chatInput" placeholder="اكتب رسالتك..." onkeypress="handleChatKey(event)">
+                        <button class="send-btn" id="chatSendBtn" onclick="sendChatMessage()">
+                            <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="modal-overlay" id="registerModal"><div class="modal-box"><h2 class="modal-title">تسجيل الدخول</h2><div id="regFlash" class="flash-msg" style="display:none;"></div><form id="registerForm" onsubmit="handleRegister(event)"><input type="text" class="modal-input" id="telegramIdInput" placeholder="أدخل معرّف تيليجرام (أرقام فقط)" required><button type="submit" class="modal-btn">تسجيل</button></form></div></div>
-    <div class="modal-overlay" id="loadingModal"><div class="modal-box"><div class="loading-spinner"></div><div id="loadingText">جاري التحقق...</div></div></div>
-    <div class="modal-overlay" id="subModal"><div class="modal-box"><h2 class="modal-title">الاشتراك مطلوب</h2><p style="margin-bottom:16px;">يرجى الاشتراك في قناتنا على تيليجرام</p><a href="{{ channel_url }}" target="_blank" class="modal-btn" onclick="channelOpened()">اشترك الآن</a><button class="modal-btn" onclick="verifySubscription()">تحقق من الاشتراك</button></div></div>
-    <div class="bottom-sheet-overlay" id="charactersSheet" onclick="closeSheetOnBackdrop(event,'charactersSheet')"><div class="bottom-sheet"><div id="charactersList"></div></div></div>
-    <div class="bottom-sheet-overlay" id="notificationsSheet" onclick="closeSheetOnBackdrop(event,'notificationsSheet')"><div class="bottom-sheet"><div id="notificationsList"></div></div></div>
+
+    <!-- Bottom sheets for characters and notifications (no changes needed) -->
+    <div class="bottom-sheet-overlay" id="charactersSheet" onclick="closeSheetOnBackdrop(event,'charactersSheet')">
+        <div class="bottom-sheet"><div id="charactersList"></div></div>
+    </div>
+    <div class="bottom-sheet-overlay" id="notificationsSheet" onclick="closeSheetOnBackdrop(event,'notificationsSheet')">
+        <div class="bottom-sheet"><div id="notificationsList"></div></div>
+    </div>
+
     <script>
+        // Data from Flask
         const characters = {{ characters|tojson }};
         const notifications = {{ notifications|tojson }};
         let telegramId = {{ telegram_id|tojson }};
@@ -100,35 +517,377 @@
         let isFirstMessage = true;
         let isProcessing = false;
         let pendingMessage = null;
+        let currentAuthState = 'none'; // 'register' or 'subscribe'
 
-        function showLoadingModal(text) { document.getElementById('loadingText').innerText = text; document.getElementById('loadingModal').classList.add('active'); }
-        function hideLoadingModal() { document.getElementById('loadingModal').classList.remove('active'); }
-        function showFlash(id, msg) { let el = document.getElementById(id); el.innerText = msg; el.style.display='block'; setTimeout(()=>el.style.display='none',4000); }
-        function updateActiveUsers() { fetch('/api/active_users').then(r=>r.json()).then(data=>{ document.getElementById('activeCount').innerText = data.count; }).catch(e=>{}); }
-        function renderCharSelector() { let sel = document.getElementById('charSelector'); sel.innerHTML = characters.map(c => `<div class="char-selector-btn ${c.callback_key===currentCharacter?'active':''}" onclick="selectCharacter('${c.callback_key}')">${c.logo_url?`<img src="${c.logo_url}">`:'🤖'}<span>${c.name}</span></div>`).join(''); }
-        function updateWelcomeDisplay() { let c = characters.find(c=>c.callback_key===currentCharacter); if(c){ document.getElementById('welcomeLogo').innerHTML = c.logo_url ? `<img src="${c.logo_url}" class="character-logo">` : `<div class="sparkle-icon">✨</div>`; document.getElementById('welcomeTitle').innerText = c.name; document.getElementById('welcomeSubtitle').innerText = c.description; } }
-        function renderCharactersSheet() { document.getElementById('charactersList').innerHTML = characters.map(c=>`<div class="char-list-item ${c.callback_key===currentCharacter?'active':''}" onclick="selectCharacter('${c.callback_key}')"><div>${c.logo_url?`<img src="${c.logo_url}" width="40" height="40" style="border-radius:12px;">`:'🤖'}</div><div><strong>${c.name}</strong><br><small>${c.description}</small></div></div>`).join(''); }
-        function renderNotificationsSheet() { let list = document.getElementById('notificationsList'); if(notifications.length===0) list.innerHTML='<p style="text-align:center;">لا توجد إشعارات</p>'; else list.innerHTML = notifications.map(n=>`<div class="notif-item"><strong>${n.title}</strong><br>${n.text}<br><small>${n.created_at}</small></div>`).join(''); let badge = document.getElementById('notifBadge'); if(notifications.length>0){ badge.innerText=notifications.length; badge.style.display='flex'; } else badge.style.display='none'; }
+        // Helper: set button loading state
+        function setButtonLoading(btn, loading) {
+            if (!btn) return;
+            if (loading) {
+                btn.disabled = true;
+                btn.innerHTML = '<div class="spinner"></div>';
+            } else {
+                btn.disabled = false;
+                btn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>';
+            }
+        }
+
+        // Show a temporary error inside auth container
+        function showAuthError(msg) {
+            let placeholder = document.getElementById('authPlaceholder');
+            let errDiv = document.createElement('div');
+            errDiv.className = 'error-msg';
+            errDiv.innerText = msg;
+            placeholder.prepend(errDiv);
+            setTimeout(() => errDiv.remove(), 4000);
+        }
+
+        // Clear auth placeholder
+        function clearAuth() {
+            document.getElementById('authPlaceholder').innerHTML = '';
+            currentAuthState = 'none';
+        }
+
+        // Render registration form (telegram id input)
+        function showRegisterForm() {
+            clearAuth();
+            currentAuthState = 'register';
+            let html = `
+                <div class="auth-container">
+                    <div class="auth-icon"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg></div>
+                    <div class="auth-title">تسجيل الدخول</div>
+                    <div class="auth-text">أدخل معرف تيليجرام (أرقام فقط) للاستمرار</div>
+                    <input type="text" id="authTelegramId" class="auth-input" placeholder="المعرف (مثال: 123456789)" autocomplete="off">
+                    <button id="registerBtn" class="auth-btn">تسجيل</button>
+                </div>
+            `;
+            document.getElementById('authPlaceholder').innerHTML = html;
+            document.getElementById('registerBtn').onclick = () => performRegister();
+            document.getElementById('authTelegramId').addEventListener('keypress', (e) => { if(e.key === 'Enter') performRegister(); });
+        }
+
+        // Perform registration
+        async function performRegister() {
+            const idInput = document.getElementById('authTelegramId');
+            const id = idInput.value.trim();
+            if (!/^\d+$/.test(id)) {
+                showAuthError('المعرف يجب أن يحتوي على أرقام فقط');
+                return;
+            }
+            const btn = document.getElementById('registerBtn');
+            setButtonLoading(btn, true);
+            try {
+                let res = await fetch('/register', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                    body: `telegram_id=${id}`
+                });
+                let data = await res.json();
+                setButtonLoading(btn, false);
+                if (data.success) {
+                    telegramId = id;
+                    if (data.subscribed) {
+                        clearAuth();
+                        if (pendingMessage) {
+                            actuallySendMessage(pendingMessage);
+                            pendingMessage = null;
+                        } else {
+                            location.reload();
+                        }
+                    } else {
+                        // Show subscription form
+                        showSubscribeForm(id);
+                    }
+                } else {
+                    showAuthError(data.message || 'فشل التسجيل');
+                }
+            } catch (err) {
+                setButtonLoading(btn, false);
+                showAuthError('خطأ في الاتصال');
+            }
+        }
+
+        // Render subscription form (telegram icon, emotional text, id field, subscribe & verify buttons)
+        function showSubscribeForm(existingId) {
+            clearAuth();
+            currentAuthState = 'subscribe';
+            let html = `
+                <div class="auth-container">
+                    <div class="auth-icon"><svg viewBox="0 0 24 24"><path d="M22 2L2 9l7.2 2.6L12 21l3-8 7-3-3-7-6 3-3-7-9 4 7 3 3 7 4-9 3-5z"/></svg></div>
+                    <div class="auth-title">الاشتراك مطلوب</div>
+                    <div class="auth-text">للوصول إلى EVILE، يرجى الاشتراك في قناتنا على تليجرام</div>
+                    <input type="text" id="subTelegramId" class="auth-input" value="${existingId}" placeholder="معرف تيليجرام" readonly disabled style="opacity:0.7;">
+                    <div class="auth-buttons">
+                        <button id="subscribeBtn" class="auth-btn">اشترك</button>
+                        <button id="verifySubBtn" class="auth-btn secondary">تحقق</button>
+                    </div>
+                </div>
+            `;
+            document.getElementById('authPlaceholder').innerHTML = html;
+            document.getElementById('subscribeBtn').onclick = () => {
+                window.open('{{ channel_url }}', '_blank');
+            };
+            document.getElementById('verifySubBtn').onclick = () => verifySubscription();
+        }
+
+        async function verifySubscription() {
+            const btn = document.getElementById('verifySubBtn');
+            setButtonLoading(btn, true);
+            try {
+                let res = await fetch('/api/verify_subscription', { method: 'POST' });
+                let data = await res.json();
+                setButtonLoading(btn, false);
+                if (data.success) {
+                    clearAuth();
+                    if (pendingMessage) {
+                        actuallySendMessage(pendingMessage);
+                        pendingMessage = null;
+                    } else {
+                        location.reload();
+                    }
+                } else {
+                    showAuthError('لم يتم الاشتراك بعد. تأكد من الاشتراك ثم اضغط تحقق.');
+                }
+            } catch (err) {
+                setButtonLoading(btn, false);
+                showAuthError('خطأ في التحقق');
+            }
+        }
+
+        // Actual message sending (enters chat)
+        async function actuallySendMessage(message) {
+            if (isProcessing) return;
+            // Check subscription before proceeding (if already registered)
+            if (isFirstMessage && telegramId) {
+                // Verify subscription silently
+                setButtonLoading(document.getElementById('welcomeSendBtn'), true);
+                try {
+                    let subCheck = await fetch('/api/verify_subscription', { method: 'POST' }).then(r => r.json());
+                    setButtonLoading(document.getElementById('welcomeSendBtn'), false);
+                    if (!subCheck.success) {
+                        showSubscribeForm(telegramId);
+                        return;
+                    }
+                } catch(e) {
+                    setButtonLoading(document.getElementById('welcomeSendBtn'), false);
+                    addMessage('خطأ في التحقق من الاشتراك', false);
+                    return;
+                }
+                // Switch to chat
+                document.getElementById('welcomeSection').classList.add('hidden');
+                document.getElementById('chatSection').classList.add('active');
+                isFirstMessage = false;
+            }
+
+            isProcessing = true;
+            const sendBtn = document.getElementById('chatSendBtn') || document.getElementById('welcomeSendBtn');
+            setButtonLoading(sendBtn, true);
+            addMessage(message, true);
+            document.getElementById('welcomeInput').value = '';
+            showTypingLoading();
+
+            try {
+                let res = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ character: currentCharacter, message })
+                });
+                let data = await res.json();
+                removeTypingLoading();
+                if (data.response) {
+                    await streamResponse(data.response);
+                } else {
+                    addMessage('حدث خطأ في المعالجة', false);
+                }
+            } catch (err) {
+                removeTypingLoading();
+                addMessage('خطأ في الاتصال', false);
+            }
+            isProcessing = false;
+            setButtonLoading(sendBtn, false);
+        }
+
+        // Typing indicator inside messages (spinner)
+        function showTypingLoading() {
+            let container = document.getElementById('messagesContainer');
+            let div = document.createElement('div');
+            div.id = 'typingLoader';
+            div.className = 'message';
+            div.innerHTML = '<div class="loading-spinner" style="width:24px;height:24px;border:2px solid #6366f1; border-top-color:transparent; border-radius:50%; animation:spin 0.8s linear infinite;"></div>';
+            container.appendChild(div);
+            container.scrollTop = container.scrollHeight;
+        }
+        function removeTypingLoading() {
+            let el = document.getElementById('typingLoader');
+            if (el) el.remove();
+        }
+
+        // Stream response (same as before, no emojis)
+        async function streamResponse(text) {
+            return new Promise((resolve) => {
+                let container = document.getElementById('messagesContainer');
+                let time = new Date().toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' });
+                let msgDiv = document.createElement('div');
+                msgDiv.className = 'message';
+                msgDiv.innerHTML = `<div class="message-time">${time}</div>`;
+                let bubble = document.createElement('div');
+                bubble.className = 'ai-bubble';
+                bubble.innerHTML = `
+                    <div class="ai-bubble-label"><svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4V4c0-1.1-.9-2-2-2z"/></svg> AI</div>
+                    <div class="ai-bubble-text"></div>
+                    <div class="ai-bubble-copy"><svg class="copy-icon" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2z"/></svg><span class="copy-text">نسخ</span></div>
+                `;
+                msgDiv.appendChild(bubble);
+                container.appendChild(msgDiv);
+                let textEl = bubble.querySelector('.ai-bubble-text');
+                let copyBtn = bubble.querySelector('.ai-bubble-copy');
+                copyBtn.onclick = () => {
+                    navigator.clipboard.writeText(textEl.innerText);
+                    copyBtn.innerHTML = '<svg class="copy-icon" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg><span class="copy-text">تم النسخ</span>';
+                    setTimeout(() => {
+                        copyBtn.innerHTML = '<svg class="copy-icon" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2z"/></svg><span class="copy-text">نسخ</span>';
+                    }, 1500);
+                };
+                let cursor = document.createElement('span');
+                cursor.className = 'cursor';
+                textEl.appendChild(cursor);
+                let idx = 0;
+                let interval = setInterval(() => {
+                    if (idx < text.length) {
+                        let span = document.createElement('span');
+                        span.textContent = text[idx];
+                        textEl.insertBefore(span, cursor);
+                        idx++;
+                        container.scrollTop = container.scrollHeight;
+                    } else {
+                        clearInterval(interval);
+                        cursor.remove();
+                        setTimeout(() => copyBtn.classList.add('visible'), 100);
+                        resolve();
+                    }
+                }, 20);
+            });
+        }
+
+        function addMessage(text, isOwn) {
+            let container = document.getElementById('messagesContainer');
+            let time = new Date().toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' });
+            let div = document.createElement('div');
+            div.className = `message ${isOwn ? 'own' : ''}`;
+            div.innerHTML = `<div class="message-time">${time}</div><div class="message-content">${escapeHtml(text)}</div>`;
+            container.appendChild(div);
+            container.scrollTop = container.scrollHeight;
+        }
+        function escapeHtml(str) {
+            return str.replace(/[&<>]/g, function(m) {
+                if (m === '&') return '&amp;';
+                if (m === '<') return '&lt;';
+                if (m === '>') return '&gt;';
+                return m;
+            });
+        }
+
+        // Send handlers
+        async function sendWelcomeMessage() {
+            if (isProcessing) return;
+            let input = document.getElementById('welcomeInput');
+            let msg = input.value.trim();
+            if (!msg) return;
+            if (!telegramId) {
+                pendingMessage = msg;
+                showRegisterForm();
+                return;
+            }
+            await actuallySendMessage(msg);
+        }
+        async function sendChatMessage() {
+            if (isProcessing) return;
+            let input = document.getElementById('chatInput');
+            let msg = input.value.trim();
+            if (!msg) return;
+            if (!telegramId) {
+                pendingMessage = msg;
+                showRegisterForm();
+                return;
+            }
+            await actuallySendMessage(msg);
+        }
+        function handleWelcomeKey(e) { if (e.key === 'Enter') sendWelcomeMessage(); }
+        function handleChatKey(e) { if (e.key === 'Enter') sendChatMessage(); }
+
+        // Other UI functions (characters, notifications, active users)
+        function updateActiveUsers() {
+            fetch('/api/active_users').then(r => r.json()).then(data => {
+                document.getElementById('activeCount').innerText = data.count;
+            }).catch(e => {});
+        }
+        function renderCharSelector() {
+            let sel = document.getElementById('charSelector');
+            sel.innerHTML = characters.map(c => `
+                <div class="char-selector-btn ${c.callback_key === currentCharacter ? 'active' : ''}" onclick="selectCharacter('${c.callback_key}')">
+                    ${c.logo_url ? `<img src="${c.logo_url}">` : '<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/></svg>'}
+                    <span>${c.name}</span>
+                </div>
+            `).join('');
+        }
+        function updateWelcomeDisplay() {
+            let c = characters.find(c => c.callback_key === currentCharacter);
+            if (c) {
+                let logoDiv = document.getElementById('welcomeLogo');
+                if (c.logo_url) {
+                    logoDiv.innerHTML = `<img src="${c.logo_url}" class="character-logo">`;
+                } else {
+                    logoDiv.innerHTML = `<div class="character-logo" style="background:#6366f1; display:flex; align-items:center; justify-content:center;"><svg width="48" height="48" viewBox="0 0 24 24" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/></svg></div>`;
+                }
+                document.getElementById('welcomeTitle').innerText = c.name;
+                document.getElementById('welcomeSubtitle').innerText = c.description;
+            }
+        }
+        function renderCharactersSheet() {
+            document.getElementById('charactersList').innerHTML = characters.map(c => `
+                <div class="char-list-item ${c.callback_key === currentCharacter ? 'active' : ''}" onclick="selectCharacter('${c.callback_key}')">
+                    <div>${c.logo_url ? `<img src="${c.logo_url}" width="40" height="40" style="border-radius:12px;">` : '<svg width="40" height="40" viewBox="0 0 24 24" fill="#a5b4fc"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/></svg>'}</div>
+                    <div><strong>${c.name}</strong><br><small>${c.description}</small></div>
+                </div>
+            `).join('');
+        }
+        function renderNotificationsSheet() {
+            let list = document.getElementById('notificationsList');
+            if (notifications.length === 0) list.innerHTML = '<p style="text-align:center;">لا توجد إشعارات</p>';
+            else list.innerHTML = notifications.map(n => `
+                <div class="notif-item">
+                    <strong>${n.title}</strong><br>${n.text}<br><small>${n.created_at}</small>
+                </div>
+            `).join('');
+            let badge = document.getElementById('notifBadge');
+            if (notifications.length > 0) { badge.innerText = notifications.length; badge.style.display = 'flex'; }
+            else badge.style.display = 'none';
+        }
         function openCharactersSheet() { renderCharactersSheet(); document.getElementById('charactersSheet').classList.add('active'); }
         function openNotificationsSheet() { renderNotificationsSheet(); document.getElementById('notificationsSheet').classList.add('active'); }
         function closeSheet(id) { document.getElementById(id).classList.remove('active'); }
-        function closeSheetOnBackdrop(e,id){ if(e.target===e.currentTarget) closeSheet(id); }
-        function selectCharacter(key) { currentCharacter=key; renderCharSelector(); updateWelcomeDisplay(); closeSheet('charactersSheet'); }
-        function goHome() { document.getElementById('chatSection').classList.remove('active'); document.getElementById('welcomeSection').classList.remove('hidden'); document.getElementById('messagesContainer').innerHTML=''; isFirstMessage=true; }
-        function addMessage(text, isOwn) { let container = document.getElementById('messagesContainer'); let time = new Date().toLocaleTimeString('ar-SA',{hour:'2-digit',minute:'2-digit'}); let div = document.createElement('div'); div.className = `message ${isOwn?'own':''}`; div.innerHTML = `<div class="message-time">${time}</div><div class="message-content">${escapeHtml(text)}</div>`; container.appendChild(div); container.scrollTop = container.scrollHeight; }
-        function showLoading() { let div = document.createElement('div'); div.id='loadingMessage'; div.className='message'; div.innerHTML='<div class="loading-spinner" style="width:24px;height:24px;border:2px solid #6366f1; border-top-color:transparent; border-radius:50%; animation:spin 0.8s linear infinite;"></div>'; document.getElementById('messagesContainer').appendChild(div); }
-        function removeLoading() { let el = document.getElementById('loadingMessage'); if(el) el.remove(); }
-        function escapeHtml(str) { return str.replace(/[&<>]/g, function(m){ if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;}); }
-        async function streamResponse(text) { return new Promise((resolve)=>{ let container = document.getElementById('messagesContainer'); let time = new Date().toLocaleTimeString('ar-SA',{hour:'2-digit',minute:'2-digit'}); let msgDiv = document.createElement('div'); msgDiv.className='message'; msgDiv.innerHTML = `<div class="message-time">${time}</div>`; let bubble = document.createElement('div'); bubble.className='ai-bubble'; bubble.innerHTML = `<div class="ai-bubble-label">🤖 AI</div><div class="ai-bubble-text"></div><div class="ai-bubble-copy"><span>📋 نسخ</span></div>`; msgDiv.appendChild(bubble); container.appendChild(msgDiv); let textEl = bubble.querySelector('.ai-bubble-text'); let copyBtn = bubble.querySelector('.ai-bubble-copy'); copyBtn.onclick = ()=>{ navigator.clipboard.writeText(textEl.innerText); copyBtn.innerHTML='✅ تم النسخ'; setTimeout(()=>copyBtn.innerHTML='📋 نسخ',1500); }; let cursor = document.createElement('span'); cursor.className='cursor'; textEl.appendChild(cursor); let idx=0; let interval = setInterval(()=>{ if(idx<text.length){ let span=document.createElement('span'); span.textContent=text[idx]; textEl.insertBefore(span,cursor); idx++; container.scrollTop=container.scrollHeight; } else { clearInterval(interval); cursor.remove(); setTimeout(()=>copyBtn.classList.add('visible'),100); resolve(); } },20); }); }
-        async function actuallySendMessage(message) { if(isProcessing) return; if(isFirstMessage){ showLoadingModal('جاري التحقق من الاشتراك...'); try{ let subCheck = await fetch('/api/verify_subscription',{method:'POST'}).then(r=>r.json()); hideLoadingModal(); if(!subCheck.success){ document.getElementById('subModal').classList.add('active'); return; } }catch(e){ hideLoadingModal(); addMessage('خطأ في التحقق',false); return; } document.getElementById('welcomeSection').classList.add('hidden'); document.getElementById('chatSection').classList.add('active'); isFirstMessage = false; } isProcessing=true; let sendBtn = document.getElementById('sendBtn'); if(sendBtn) sendBtn.disabled=true; addMessage(message,true); document.getElementById('welcomeInput').value=''; showLoading(); try{ let res = await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({character:currentCharacter,message})}); let data = await res.json(); removeLoading(); if(data.response) await streamResponse(data.response); else addMessage('حدث خطأ',false); }catch(err){ removeLoading(); addMessage('خطأ في الاتصال',false); } isProcessing=false; if(sendBtn) sendBtn.disabled=false; }
-        async function sendWelcomeMessage() { if(isProcessing) return; let input = document.getElementById('welcomeInput'); let msg = input.value.trim(); if(!msg) return; if(!telegramId){ pendingMessage = msg; document.getElementById('registerModal').classList.add('active'); return; } await actuallySendMessage(msg); }
-        async function sendChatMessage() { if(isProcessing) return; let input = document.getElementById('chatInput'); let msg = input.value.trim(); if(!msg) return; if(!telegramId){ pendingMessage = msg; document.getElementById('registerModal').classList.add('active'); return; } await actuallySendMessage(msg); }
-        function handleWelcomeKey(e){ if(e.key==='Enter') sendWelcomeMessage(); }
-        function handleChatKey(e){ if(e.key==='Enter') sendChatMessage(); }
-        function handleRegister(e){ e.preventDefault(); let id = document.getElementById('telegramIdInput').value.trim(); if(!/^\d+$/.test(id)){ showFlash('regFlash','معرّف غير صحيح'); return; } document.getElementById('registerModal').classList.remove('active'); showLoadingModal('جاري التسجيل...'); fetch('/register',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:`telegram_id=${id}`}).then(r=>r.json()).then(data=>{ hideLoadingModal(); if(data.success){ telegramId = id; if(data.subscribed){ if(pendingMessage){ actuallySendMessage(pendingMessage); pendingMessage=null; } else location.reload(); } else { document.getElementById('subModal').classList.add('active'); } } else { showFlash('regFlash',data.message||'خطأ'); document.getElementById('registerModal').classList.add('active'); } }).catch(err=>{ hideLoadingModal(); showFlash('regFlash','خطأ في الاتصال'); document.getElementById('registerModal').classList.add('active'); }); }
-        function channelOpened(){ }
-        function verifySubscription(){ showLoadingModal('جاري التحقق...'); fetch('/api/verify_subscription',{method:'POST'}).then(r=>r.json()).then(data=>{ hideLoadingModal(); if(data.success){ document.getElementById('subModal').classList.remove('active'); if(pendingMessage){ actuallySendMessage(pendingMessage); pendingMessage=null; } else location.reload(); } else { showFlash('subFlash','لم يتم الاشتراك بعد'); } }).catch(()=>{ hideLoadingModal(); showFlash('subFlash','خطأ في الاتصال'); }); }
-        document.addEventListener('DOMContentLoaded',()=>{ if(!telegramId){ document.getElementById('welcomeInput').placeholder = 'اكتب رسالتك... (سيُطلب منك إدخال معرفك أولاً)'; } renderCharSelector(); updateWelcomeDisplay(); updateActiveUsers(); setInterval(updateActiveUsers,30000); renderNotificationsSheet(); });
+        function closeSheetOnBackdrop(e, id) { if (e.target === e.currentTarget) closeSheet(id); }
+        function selectCharacter(key) { currentCharacter = key; renderCharSelector(); updateWelcomeDisplay(); closeSheet('charactersSheet'); }
+        function goHome() {
+            document.getElementById('chatSection').classList.remove('active');
+            document.getElementById('welcomeSection').classList.remove('hidden');
+            document.getElementById('messagesContainer').innerHTML = '';
+            isFirstMessage = true;
+            clearAuth();
+        }
+
+        // Initialization
+        document.addEventListener('DOMContentLoaded', () => {
+            if (!telegramId) {
+                // Show register form only when trying to send first message, not automatically.
+                // Just placeholder change
+                document.getElementById('welcomeInput').placeholder = 'اكتب رسالتك... (سيُطلب منك إدخال معرفك أولاً)';
+            }
+            renderCharSelector();
+            updateWelcomeDisplay();
+            updateActiveUsers();
+            setInterval(updateActiveUsers, 30000);
+            renderNotificationsSheet();
+        });
     </script>
 </body>
 </html>
