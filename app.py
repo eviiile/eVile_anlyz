@@ -1,5 +1,4 @@
 import os
-import sqlite3
 import logging
 import requests
 import time
@@ -7,6 +6,9 @@ from datetime import datetime, timedelta
 from functools import wraps
 from contextlib import contextmanager
 from flask import Flask, render_template, request, redirect, url_for, session, flash, jsonify
+
+import psycopg2
+from psycopg2.extras import RealDictCursor
 
 app = Flask(__name__)
 app.secret_key = os.getenv('SECRET_KEY', 'evile-secret-key-2026')
@@ -17,7 +19,7 @@ OPENROUTER_API_KEY = os.getenv('OPENROUTER_API_KEY', 'sk-or-v1-c9df44eba45bd3f60
 OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions"
 TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN', '8785192184:AAHckCzqabzQbGpO1E9r2DDm89zukKlvihc')
 TELEGRAM_CHANNEL_ID = os.getenv('TELEGRAM_CHANNEL_ID', '@Evile_Prompts')
-DATABASE_FILE = 'evile.db'
+DATABASE_URL = "postgresql://evile_site_user:yxWlZVZsC39DhRtXoY7e84ci6NTJgcaR@dpg-d8mpl3rsq97s739pscq0-a.oregon-postgres.render.com/evile_site"
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -25,19 +27,13 @@ logger = logging.getLogger(__name__)
 _characters_cache = {'data': None, 'timestamp': 0}
 CACHE_TTL = 300
 
-def dict_factory(cursor, row):
-    """Convert row to dictionary for sqlite3"""
-    fields = [column[0] for column in cursor.description]
-    return {key: value for key, value in zip(fields, row)}
-
 @contextmanager
 def get_db():
     conn = None
     cur = None
     try:
-        conn = sqlite3.connect(DATABASE_FILE)
-        conn.row_factory = dict_factory
-        cur = conn.cursor()
+        conn = psycopg2.connect(DATABASE_URL)
+        cur = conn.cursor(cursor_factory=RealDictCursor)
         yield cur
         conn.commit()
     except Exception as e:
@@ -55,7 +51,7 @@ def init_db():
     try:
         with get_db() as cur:
             cur.execute('''CREATE TABLE IF NOT EXISTS characters (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                id SERIAL PRIMARY KEY,
                 name TEXT NOT NULL,
                 description TEXT NOT NULL,
                 prompt TEXT NOT NULL,
@@ -63,34 +59,34 @@ def init_db():
                 logo_url TEXT DEFAULT ''
             )''')
             cur.execute('''CREATE TABLE IF NOT EXISTS notifications (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                id SERIAL PRIMARY KEY,
                 title TEXT NOT NULL,
                 text TEXT NOT NULL,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )''')
             cur.execute('''CREATE TABLE IF NOT EXISTS users (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                id SERIAL PRIMARY KEY,
                 telegram_id TEXT UNIQUE NOT NULL,
-                is_subscribed INTEGER DEFAULT 0,
+                is_subscribed BOOLEAN DEFAULT FALSE,
                 last_active TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )''')
-            cur.execute("SELECT COUNT(*) as cnt FROM characters")
+            cur.execute("SELECT COUNT(*) FROM characters")
             row = cur.fetchone()
-            count = row['cnt'] if row else 0
+            count = row['count'] if row else 0
             if count == 0:
                 cur.execute(
-                    "INSERT INTO characters (name, description, prompt, callback_key, logo_url) VALUES (?, ?, ?, ?, ?)",
+                    "INSERT INTO characters (name, description, prompt, callback_key, logo_url) VALUES (%s, %s, %s, %s, %s)",
                     ('لوجو ميكر', 'مصمم برومبتات شعارات احترافية',
                      'Receive any keywords in the format "Name + Element" and generate one single, ready-to-use English prompt (2-4 concise sentences): act like a master logo designer.',
                      'logo_maker', 'https://i.ibb.co/XZ3SRWQN/x.jpg')
                 )
                 cur.execute(
-                    "INSERT INTO characters (name, description, prompt, callback_key, logo_url) VALUES (?, ?, ?, ?, ?)",
+                    "INSERT INTO characters (name, description, prompt, callback_key, logo_url) VALUES (%s, %s, %s, %s, %s)",
                     ('كاتب محتوى', 'كاتب محترف لقنوات تيليجرام',
                      'أنت كاتب محتوى محترف لقنوات تيليجرام، ممنوع تماماً استخدام أي إيموجي.',
                      'content_writer', 'https://i.ibb.co/wNwDgkmV/x.png')
                 )
-        logger.info("SQLite Database initialized successfully")
+        logger.info("Database initialized successfully")
     except Exception as e:
         logger.error(f"Database initialization error: {e}")
         raise
@@ -100,7 +96,7 @@ def update_user_activity(telegram_id):
         return
     try:
         with get_db() as cur:
-            cur.execute("UPDATE users SET last_active = CURRENT_TIMESTAMP WHERE telegram_id = ?", (telegram_id,))
+            cur.execute("UPDATE users SET last_active = CURRENT_TIMESTAMP WHERE telegram_id = %s", (telegram_id,))
     except Exception as e:
         logger.error(f"Update activity error: {e}")
 
@@ -155,14 +151,14 @@ def register():
             return jsonify({'success': False, 'message': 'معرّف غير صحيح'}), 400
         with get_db() as cur:
             cur.execute(
-                "INSERT INTO users (telegram_id) VALUES (?) ON CONFLICT(telegram_id) DO UPDATE SET last_active = CURRENT_TIMESTAMP",
+                "INSERT INTO users (telegram_id) VALUES (%s) ON CONFLICT (telegram_id) DO UPDATE SET last_active = CURRENT_TIMESTAMP",
                 (telegram_id,)
             )
         session['telegram_id'] = telegram_id
         session.permanent = True
         is_sub = check_telegram_subscription(telegram_id)
         with get_db() as cur:
-            cur.execute("UPDATE users SET is_subscribed = ? WHERE telegram_id = ?", (1 if is_sub else 0, telegram_id))
+            cur.execute("UPDATE users SET is_subscribed = %s WHERE telegram_id = %s", (is_sub, telegram_id))
         return jsonify({'success': True, 'subscribed': is_sub})
     except Exception as e:
         logger.error(f"Register error: {e}")
@@ -176,7 +172,7 @@ def api_verify_subscription():
             return jsonify({'success': False, 'subscribed': False}), 401
         is_sub = check_telegram_subscription(telegram_id)
         with get_db() as cur:
-            cur.execute("UPDATE users SET is_subscribed = ?, last_active = CURRENT_TIMESTAMP WHERE telegram_id = ?", (1 if is_sub else 0, telegram_id))
+            cur.execute("UPDATE users SET is_subscribed = %s, last_active = CURRENT_TIMESTAMP WHERE telegram_id = %s", (is_sub, telegram_id))
         return jsonify({'success': is_sub, 'subscribed': is_sub})
     except Exception as e:
         logger.error(f"Verify error: {e}")
@@ -186,9 +182,9 @@ def api_verify_subscription():
 def api_active_users():
     try:
         with get_db() as cur:
-            cur.execute("SELECT COUNT(*) as cnt FROM users WHERE last_active > datetime('now', '-5 minutes')")
+            cur.execute("SELECT COUNT(*) FROM users WHERE last_active > NOW() - INTERVAL '5 minutes'")
             row = cur.fetchone()
-            count = row['cnt'] if row else 0
+            count = row['count'] if row else 0
         return jsonify({'count': count})
     except Exception as e:
         logger.error(f"Active users error: {e}")
@@ -232,9 +228,9 @@ def admin_panel():
             characters = cur.fetchall()
             cur.execute('SELECT * FROM notifications ORDER BY id DESC')
             notifications = cur.fetchall()
-            cur.execute('SELECT COUNT(*) as cnt FROM users')
+            cur.execute('SELECT COUNT(*) FROM users')
             row = cur.fetchone()
-            users_count = row['cnt'] if row else 0
+            users_count = row['count'] if row else 0
     except Exception as e:
         logger.error(f"Admin panel error: {e}")
         characters, notifications, users_count = [], [], 0
@@ -251,7 +247,7 @@ def add_character():
     if name and description and prompt:
         try:
             with get_db() as cur:
-                cur.execute("INSERT INTO characters (name, description, prompt, callback_key, logo_url) VALUES (?, ?, ?, ?, ?)",
+                cur.execute("INSERT INTO characters (name, description, prompt, callback_key, logo_url) VALUES (%s, %s, %s, %s, %s)",
                     (name, description, prompt, callback_key, logo_url))
             flash('تمت إضافة الشخصية بنجاح', 'success')
         except Exception as e:
@@ -268,7 +264,7 @@ def edit_character(char_id):
     if name and description and prompt:
         try:
             with get_db() as cur:
-                cur.execute("UPDATE characters SET name=?, description=?, prompt=?, logo_url=? WHERE id=?",
+                cur.execute("UPDATE characters SET name=%s, description=%s, prompt=%s, logo_url=%s WHERE id=%s",
                     (name, description, prompt, logo_url, char_id))
             flash('تم تعديل الشخصية بنجاح', 'success')
         except Exception as e:
@@ -280,7 +276,7 @@ def edit_character(char_id):
 def delete_character(char_id):
     try:
         with get_db() as cur:
-            cur.execute("DELETE FROM characters WHERE id=?", (char_id,))
+            cur.execute("DELETE FROM characters WHERE id=%s", (char_id,))
         flash('تم حذف الشخصية', 'success')
     except Exception as e:
         flash(str(e), 'error')
@@ -294,7 +290,7 @@ def add_notification():
     if title and text:
         try:
             with get_db() as cur:
-                cur.execute("INSERT INTO notifications (title, text) VALUES (?, ?)", (title, text))
+                cur.execute("INSERT INTO notifications (title, text) VALUES (%s, %s)", (title, text))
             flash('تم إرسال الإشعار بنجاح', 'success')
         except Exception as e:
             flash(str(e), 'error')
@@ -305,7 +301,7 @@ def add_notification():
 def delete_notification(notif_id):
     try:
         with get_db() as cur:
-            cur.execute("DELETE FROM notifications WHERE id=?", (notif_id,))
+            cur.execute("DELETE FROM notifications WHERE id=%s", (notif_id,))
         flash('تم حذف الإشعار', 'success')
     except Exception as e:
         flash(str(e), 'error')
@@ -344,7 +340,7 @@ def api_chat():
     message = data.get('message', '')
     try:
         with get_db() as cur:
-            cur.execute("SELECT * FROM characters WHERE callback_key=?", (character_key,))
+            cur.execute("SELECT * FROM characters WHERE callback_key=%s", (character_key,))
             character = cur.fetchone()
     except Exception as e:
         logger.error(f"Get character error: {e}")
