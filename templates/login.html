@@ -6,11 +6,7 @@
     <title>تسجيل الدخول - EVILE Admin</title>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Tajawal', sans-serif;
             background: linear-gradient(145deg, #0f172a 0%, #1e1b4b 100%);
@@ -22,7 +18,6 @@
             position: relative;
             overflow: hidden;
         }
-        /* خلفية متحركة */
         body::before {
             content: '';
             position: absolute;
@@ -51,16 +46,10 @@
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
             transition: transform 0.3s ease;
         }
-        .login-card:hover {
-            transform: translateY(-5px);
-        }
-        .logo {
-            text-align: center;
-            margin-bottom: 32px;
-        }
+        .login-card:hover { transform: translateY(-5px); }
+        .logo { text-align: center; margin-bottom: 32px; }
         .logo-icon {
-            width: 64px;
-            height: 64px;
+            width: 64px; height: 64px;
             background: linear-gradient(135deg, #6366f1, #8b5cf6);
             border-radius: 20px;
             display: flex;
@@ -69,48 +58,27 @@
             margin: 0 auto 16px;
             box-shadow: 0 10px 25px -5px rgba(99, 102, 241, 0.4);
         }
-        .logo-icon svg {
-            width: 36px;
-            height: 36px;
-            fill: white;
-        }
+        .logo-icon svg { width: 36px; height: 36px; fill: white; }
         h1 {
-            font-size: 28px;
-            font-weight: 800;
+            font-size: 28px; font-weight: 800;
             background: linear-gradient(135deg, #e0e7ff, #a5b4fc);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
             margin-bottom: 8px;
         }
-        .subtitle {
-            color: #818cf8;
-            font-size: 14px;
-            text-align: center;
-        }
-        .form-group {
-            margin-bottom: 24px;
-        }
-        label {
-            display: block;
-            margin-bottom: 8px;
-            color: #c7d2fe;
-            font-weight: 500;
-            font-size: 14px;
-        }
-        .input-wrapper {
-            position: relative;
-        }
+        .subtitle { color: #818cf8; font-size: 14px; text-align: center; }
+        .form-group { margin-bottom: 24px; }
+        label { display: block; margin-bottom: 8px; color: #c7d2fe; font-weight: 500; font-size: 14px; }
         input {
-            width: 100%;
-            padding: 14px 18px;
+            width: 100%; padding: 14px 18px;
             background: rgba(30, 27, 75, 0.6);
             border: 1px solid rgba(99, 102, 241, 0.3);
             border-radius: 16px;
             color: #e0e7ff;
             font-size: 16px;
             font-family: 'Tajawal', sans-serif;
-            transition: all 0.2s ease;
+            transition: all 0.2s;
         }
         input:focus {
             outline: none;
@@ -118,13 +86,8 @@
             box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
             background: rgba(30, 27, 75, 0.8);
         }
-        input::placeholder {
-            color: #6366f1;
-            font-size: 14px;
-        }
         .btn {
-            width: 100%;
-            padding: 14px;
+            width: 100%; padding: 14px;
             background: linear-gradient(135deg, #6366f1, #8b5cf6);
             border: none;
             border-radius: 16px;
@@ -132,16 +95,9 @@
             font-weight: 700;
             font-size: 16px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            font-family: 'Tajawal', sans-serif;
+            transition: all 0.3s;
         }
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px -5px rgba(99, 102, 241, 0.5);
-        }
-        .btn:active {
-            transform: translateY(1px);
-        }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 10px 25px -5px rgba(99, 102, 241, 0.5); }
         .flash {
             padding: 12px;
             background: rgba(239, 68, 68, 0.15);
@@ -152,30 +108,13 @@
             text-align: center;
             font-size: 14px;
         }
-        .footer-text {
-            text-align: center;
-            margin-top: 24px;
-            color: #6366f1;
-            font-size: 12px;
-        }
-        @media (max-width: 480px) {
-            .login-card {
-                padding: 32px 24px;
-            }
-            h1 {
-                font-size: 24px;
-            }
-        }
+        @media (max-width: 480px) { .login-card { padding: 32px 24px; } h1 { font-size: 24px; } }
     </style>
 </head>
 <body>
     <div class="login-card">
         <div class="logo">
-            <div class="logo-icon">
-                <svg viewBox="0 0 24 24" width="36" height="36">
-                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-                </svg>
-            </div>
+            <div class="logo-icon"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg></div>
             <h1>لوحة التحكم</h1>
             <div class="subtitle">EVILE Admin Panel</div>
         </div>
@@ -189,15 +128,10 @@
         <form method="POST">
             <div class="form-group">
                 <label>🔐 كلمة المرور</label>
-                <div class="input-wrapper">
-                    <input type="password" name="password" required placeholder="••••••••">
-                </div>
+                <input type="password" name="password" required placeholder="••••••••">
             </div>
             <button type="submit" class="btn">دخول</button>
         </form>
-        <div class="footer-text">
-            إدارة النظام
-        </div>
     </div>
 </body>
 </html>
