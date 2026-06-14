@@ -10,7 +10,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Tajawal', sans-serif;
-            background: linear-gradient(145deg, #0a0a0a 0%, #1a1a2a 100%);
+            background: linear-gradient(145deg, #f5f5f5 0%, #e0e0e0 100%);
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -26,7 +26,7 @@
             height: 200%;
             top: -50%;
             left: -50%;
-            background: radial-gradient(circle at 30% 40%, rgba(120,120,120,0.1) 0%, transparent 60%);
+            background: radial-gradient(circle at 30% 40%, rgba(0,0,0,0.05) 0%, transparent 60%);
             animation: rotate 30s linear infinite;
             z-index: 0;
         }
@@ -37,10 +37,10 @@
         .login-card {
             position: relative;
             z-index: 1;
-            background: rgba(20,20,30,0.8);
+            background: rgba(255,255,255,0.75);
             backdrop-filter: blur(20px);
             border-radius: 32px;
-            border: 1px solid rgba(150,150,150,0.3);
+            border: 1px solid rgba(0,0,0,0.1);
             padding: 40px 32px;
             width: 100%;
             max-width: 420px;
@@ -50,31 +50,31 @@
         .logo { text-align: center; margin-bottom: 32px; }
         .logo-icon {
             width: 64px; height: 64px;
-            background: linear-gradient(135deg, #6b7280, #4b5563);
+            background: linear-gradient(135deg, #ddd, #bbb);
             border-radius: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
             margin: 0 auto 16px;
         }
-        .logo-icon i { font-size: 36px; color: white; }
+        .logo-icon i { font-size: 36px; color: #333; }
         h1 {
             font-size: 28px; font-weight: 800;
-            background: linear-gradient(135deg, #eee, #aaa);
+            background: linear-gradient(135deg, #333, #888);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
             margin-bottom: 8px;
         }
-        .subtitle { color: #aaa; font-size: 14px; text-align: center; }
+        .subtitle { color: #666; font-size: 14px; text-align: center; }
         .form-group { margin-bottom: 24px; }
-        label { display: block; margin-bottom: 8px; color: #bbb; font-weight: 500; font-size: 14px; }
+        label { display: block; margin-bottom: 8px; color: #555; font-weight: 500; font-size: 14px; }
         input {
             width: 100%; padding: 14px 18px;
-            background: rgba(30,30,45,0.6);
-            border: 1px solid rgba(150,150,150,0.3);
+            background: rgba(255,255,255,0.8);
+            border: 1px solid rgba(0,0,0,0.1);
             border-radius: 16px;
-            color: #eee;
+            color: #1a1a1a;
             font-size: 16px;
             font-family: 'Tajawal', sans-serif;
             transition: all 0.2s;
@@ -82,26 +82,26 @@
         input:focus {
             outline: none;
             border-color: #aaa;
-            background: rgba(30,30,45,0.8);
+            background: rgba(255,255,255,0.95);
         }
         .btn {
             width: 100%; padding: 14px;
-            background: linear-gradient(135deg, #6b7280, #4b5563);
+            background: linear-gradient(135deg, #ddd, #bbb);
             border: none;
             border-radius: 16px;
-            color: white;
+            color: #333;
             font-weight: 700;
             font-size: 16px;
             cursor: pointer;
             transition: all 0.3s;
         }
-        .btn:hover { transform: translateY(-2px); filter: brightness(1.05); }
+        .btn:hover { transform: translateY(-2px); filter: brightness(0.98); }
         .flash {
             padding: 12px;
-            background: rgba(200,50,50,0.15);
-            border: 1px solid rgba(200,50,50,0.5);
+            background: rgba(220,53,69,0.1);
+            border: 1px solid rgba(220,53,69,0.3);
             border-radius: 14px;
-            color: #fca5a5;
+            color: #dc3545;
             margin-bottom: 24px;
             text-align: center;
             font-size: 14px;
