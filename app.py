@@ -17,8 +17,6 @@ app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=7)
 ADMIN_PASSWORD = os.getenv('ADMIN_PASSWORD', 'evile2026')
 OPENROUTER_API_KEY = os.getenv('OPENROUTER_API_KEY', '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')
 OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions"
-TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN', '8785192184:AAHckCzqabzQbGpO1E9r2DDm89zukKlvihc')
-TELEGRAM_CHANNEL_ID = os.getenv('TELEGRAM_CHANNEL_ID', '@Evile_Prompts')
 DATABASE_URL = "postgresql://evile_site_user:yxWlZVZsC39DhRtXoY7e84ci6NTJgcaR@dpg-d8mpl3rsq97s739pscq0-a.oregon-postgres.render.com/evile_site"
 
 logging.basicConfig(level=logging.INFO)
@@ -62,16 +60,16 @@ def init_db():
                 id SERIAL PRIMARY KEY,
                 title TEXT NOT NULL,
                 text TEXT NOT NULL,
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                duration_hours INTEGER DEFAULT 1,
+                show_in_chat BOOLEAN DEFAULT FALSE
             )''')
             cur.execute('''CREATE TABLE IF NOT EXISTS users (
                 id SERIAL PRIMARY KEY,
                 telegram_id TEXT UNIQUE NOT NULL,
-                is_subscribed BOOLEAN DEFAULT FALSE,
                 last_active TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )''')
-            # لا نقوم بإضافة أي شخصيات افتراضية
-            logger.info("Database initialized successfully (no default characters)")
+            logger.info("Database initialized successfully")
     except Exception as e:
         logger.error(f"Database initialization error: {e}")
         raise
@@ -84,20 +82,6 @@ def update_user_activity(telegram_id):
             cur.execute("UPDATE users SET last_active = CURRENT_TIMESTAMP WHERE telegram_id = %s", (telegram_id,))
     except Exception as e:
         logger.error(f"Update activity error: {e}")
-
-def check_telegram_subscription(telegram_id):
-    try:
-        url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/getChatMember"
-        params = {"chat_id": TELEGRAM_CHANNEL_ID, "user_id": telegram_id}
-        response = requests.get(url, params=params, timeout=10)
-        data = response.json()
-        if data.get("ok"):
-            status = data["result"].get("status")
-            return status in ["member", "administrator", "creator"]
-        return False
-    except Exception as e:
-        logger.error(f"Telegram API Error: {e}")
-        return False
 
 def admin_required(f):
     @wraps(f)
@@ -116,17 +100,20 @@ def index():
         with get_db() as cur:
             cur.execute('SELECT * FROM characters ORDER BY id')
             characters = cur.fetchall()
-            cur.execute('SELECT * FROM notifications ORDER BY id DESC')
-            notifications = cur.fetchall()
+            # جلب أحدث إشعار للعرض في الدردشة (إذا كان show_in_chat = true)
+            cur.execute('SELECT * FROM notifications WHERE show_in_chat = true ORDER BY created_at DESC LIMIT 1')
+            latest_notification = cur.fetchone()
     except Exception as e:
         logger.error(f"Index error: {e}")
-        characters, notifications = [], []
-    channel_url = f"https://t.me/{TELEGRAM_CHANNEL_ID.replace('@', '')}"
+        characters, latest_notification = [], None
+    channel_url = "https://t.me/Evile_Prompts"
+    instagram_url = "https://www.instagram.com/bla6c7?igsh=MWR4ZTR5ZXZ5a2p0dw=="
     return render_template('index.html',
                          characters=characters,
-                         notifications=notifications,
                          telegram_id=telegram_id,
-                         channel_url=channel_url)
+                         latest_notification=latest_notification,
+                         channel_url=channel_url,
+                         instagram_url=instagram_url)
 
 @app.route('/register', methods=['POST'])
 def register():
@@ -141,27 +128,10 @@ def register():
             )
         session['telegram_id'] = telegram_id
         session.permanent = True
-        is_sub = check_telegram_subscription(telegram_id)
-        with get_db() as cur:
-            cur.execute("UPDATE users SET is_subscribed = %s WHERE telegram_id = %s", (is_sub, telegram_id))
-        return jsonify({'success': True, 'subscribed': is_sub})
+        return jsonify({'success': True})
     except Exception as e:
         logger.error(f"Register error: {e}")
         return jsonify({'success': False, 'message': str(e)}), 500
-
-@app.route('/api/verify_subscription', methods=['POST'])
-def api_verify_subscription():
-    try:
-        telegram_id = session.get('telegram_id')
-        if not telegram_id:
-            return jsonify({'success': False, 'subscribed': False}), 401
-        is_sub = check_telegram_subscription(telegram_id)
-        with get_db() as cur:
-            cur.execute("UPDATE users SET is_subscribed = %s, last_active = CURRENT_TIMESTAMP WHERE telegram_id = %s", (is_sub, telegram_id))
-        return jsonify({'success': is_sub, 'subscribed': is_sub})
-    except Exception as e:
-        logger.error(f"Verify error: {e}")
-        return jsonify({'success': False, 'subscribed': False}), 500
 
 @app.route('/api/active_users')
 def api_active_users():
@@ -272,10 +242,15 @@ def delete_character(char_id):
 def add_notification():
     title = request.form.get('title')
     text = request.form.get('text')
+    duration_hours = request.form.get('duration_hours', 1, type=int)
+    show_in_chat = request.form.get('show_in_chat') == 'on'
     if title and text:
         try:
             with get_db() as cur:
-                cur.execute("INSERT INTO notifications (title, text) VALUES (%s, %s)", (title, text))
+                cur.execute(
+                    "INSERT INTO notifications (title, text, duration_hours, show_in_chat) VALUES (%s, %s, %s, %s)",
+                    (title, text, duration_hours, show_in_chat)
+                )
             flash('تم إرسال الإشعار بنجاح', 'success')
         except Exception as e:
             flash(str(e), 'error')
