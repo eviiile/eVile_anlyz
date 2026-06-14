@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>EVILE</title>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body {
@@ -36,7 +37,7 @@
             cursor: pointer; transition: all 0.3s; flex-shrink: 0; position: relative;
         }
         .header-circle:active { transform: scale(0.9); background: rgba(80,80,100,0.7); }
-        .header-circle svg { width: 18px; height: 18px; fill: #ccc; }
+        .header-circle i { font-size: 18px; color: #ccc; }
         .header-circle .notif-badge {
             position: absolute; top: -3px; right: -3px; width: 16px; height: 16px; background: #666;
             border-radius: 50%; display: flex; align-items: center; justify-content: center;
@@ -60,9 +61,9 @@
             display: flex; align-items: center; justify-content: center; gap: 4px;
             font-size: 11px; font-weight: 700; color: #bbb; white-space: nowrap;
         }
-        .active-users-box svg { width: 14px; height: 14px; fill: #bbb; }
+        .active-users-box i { font-size: 12px; color: #bbb; }
 
-        /* ========== SPLASH SCREEN (NEW USER) ========== */
+        /* ========== SPLASH SCREEN ========== */
         .splash-section {
             flex: 1;
             display: none;
@@ -88,7 +89,7 @@
             border: 1px solid rgba(150,150,150,0.3);
         }
         @keyframes pulse { 0%,100% { transform: scale(1); opacity: 0.7; } 50% { transform: scale(1.05); opacity: 1; } }
-        .splash-icon svg { width: 56px; height: 56px; fill: #ccc; }
+        .splash-icon i { font-size: 56px; color: #ccc; }
         .splash-title {
             font-size: 28px;
             font-weight: 800;
@@ -141,7 +142,7 @@
             transition: all 0.2s;
         }
         .splash-btn:active { transform: scale(0.94); }
-        .splash-btn svg { width: 24px; height: 24px; fill: white; }
+        .splash-btn i { font-size: 24px; color: white; }
         .splash-error {
             margin-top: 16px;
             font-size: 12px;
@@ -151,7 +152,7 @@
             padding: 8px 16px;
         }
 
-        /* ========== MAIN WELCOME (REGISTERED USER) ========== */
+        /* ========== MAIN WELCOME ========== */
         .welcome-section {
             flex: 1;
             display: none;
@@ -172,8 +173,8 @@
             border: 2px solid rgba(150,150,150,0.5);
             background: rgba(30,30,45,0.5);
         }
-        .sparkle-icon { width: 60px; height: 60px; margin-bottom: 10px; }
-        .sparkle-icon svg { width: 100%; height: 100%; }
+        .sparkle-icon { width: 60px; height: 60px; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; }
+        .sparkle-icon i { font-size: 60px; color: #aaa; }
         .welcome-title {
             font-size: 24px;
             font-weight: 800;
@@ -233,7 +234,7 @@
         }
         .send-btn:disabled { opacity: 0.5; }
         .send-btn:active:not(:disabled) { transform: scale(0.94); }
-        .send-btn svg { width: 16px; height: 16px; fill: white; }
+        .send-btn i { font-size: 16px; color: white; }
         .spinner {
             width: 16px;
             height: 16px;
@@ -244,7 +245,7 @@
         }
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* شريط أزرار الشخصيات - قابل للتمرير مع حدود ضبابية ومغناطيس */
+        /* شريط أزرار الشخصيات */
         .char-scroll-container {
             position: relative;
             width: 100%;
@@ -285,18 +286,14 @@
             background: rgba(100,100,130,0.5);
             border-color: #aaa;
         }
-        .char-selector-btn svg {
-            width: 14px;
-            height: 14px;
-            fill: #ccc;
-        }
+        .char-selector-btn i { font-size: 12px; color: #ccc; }
         .char-selector-name {
             font-size: 11px;
             font-weight: 500;
             color: #ddd;
         }
 
-        /* مستطيل التواصل الاجتماعي (مصغر) */
+        /* مستطيل التواصل الاجتماعي (أيقونات واضحة) */
         .social-section {
             width: 100%;
             max-width: 260px;
@@ -320,20 +317,16 @@
             transition: all 0.2s;
         }
         .social-icon:active { transform: scale(0.95); }
-        .social-icon svg {
-            width: 22px;
-            height: 22px;
-        }
-        /* ألوان حقيقية للأيقونات */
-        .social-icon.telegram svg { fill: #0088cc; }
-        .social-icon.instagram svg { fill: url(#instaGrad); }
-        .social-icon.support svg { fill: #4a90e2; }
+        .social-icon i { font-size: 22px; }
+        .social-icon.telegram i { color: #0088cc; }
+        .social-icon.instagram i { color: #e4405f; }
+        .social-icon.support i { color: #4a90e2; }
         .social-icon span {
             font-size: 8px;
             color: #aaa;
         }
 
-        /* ========== CHAT SECTION (بدون تغيير) ========== */
+        /* ========== CHAT SECTION ========== */
         .chat-section {
             flex: 1;
             display: none;
@@ -388,7 +381,7 @@
             font-weight: 700;
             color: #aaa;
         }
-        .ai-bubble-label svg { width: 10px; height: 10px; fill: #aaa; }
+        .ai-bubble-label i { font-size: 10px; color: #aaa; }
         .ai-bubble-text { padding: 4px 10px 8px; font-size: 12px; line-height: 1.5; color: #ddd; word-wrap: break-word; }
         .ai-bubble-copy {
             height: 26px;
@@ -406,7 +399,7 @@
         .ai-bubble-copy.visible { opacity: 1; transform: translateY(0); }
         .ai-bubble-copy:active { background: rgba(80,80,100,0.7); }
         .ai-bubble-copy.copied { background: rgba(100,100,100,0.4); }
-        .copy-icon { width: 10px; height: 10px; fill: #ccc; }
+        .copy-icon { font-size: 10px; color: #ccc; }
         .copy-text { color: #ccc; font-size: 10px; font-weight: 700; }
 
         .input-section { padding: 6px 0; flex-shrink: 0; }
@@ -429,7 +422,7 @@
             cursor: pointer;
         }
         .home-btn:active { transform: scale(0.9); background: rgba(80,80,100,0.7); }
-        .home-btn svg { width: 16px; height: 16px; fill: #ccc; }
+        .home-btn i { font-size: 16px; color: #ccc; }
 
         /* ========== BOTTOM SHEETS ========== */
         .bottom-sheet-overlay {
@@ -473,7 +466,7 @@
             gap: 8px;
             color: #ddd;
         }
-        .sheet-title svg { width: 18px; height: 18px; fill: #aaa; }
+        .sheet-title i { font-size: 18px; color: #aaa; }
         .sheet-close {
             width: 30px;
             height: 30px;
@@ -485,7 +478,7 @@
             justify-content: center;
             cursor: pointer;
         }
-        .sheet-close svg { width: 14px; height: 14px; fill: #ccc; }
+        .sheet-close i { font-size: 14px; color: #ccc; }
         .sheet-instruction {
             font-size: 11px;
             color: #aaa;
@@ -522,11 +515,7 @@
             justify-content: center;
             flex-shrink: 0;
         }
-        .char-list-icon svg, .notif-icon svg {
-            width: 20px;
-            height: 20px;
-            fill: #ccc;
-        }
+        .char-list-icon i, .notif-icon i { font-size: 20px; color: #ccc; }
         .char-list-info, .notif-content {
             flex: 1;
             text-align: right;
@@ -556,11 +545,7 @@
             opacity: 1;
             background: #6b7280;
         }
-        .char-list-check svg {
-            width: 12px;
-            height: 12px;
-            fill: white;
-        }
+        .char-list-check i { font-size: 12px; color: white; }
         .sheet-social {
             margin-top: 16px;
             padding-top: 10px;
@@ -573,25 +558,8 @@
             flex-direction: row;
             gap: 4px;
         }
-        .sheet-social .social-icon svg {
-            width: 18px;
-            height: 18px;
-        }
-        .sheet-social .social-icon span {
-            font-size: 10px;
-        }
-
-        /* تدرج إنستغرام */
-        <svg style="display:none;">
-            <defs>
-                <linearGradient id="instaGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stop-color="#f58529"/>
-                    <stop offset="30%" stop-color="#dd2a7b"/>
-                    <stop offset="60%" stop-color="#8134af"/>
-                    <stop offset="100%" stop-color="#515bd4"/>
-                </linearGradient>
-            </defs>
-        </svg>
+        .sheet-social .social-icon i { font-size: 18px; }
+        .sheet-social .social-icon span { font-size: 10px; }
 
         @media (min-width: 768px) {
             .main-container { max-width: 700px; margin: 0 auto; padding: 20px; padding-top: 80px; }
@@ -604,17 +572,17 @@
 
     <header class="floating-header">
         <div class="header-circle" onclick="openCharactersSheet()">
-            <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+            <i class="fas fa-users"></i>
         </div>
         <div class="logo-wrapper">
             <div class="logo-center"><span class="logo-text">EVILE</span></div>
             <div class="active-users-box">
-                <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+                <i class="fas fa-user-friends"></i>
                 <span id="activeCount">0</span>
             </div>
         </div>
         <div class="header-circle" onclick="openNotificationsSheet()">
-            <svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
+            <i class="fas fa-bell"></i>
             <span class="notif-badge" id="notifBadge" style="display: none;">0</span>
         </div>
     </header>
@@ -623,14 +591,14 @@
         <!-- Splash screen -->
         <div class="splash-section" id="splashSection">
             <div class="splash-icon">
-                <svg viewBox="0 0 24 24"><path d="M22 2L2 9l7.2 2.6L12 21l3-8 7-3-3-7-6 3-3-7-9 4 7 3 3 7 4-9 3-5z"/></svg>
+                <i class="fab fa-telegram-plane"></i>
             </div>
             <div class="splash-title">اشتراك إجباري</div>
             <div class="splash-text">ندعوك للانضمام إلى قناتنا على تليجرام لتتمكن من الوصول إلى موقعنا الخاص وتجربة أدوات توليد المحتوى</div>
             <div class="splash-input-wrapper">
                 <input type="text" id="splashTelegramId" class="splash-input" placeholder="معرف تيليجرام (أرقام فقط)" autocomplete="off">
                 <button id="splashRegisterBtn" class="splash-btn">
-                    <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+                    <i class="fas fa-arrow-left"></i>
                 </button>
             </div>
             <div id="splashError" class="splash-error" style="display: none;"></div>
@@ -640,9 +608,7 @@
         <div class="welcome-section" id="welcomeSection">
             <div id="welcomeLogo">
                 <div class="sparkle-icon">
-                    <svg viewBox="0 0 100 100" fill="none">
-                        <path d="M50 5 L55 40 L90 45 L55 50 L50 85 L45 50 L10 45 L45 40 Z" fill="#aaa" stroke="#ccc" stroke-width="1.5"/>
-                    </svg>
+                    <i class="fas fa-star-of-life"></i>
                 </div>
             </div>
             <h1 class="welcome-title" id="welcomeTitle">ابنِ أفكارك مع EVILE</h1>
@@ -653,31 +619,31 @@
                     <div class="input-wrapper">
                         <input type="text" class="message-input" id="welcomeInput" placeholder="اكتب رسالتك..." onkeypress="handleWelcomeKey(event)">
                         <button class="send-btn" id="welcomeSendBtn" onclick="sendWelcomeMessage()">
-                            <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+                            <i class="fas fa-paper-plane"></i>
                         </button>
                     </div>
                 </div>
             </div>
 
-            <!-- أزرار الشخصيات (قابلة للتمرير مع مغناطيس) -->
+            <!-- أزرار الشخصيات -->
             <div class="char-scroll-container">
                 <div class="char-scroll-wrapper" id="charScrollWrapper">
                     <div class="char-selector" id="charSelector"></div>
                 </div>
             </div>
 
-            <!-- مستطيل التواصل الاجتماعي (مصغر) -->
+            <!-- مستطيل التواصل الاجتماعي بأيقونات واضحة -->
             <div class="social-section">
                 <a href="https://t.me/Evile_Prompts" target="_blank" class="social-icon telegram" rel="noopener noreferrer">
-                    <svg viewBox="0 0 24 24"><path d="M22 2L2 9l7.2 2.6L12 21l3-8 7-3-3-7-6 3-3-7-9 4 7 3 3 7 4-9 3-5z"/></svg>
+                    <i class="fab fa-telegram-plane"></i>
                     <span>تيليجرام</span>
                 </a>
                 <a href="https://www.instagram.com/bla6c7?igsh=MWR4ZTR5ZXZ5a2p0dw==" target="_blank" class="social-icon instagram" rel="noopener noreferrer">
-                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 2.99 1.34 2.99 3S13.66 11 12 11 9.01 9.66 9.01 8 10.34 5 12 5zm0 14c-2.33 0-4.31-1.46-5.11-3.5h10.22c-.8 2.04-2.78 3.5-5.11 3.5z"/></svg>
+                    <i class="fab fa-instagram"></i>
                     <span>إنستغرام</span>
                 </a>
                 <a href="https://t.me/@OlIiIl7" target="_blank" class="social-icon support" rel="noopener noreferrer">
-                    <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4V4c0-1.1-.9-2-2-2z"/></svg>
+                    <i class="fas fa-headset"></i>
                     <span>الدعم</span>
                 </a>
             </div>
@@ -690,11 +656,11 @@
                 <div class="input-card">
                     <div class="input-wrapper">
                         <button class="home-btn" onclick="goHome()" title="العودة للقائمة الرئيسية">
-                            <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+                            <i class="fas fa-home"></i>
                         </button>
                         <input type="text" class="message-input" id="chatInput" placeholder="اكتب رسالتك..." onkeypress="handleChatKey(event)">
                         <button class="send-btn" id="sendBtn" onclick="sendChatMessage()">
-                            <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+                            <i class="fas fa-paper-plane"></i>
                         </button>
                     </div>
                 </div>
@@ -706,34 +672,35 @@
     <div class="bottom-sheet-overlay" id="charactersSheet" onclick="closeSheetOnBackdrop(event, 'charactersSheet')">
         <div class="bottom-sheet" onclick="event.stopPropagation()">
             <div class="sheet-header">
-                <div class="sheet-title"><svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg> الشخصيات</div>
-                <button class="sheet-close" onclick="closeSheet('charactersSheet')"><svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>
+                <div class="sheet-title"><i class="fas fa-users"></i> الشخصيات</div>
+                <button class="sheet-close" onclick="closeSheet('charactersSheet')"><i class="fas fa-times"></i></button>
             </div>
             <div class="sheet-instruction">اختر الشخصية المناسبة لمحادثتك</div>
             <div id="charactersList" class="characters-list"></div>
             <div class="sheet-social">
-                <a href="https://t.me/Evile_Prompts" target="_blank" class="social-icon telegram"><svg viewBox="0 0 24 24"><path d="M22 2L2 9l7.2 2.6L12 21l3-8 7-3-3-7-6 3-3-7-9 4 7 3 3 7 4-9 3-5z"/></svg><span>تيليجرام</span></a>
-                <a href="https://www.instagram.com/bla6c7?igsh=MWR4ZTR5ZXZ5a2p0dw==" target="_blank" class="social-icon instagram"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/></svg><span>إنستغرام</span></a>
-                <a href="https://t.me/@OlIiIl7" target="_blank" class="social-icon support"><svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4V4c0-1.1-.9-2-2-2z"/></svg><span>الدعم</span></a>
+                <a href="https://t.me/Evile_Prompts" target="_blank" class="social-icon telegram"><i class="fab fa-telegram-plane"></i><span>تيليجرام</span></a>
+                <a href="https://www.instagram.com/bla6c7?igsh=MWR4ZTR5ZXZ5a2p0dw==" target="_blank" class="social-icon instagram"><i class="fab fa-instagram"></i><span>إنستغرام</span></a>
+                <a href="https://t.me/@OlIiIl7" target="_blank" class="social-icon support"><i class="fas fa-headset"></i><span>الدعم</span></a>
             </div>
         </div>
     </div>
     <div class="bottom-sheet-overlay" id="notificationsSheet" onclick="closeSheetOnBackdrop(event, 'notificationsSheet')">
         <div class="bottom-sheet" onclick="event.stopPropagation()">
             <div class="sheet-header">
-                <div class="sheet-title"><svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg> الإشعارات</div>
-                <button class="sheet-close" onclick="closeSheet('notificationsSheet')"><svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>
+                <div class="sheet-title"><i class="fas fa-bell"></i> الإشعارات</div>
+                <button class="sheet-close" onclick="closeSheet('notificationsSheet')"><i class="fas fa-times"></i></button>
             </div>
             <div id="notificationsList" class="notifications-list"></div>
             <div class="sheet-social">
-                <a href="https://t.me/Evile_Prompts" target="_blank" class="social-icon telegram"><svg viewBox="0 0 24 24"><path d="M22 2L2 9l7.2 2.6L12 21l3-8 7-3-3-7-6 3-3-7-9 4 7 3 3 7 4-9 3-5z"/></svg><span>تيليجرام</span></a>
-                <a href="https://www.instagram.com/bla6c7?igsh=MWR4ZTR5ZXZ5a2p0dw==" target="_blank" class="social-icon instagram"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/></svg><span>إنستغرام</span></a>
-                <a href="https://t.me/@OlIiIl7" target="_blank" class="social-icon support"><svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4V4c0-1.1-.9-2-2-2z"/></svg><span>الدعم</span></a>
+                <a href="https://t.me/Evile_Prompts" target="_blank" class="social-icon telegram"><i class="fab fa-telegram-plane"></i><span>تيليجرام</span></a>
+                <a href="https://www.instagram.com/bla6c7?igsh=MWR4ZTR5ZXZ5a2p0dw==" target="_blank" class="social-icon instagram"><i class="fab fa-instagram"></i><span>إنستغرام</span></a>
+                <a href="https://t.me/@OlIiIl7" target="_blank" class="social-icon support"><i class="fas fa-headset"></i><span>الدعم</span></a>
             </div>
         </div>
     </div>
 
     <script>
+        // نفس السكربت السابق مع تحديث أيقونات FontAwesome (لا حاجة لتغيير المنطق)
         const characters = {{ characters|tojson }};
         const notifications = {{ notifications|tojson }};
         let telegramId = {{ telegram_id|tojson }};
@@ -743,7 +710,6 @@
         let isProcessing = false;
         let pendingMessage = null;
 
-        // عناصر DOM
         const splashSection = document.getElementById('splashSection');
         const welcomeSection = document.getElementById('welcomeSection');
         const chatSection = document.getElementById('chatSection');
@@ -771,12 +737,11 @@
                 .catch(() => {});
         }
 
-        // عرض أزرار الشخصيات مع مغناطيس
         function renderCharSelector() {
             const selector = document.getElementById('charSelector');
             selector.innerHTML = characters.map(char => `
                 <div class="char-selector-btn ${char.callback_key === currentCharacter ? 'active' : ''}" data-key="${char.callback_key}">
-                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/></svg>
+                    <i class="fas fa-robot"></i>
                     <span class="char-selector-name">${char.name}</span>
                 </div>
             `).join('');
@@ -786,11 +751,8 @@
                     if (key) selectCharacter(key);
                 });
             });
-            // إضافة مستمع للتمرير المغناطيسي
             if (charScrollWrapper) {
-                charScrollWrapper.addEventListener('scrollend', () => {
-                    snapToNearest();
-                });
+                charScrollWrapper.addEventListener('scrollend', () => snapToNearest());
             }
         }
 
@@ -825,7 +787,7 @@
                 if (char.logo_url) {
                     logoContainer.innerHTML = `<img src="${char.logo_url}" class="character-logo" alt="${char.name}">`;
                 } else {
-                    logoContainer.innerHTML = `<div class="sparkle-icon"><svg viewBox="0 0 100 100" fill="none"><path d="M50 5 L55 40 L90 45 L55 50 L50 85 L45 50 L10 45 L45 40 Z" fill="#aaa" stroke="#ccc"/></svg></div>`;
+                    logoContainer.innerHTML = `<div class="sparkle-icon"><i class="fas fa-star-of-life"></i></div>`;
                 }
                 title.textContent = char.name;
                 subtitle.textContent = char.description;
@@ -836,12 +798,12 @@
             const list = document.getElementById('charactersList');
             list.innerHTML = characters.map(char => `
                 <div class="char-list-item ${char.callback_key === currentCharacter ? 'active' : ''}" onclick="selectCharacter('${char.callback_key}')">
-                    <div class="char-list-icon"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/></svg></div>
+                    <div class="char-list-icon"><i class="fas fa-robot"></i></div>
                     <div class="char-list-info">
                         <div class="char-list-name">${char.name}</div>
                         <div class="char-list-desc">${char.description}</div>
                     </div>
-                    <div class="char-list-check"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
+                    <div class="char-list-check"><i class="fas fa-check"></i></div>
                 </div>
             `).join('');
         }
@@ -858,7 +820,7 @@
             badge.style.display = 'flex';
             list.innerHTML = notifications.map(notif => `
                 <div class="notif-item">
-                    <div class="notif-icon"><svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg></div>
+                    <div class="notif-icon"><i class="fas fa-bell"></i></div>
                     <div class="notif-content">
                         <div class="notif-title">${notif.title}</div>
                         <div class="notif-text">${notif.text}</div>
@@ -868,7 +830,7 @@
             `).join('');
         }
 
-        // دوال التسجيل والاشتراك (نفس السابق)
+        // دوال التسجيل والاشتراك والدردشة (نفس السابق)
         function setButtonLoading(btn, loading) {
             if (!btn) return;
             if (loading) {
@@ -876,7 +838,7 @@
                 btn.innerHTML = '<div class="spinner"></div>';
             } else {
                 btn.disabled = false;
-                btn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>';
+                btn.innerHTML = '<i class="fas fa-paper-plane"></i>';
             }
         }
 
@@ -925,10 +887,10 @@
             wrapper.innerHTML = `
                 <input type="text" id="subTelegramId" class="splash-input" value="${existingId}" readonly disabled style="opacity:0.7;">
                 <button id="subscribeBtn" class="splash-btn" style="background: linear-gradient(135deg, #6b7280, #4b5563);">
-                    <svg viewBox="0 0 24 24"><path d="M22 2L2 9l7.2 2.6L12 21l3-8 7-3-3-7-6 3-3-7-9 4 7 3 3 7 4-9 3-5z"/></svg>
+                    <i class="fab fa-telegram-plane"></i>
                 </button>
                 <button id="verifySubBtn" class="splash-btn" style="background: rgba(80,80,100,0.6);">
-                    <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                    <i class="fas fa-check"></i>
                 </button>
             `;
             document.getElementById('subscribeBtn').onclick = () => { window.open('{{ channel_url }}', '_blank'); };
@@ -953,13 +915,12 @@
             }
         }
 
-        // دوال الرسائل
         function addMessage(text, isOwn) {
             const container = document.getElementById('messagesContainer');
             const time = new Date().toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' });
             const div = document.createElement('div');
             div.className = `message ${isOwn ? 'own' : ''}`;
-            div.innerHTML = `<span class="message-time">${time}</span><div class="message-content">${escapeHtml(text)}</div>`;
+            div.innerHTML = `<div class="message-time">${time}</div><div class="message-content">${escapeHtml(text)}</div>`;
             container.appendChild(div);
             container.scrollTop = container.scrollHeight;
         }
@@ -991,14 +952,14 @@
                 const time = new Date().toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' });
                 const msgDiv = document.createElement('div');
                 msgDiv.className = 'message';
-                msgDiv.innerHTML = `<span class="message-time">${time}</span>`;
+                msgDiv.innerHTML = `<div class="message-time">${time}</div>`;
                 container.appendChild(msgDiv);
                 const bubble = document.createElement('div');
                 bubble.className = 'ai-bubble';
                 bubble.innerHTML = `
-                    <div class="ai-bubble-label"><svg viewBox="0 0 24 24"><path d="M21 10.5V9a1 1 0 0 0-1-1h-2.17a4 4 0 0 0-7.66 0H8a1 1 0 0 0-1 1v1.5a3.5 3.5 0 0 0 0 7v1.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-1.5a3.5 3.5 0 0 0 0-7z"/></svg><span>AI</span></div>
+                    <div class="ai-bubble-label"><i class="fas fa-brain"></i> AI</div>
                     <div class="ai-bubble-text"></div>
-                    <div class="ai-bubble-copy"><svg class="copy-icon" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2z"/></svg><span class="copy-text">نسخ</span></div>
+                    <div class="ai-bubble-copy"><i class="far fa-copy copy-icon"></i><span class="copy-text">نسخ</span></div>
                 `;
                 msgDiv.appendChild(bubble);
                 const textEl = bubble.querySelector('.ai-bubble-text');
@@ -1028,10 +989,10 @@
         function copyBubbleContent(button, text) {
             navigator.clipboard.writeText(text).then(() => {
                 button.classList.add('copied');
-                button.innerHTML = '<svg class="copy-icon" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg><span class="copy-text">تم النسخ</span>';
+                button.innerHTML = '<i class="fas fa-check copy-icon"></i><span class="copy-text">تم النسخ</span>';
                 setTimeout(() => {
                     button.classList.remove('copied');
-                    button.innerHTML = '<svg class="copy-icon" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2z"/></svg><span class="copy-text">نسخ</span>';
+                    button.innerHTML = '<i class="far fa-copy copy-icon"></i><span class="copy-text">نسخ</span>';
                 }, 1500);
             });
         }
