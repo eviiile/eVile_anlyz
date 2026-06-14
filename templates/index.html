@@ -10,15 +10,15 @@
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body {
             font-family: 'Tajawal', sans-serif;
-            background: #0a0a0a;
-            color: #e0e0e0;
+            background: #f5f5f5;
+            color: #1a1a1a;
             overflow: hidden;
             touch-action: manipulation;
         }
         .bg-animation {
             position: fixed; width: 100%; height: 100%; top: 0; left: 0; z-index: -1;
-            background: radial-gradient(circle at 20% 80%, rgba(120,120,120,0.1) 0%, transparent 50%),
-                        radial-gradient(circle at 80% 20%, rgba(80,80,80,0.08) 0%, transparent 50%);
+            background: radial-gradient(circle at 20% 80%, rgba(200,200,200,0.3) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(150,150,150,0.2) 0%, transparent 50%);
             filter: blur(80px);
         }
         .main-container { width: 100%; height: 100vh; height: 100dvh; display: flex; flex-direction: column; padding: 12px; padding-top: 70px; }
@@ -26,42 +26,44 @@
         .floating-header {
             position: fixed; top: 12px; left: 12px; right: 12px; z-index: 100;
             display: flex; align-items: center; justify-content: space-between; padding: 6px;
-            background: rgba(20,20,30,0.85); backdrop-filter: blur(25px);
-            border: 1px solid rgba(150,150,150,0.3); border-radius: 18px; gap: 6px;
+            background: rgba(255,255,255,0.75);
+            backdrop-filter: blur(25px);
+            border: 1px solid rgba(0,0,0,0.1);
+            border-radius: 18px; gap: 6px;
         }
         .header-circle {
-            width: 40px; height: 40px; border-radius: 12px; background: rgba(40,40,55,0.6);
-            border: 1px solid rgba(150,150,150,0.4); display: flex; align-items: center; justify-content: center;
+            width: 40px; height: 40px; border-radius: 12px; background: rgba(0,0,0,0.05);
+            border: 1px solid rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: center;
             cursor: pointer; transition: all 0.3s; flex-shrink: 0; position: relative;
         }
-        .header-circle:active { transform: scale(0.9); background: rgba(80,80,100,0.7); }
-        .header-circle i { font-size: 20px; color: #ccc; }
+        .header-circle:active { transform: scale(0.9); background: rgba(0,0,0,0.1); }
+        .header-circle i { font-size: 20px; color: #333; }
         .header-circle .notif-badge {
-            position: absolute; top: -3px; right: -3px; width: 16px; height: 16px; background: #666;
+            position: absolute; top: -3px; right: -3px; width: 16px; height: 16px; background: #dc3545;
             border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            font-size: 9px; font-weight: bold; color: #fff; border: 2px solid #0a0a0a;
+            font-size: 9px; font-weight: bold; color: #fff; border: 2px solid #f5f5f5;
         }
         .logo-wrapper { flex: 1; display: flex; align-items: center; gap: 6px; }
         .logo-center {
-            flex: 1; height: 40px; background: rgba(30,30,45,0.5);
-            border: 1px solid rgba(150,150,150,0.3); border-radius: 12px;
+            flex: 1; height: 40px; background: rgba(255,255,255,0.5);
+            border: 1px solid rgba(0,0,0,0.1); border-radius: 12px;
             display: flex; align-items: center; justify-content: center;
         }
         .logo-text {
             font-size: 20px; font-weight: 900;
-            background: linear-gradient(135deg, #eee, #aaa);
+            background: linear-gradient(135deg, #333, #888);
             -webkit-background-clip: text; background-clip: text;
             color: transparent; letter-spacing: 3px;
         }
         .active-users-box {
-            height: 40px; padding: 0 10px; background: rgba(100,100,100,0.2);
-            border: 1px solid rgba(150,150,150,0.4); border-radius: 12px;
+            height: 40px; padding: 0 10px; background: rgba(0,0,0,0.05);
+            border: 1px solid rgba(0,0,0,0.1); border-radius: 12px;
             display: flex; align-items: center; justify-content: center; gap: 4px;
-            font-size: 11px; font-weight: 700; color: #bbb; white-space: nowrap;
+            font-size: 11px; font-weight: 700; color: #555; white-space: nowrap;
         }
-        .active-users-box i { font-size: 14px; color: #bbb; }
+        .active-users-box i { font-size: 14px; color: #555; }
 
-        /* Splash Screen */
+        /* Splash Screen (تسجيل الدخول فقط) */
         .splash-section {
             flex: 1;
             display: none;
@@ -76,7 +78,7 @@
         .splash-icon {
             width: 100px;
             height: 100px;
-            background: rgba(80,80,100,0.3);
+            background: rgba(0,0,0,0.05);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -84,21 +86,22 @@
             margin-bottom: 24px;
             animation: pulse 2s infinite;
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(150,150,150,0.3);
+            border: 1px solid rgba(0,0,0,0.1);
         }
         @keyframes pulse { 0%,100% { transform: scale(1); opacity: 0.7; } 50% { transform: scale(1.05); opacity: 1; } }
-        .splash-icon i { font-size: 56px; color: #ccc; }
+        .splash-icon i { font-size: 56px; color: #555; }
         .splash-title {
             font-size: 28px;
             font-weight: 800;
-            background: linear-gradient(135deg, #eee, #aaa);
-            -webkit-background-clip: text; background-clip: text;
+            background: linear-gradient(135deg, #333, #888);
+            -webkit-background-clip: text;
+            background-clip: text;
             color: transparent;
             margin-bottom: 16px;
         }
         .splash-text {
             font-size: 16px;
-            color: #bbb;
+            color: #555;
             max-width: 280px;
             line-height: 1.6;
             margin-bottom: 32px;
@@ -108,9 +111,9 @@
             max-width: 320px;
             display: flex;
             gap: 12px;
-            background: rgba(20,20,35,0.7);
+            background: rgba(255,255,255,0.7);
             backdrop-filter: blur(16px);
-            border: 1px solid rgba(150,150,150,0.3);
+            border: 1px solid rgba(0,0,0,0.1);
             border-radius: 48px;
             padding: 6px 6px 6px 16px;
             align-items: center;
@@ -120,17 +123,17 @@
             background: transparent;
             border: none;
             padding: 14px 0;
-            color: #eee;
+            color: #1a1a1a;
             font-size: 16px;
             font-family: 'Tajawal', sans-serif;
             outline: none;
         }
-        .splash-input::placeholder { color: #888; font-size: 14px; }
+        .splash-input::placeholder { color: #aaa; font-size: 14px; }
         .splash-btn {
             width: 48px;
             height: 48px;
             border-radius: 40px;
-            background: linear-gradient(135deg, #6b7280, #4b5563);
+            background: linear-gradient(135deg, #ddd, #bbb);
             border: none;
             display: flex;
             align-items: center;
@@ -139,12 +142,12 @@
             transition: all 0.2s;
         }
         .splash-btn:active { transform: scale(0.94); }
-        .splash-btn i { font-size: 24px; color: white; }
+        .splash-btn i { font-size: 24px; color: #333; }
         .splash-error {
             margin-top: 16px;
             font-size: 12px;
-            color: #fca5a5;
-            background: rgba(200,50,50,0.15);
+            color: #dc3545;
+            background: rgba(220,53,69,0.1);
             border-radius: 40px;
             padding: 8px 16px;
         }
@@ -167,8 +170,8 @@
             border-radius: 28px;
             object-fit: cover;
             margin-bottom: 20px;
-            border: 2px solid rgba(150,150,150,0.5);
-            background: rgba(30,30,45,0.5);
+            border: 1px solid rgba(0,0,0,0.1);
+            background: rgba(255,255,255,0.5);
         }
         .sparkle-icon { width: 60px; height: 60px; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; }
         .sparkle-icon i { font-size: 60px; color: #aaa; }
@@ -176,13 +179,14 @@
             font-size: 24px;
             font-weight: 800;
             margin-bottom: 6px;
-            background: linear-gradient(135deg, #eee, #aaa);
-            -webkit-background-clip: text; background-clip: text;
+            background: linear-gradient(135deg, #333, #888);
+            -webkit-background-clip: text;
+            background-clip: text;
             color: transparent;
         }
         .welcome-subtitle {
             font-size: 12px;
-            color: #aaa;
+            color: #666;
             max-width: 260px;
             line-height: 1.4;
             margin-bottom: 16px;
@@ -193,9 +197,9 @@
             margin-bottom: 8px;
         }
         .input-card {
-            background: rgba(20,20,35,0.85);
+            background: rgba(255,255,255,0.75);
             backdrop-filter: blur(25px);
-            border: 1px solid rgba(150,150,150,0.3);
+            border: 1px solid rgba(0,0,0,0.1);
             border-radius: 18px;
             padding: 6px 6px 6px 12px;
         }
@@ -209,17 +213,17 @@
             background: transparent;
             border: none;
             padding: 8px 0;
-            color: #eee;
+            color: #1a1a1a;
             font-family: 'Tajawal', sans-serif;
             font-size: 13px;
             outline: none;
         }
-        .message-input::placeholder { color: #888; }
+        .message-input::placeholder { color: #aaa; }
         .send-btn {
             width: 34px;
             height: 34px;
             border-radius: 10px;
-            background: linear-gradient(135deg, #6b7280, #4b5563);
+            background: linear-gradient(135deg, #ddd, #bbb);
             border: none;
             display: flex;
             align-items: center;
@@ -228,18 +232,18 @@
         }
         .send-btn:disabled { opacity: 0.5; }
         .send-btn:active:not(:disabled) { transform: scale(0.94); }
-        .send-btn i { font-size: 18px; color: white; }
+        .send-btn i { font-size: 18px; color: #333; }
         .spinner {
             width: 16px;
             height: 16px;
-            border: 2px solid rgba(255,255,255,0.3);
-            border-top-color: white;
+            border: 2px solid rgba(0,0,0,0.2);
+            border-top-color: #333;
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
         }
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* Character scroll - centering when few items */
+        /* Character scroll */
         .char-scroll-container {
             position: relative;
             width: 100%;
@@ -255,12 +259,8 @@
             mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
             -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
         }
-        /* Center the buttons if they don't overflow */
         .char-scroll-wrapper:not(.overflowing) {
             display: flex;
-            justify-content: center;
-        }
-        .char-scroll-wrapper:not(.overflowing) .char-selector {
             justify-content: center;
         }
         .char-selector {
@@ -275,9 +275,9 @@
             align-items: center;
             gap: 4px;
             padding: 4px 10px;
-            background: rgba(30,30,45,0.7);
+            background: rgba(255,255,255,0.7);
             backdrop-filter: blur(20px);
-            border: 1px solid rgba(150,150,150,0.3);
+            border: 1px solid rgba(0,0,0,0.1);
             border-radius: 24px;
             cursor: pointer;
             transition: all 0.2s;
@@ -285,14 +285,14 @@
             font-size: 11px;
         }
         .char-selector-btn.active {
-            background: rgba(100,100,130,0.5);
+            background: rgba(0,0,0,0.1);
             border-color: #aaa;
         }
-        .char-selector-btn i { font-size: 14px; color: #ccc; }
+        .char-selector-btn i { font-size: 14px; color: #555; }
         .char-selector-name {
             font-size: 11px;
             font-weight: 500;
-            color: #ddd;
+            color: #333;
         }
 
         /* Chat Section */
@@ -308,35 +308,35 @@
             overflow-y: auto;
             padding: 12px;
             margin-bottom: 10px;
-            background: rgba(20,20,35,0.6);
+            background: rgba(255,255,255,0.6);
             backdrop-filter: blur(15px);
             border-radius: 20px;
-            border: 1px solid rgba(150,150,150,0.3);
+            border: 1px solid rgba(0,0,0,0.1);
         }
         .message { margin-bottom: 10px; animation: messageSlide 0.3s ease; }
         @keyframes messageSlide { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .message-time { font-size: 9px; color: #999; margin-bottom: 3px; }
+        .message-time { font-size: 9px; color: #888; margin-bottom: 3px; }
         .message-content {
-            background: rgba(30,30,45,0.6);
-            border: 1px solid rgba(150,150,150,0.3);
+            background: rgba(255,255,255,0.8);
+            border: 1px solid rgba(0,0,0,0.1);
             padding: 8px 12px;
             border-radius: 12px;
             font-size: 12px;
             line-height: 1.5;
             word-wrap: break-word;
-            color: #ddd;
+            color: #1a1a1a;
             max-width: 85%;
         }
         .message.own { text-align: left; }
         .message.own .message-content {
-            background: rgba(70,70,90,0.7);
-            border-color: rgba(180,180,180,0.4);
+            background: rgba(220,220,220,0.8);
+            border-color: rgba(0,0,0,0.15);
             margin-right: auto;
             margin-left: 0;
         }
         .ai-bubble {
-            background: rgba(30,30,45,0.7);
-            border: 1px solid rgba(150,150,150,0.3);
+            background: rgba(255,255,255,0.8);
+            border: 1px solid rgba(0,0,0,0.1);
             border-radius: 12px;
             overflow: hidden;
             max-width: 85%;
@@ -348,34 +348,45 @@
             padding: 6px 10px 0;
             font-size: 9px;
             font-weight: 700;
-            color: #aaa;
+            color: #888;
         }
-        .ai-bubble-label i { font-size: 11px; color: #aaa; }
-        .ai-bubble-text { padding: 4px 10px 8px; font-size: 12px; line-height: 1.5; color: #ddd; word-wrap: break-word; }
-        .ai-bubble-copy {
-            height: 26px;
-            background: rgba(40,40,55,0.6);
-            border-top: 1px solid rgba(150,150,150,0.3);
+        .ai-bubble-label i { font-size: 11px; color: #888; }
+        .ai-bubble-text { padding: 4px 10px 8px; font-size: 12px; line-height: 1.5; color: #1a1a1a; word-wrap: break-word; }
+        .ai-bubble-footer {
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: space-between;
+            padding: 4px 10px 6px;
+            border-top: 1px solid rgba(0,0,0,0.05);
+            background: rgba(250,250,250,0.6);
+        }
+        .ai-social-icons {
+            display: flex;
+            gap: 8px;
+        }
+        .ai-social-icons a {
+            text-decoration: none;
+            font-size: 14px;
+            transition: transform 0.2s;
+        }
+        .ai-social-icons a:active { transform: scale(0.9); }
+        .ai-social-icons .bi-telegram { color: #0088cc; }
+        .ai-social-icons .bi-instagram { color: #e4405f; }
+        .ai-bubble-copy {
             cursor: pointer;
-            transition: all 0.3s ease;
-            opacity: 0;
-            transform: translateY(-5px);
+            display: flex;
+            align-items: center;
             gap: 4px;
         }
-        .ai-bubble-copy.visible { opacity: 1; transform: translateY(0); }
-        .ai-bubble-copy:active { background: rgba(80,80,100,0.7); }
-        .ai-bubble-copy.copied { background: rgba(100,100,100,0.4); }
-        .copy-icon { font-size: 12px; color: #ccc; }
-        .copy-text { color: #ccc; font-size: 10px; font-weight: 700; }
+        .ai-bubble-copy i { font-size: 12px; color: #888; }
+        .ai-bubble-copy span { font-size: 10px; color: #888; }
+        .ai-bubble-copy:active { opacity: 0.6; }
 
         .input-section { padding: 6px 0; flex-shrink: 0; }
         .chat-section .input-card {
-            background: rgba(20,20,35,0.85);
+            background: rgba(255,255,255,0.85);
             backdrop-filter: blur(25px);
-            border: 1px solid rgba(150,150,150,0.3);
+            border: 1px solid rgba(0,0,0,0.1);
             border-radius: 18px;
             padding: 8px 10px;
         }
@@ -383,20 +394,42 @@
             width: 34px;
             height: 34px;
             border-radius: 10px;
-            background: rgba(40,40,55,0.6);
-            border: 1px solid rgba(150,150,150,0.4);
+            background: rgba(0,0,0,0.05);
+            border: 1px solid rgba(0,0,0,0.1);
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
         }
-        .home-btn:active { transform: scale(0.9); background: rgba(80,80,100,0.7); }
-        .home-btn i { font-size: 18px; color: #ccc; }
+        .home-btn:active { transform: scale(0.9); background: rgba(0,0,0,0.1); }
+        .home-btn i { font-size: 18px; color: #555; }
+
+        /* Toast Notification */
+        .toast-notification {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.85);
+            color: white;
+            padding: 12px 16px;
+            border-radius: 16px;
+            font-size: 13px;
+            z-index: 200;
+            backdrop-filter: blur(10px);
+            animation: fadeInUp 0.3s ease;
+            box-shadow: none;
+            text-align: center;
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
         /* Bottom Sheets */
         .bottom-sheet-overlay {
             position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.9);
+            background: rgba(0,0,0,0.5);
             backdrop-filter: blur(8px);
             z-index: 1000;
             display: none;
@@ -408,9 +441,9 @@
             width: 100%;
             max-width: 600px;
             max-height: 80vh;
-            background: rgba(15,15,25,0.95);
+            background: rgba(255,255,255,0.95);
             backdrop-filter: blur(25px);
-            border: 1px solid rgba(150,150,150,0.3);
+            border: 1px solid rgba(0,0,0,0.1);
             border-radius: 25px 25px 0 0;
             padding: 20px;
             animation: slideUp 0.4s ease;
@@ -425,7 +458,7 @@
             justify-content: space-between;
             margin-bottom: 12px;
             padding-bottom: 10px;
-            border-bottom: 1px solid rgba(150,150,150,0.3);
+            border-bottom: 1px solid rgba(0,0,0,0.1);
         }
         .sheet-title {
             font-size: 16px;
@@ -433,28 +466,28 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            color: #ddd;
+            color: #333;
         }
-        .sheet-title i { font-size: 18px; color: #aaa; }
+        .sheet-title i { font-size: 18px; color: #888; }
         .sheet-close {
             width: 30px;
             height: 30px;
             border-radius: 50%;
-            background: rgba(40,40,55,0.6);
-            border: 1px solid rgba(150,150,150,0.4);
+            background: rgba(0,0,0,0.05);
+            border: 1px solid rgba(0,0,0,0.1);
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
         }
-        .sheet-close i { font-size: 16px; color: #ccc; }
+        .sheet-close i { font-size: 16px; color: #888; }
         .sheet-instruction {
             font-size: 11px;
-            color: #aaa;
+            color: #666;
             text-align: center;
             margin-bottom: 16px;
             padding: 6px;
-            background: rgba(30,30,45,0.5);
+            background: rgba(0,0,0,0.05);
             border-radius: 30px;
         }
         .characters-list, .notifications-list {
@@ -469,8 +502,8 @@
             align-items: center;
             gap: 12px;
             padding: 10px 14px;
-            background: rgba(30,30,45,0.6);
-            border: 1px solid rgba(150,150,150,0.3);
+            background: rgba(255,255,255,0.7);
+            border: 1px solid rgba(0,0,0,0.1);
             border-radius: 16px;
             width: 100%;
         }
@@ -478,13 +511,13 @@
             width: 36px;
             height: 36px;
             border-radius: 10px;
-            background: rgba(40,40,55,0.6);
+            background: rgba(0,0,0,0.05);
             display: flex;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
         }
-        .char-list-icon i, .notif-icon i { font-size: 20px; color: #ccc; }
+        .char-list-icon i, .notif-icon i { font-size: 20px; color: #888; }
         .char-list-info, .notif-content {
             flex: 1;
             text-align: right;
@@ -492,19 +525,19 @@
         .char-list-name, .notif-title {
             font-size: 13px;
             font-weight: 700;
-            color: #eee;
+            color: #1a1a1a;
             margin-bottom: 2px;
         }
         .char-list-desc, .notif-text {
             font-size: 10px;
-            color: #aaa;
+            color: #666;
             line-height: 1.3;
         }
         .char-list-check {
             width: 20px;
             height: 20px;
             border-radius: 50%;
-            background: rgba(40,40,55,0.6);
+            background: rgba(0,0,0,0.05);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -512,7 +545,7 @@
         }
         .char-list-item.active .char-list-check {
             opacity: 1;
-            background: #6b7280;
+            background: #aaa;
         }
         .char-list-check i { font-size: 12px; color: white; }
 
@@ -543,13 +576,13 @@
     </header>
 
     <div class="main-container">
-        <!-- Splash screen -->
+        <!-- Splash screen (تسجيل المعرف فقط) -->
         <div class="splash-section" id="splashSection">
             <div class="splash-icon">
-                <i class="bi bi-robot"></i>
+                <i class="bi bi-chat-dots"></i>
             </div>
-            <div class="splash-title">اشتراك إجباري</div>
-            <div class="splash-text">ندعوك للانضمام إلى قناتنا على تليجرام لتتمكن من الوصول إلى موقعنا الخاص وتجربة أدوات توليد المحتوى</div>
+            <div class="splash-title">مرحباً بك في EVILE</div>
+            <div class="splash-text">أدخل معرف تيليجرام الخاص بك لبدء المحادثة</div>
             <div class="splash-input-wrapper">
                 <input type="text" id="splashTelegramId" class="splash-input" placeholder="معرف تيليجرام (أرقام فقط)" autocomplete="off">
                 <button id="splashRegisterBtn" class="splash-btn">
@@ -632,8 +665,8 @@
 
     <script>
         const characters = {{ characters|tojson }};
-        const notifications = {{ notifications|tojson }};
         let telegramId = {{ telegram_id|tojson }};
+        const latestNotification = {{ latest_notification|tojson }};
         
         let currentCharacter = characters.length > 0 ? characters[0].callback_key : 'logo_maker';
         let isFirstMessage = true;
@@ -651,11 +684,25 @@
                 welcomeSection.classList.add('active');
                 chatSection.classList.remove('active');
                 document.getElementById('welcomeInput').placeholder = 'اكتب رسالتك...';
+                // عرض الإشعار إذا كان موجوداً وفي الدردشة
+                if (latestNotification && latestNotification.show_in_chat) {
+                    showToastNotification(latestNotification.title + ': ' + latestNotification.text, 10000);
+                }
             } else {
                 splashSection.classList.add('active');
                 welcomeSection.classList.remove('active');
                 chatSection.classList.remove('active');
             }
+        }
+
+        function showToastNotification(message, duration = 10000) {
+            const toast = document.createElement('div');
+            toast.className = 'toast-notification';
+            toast.innerText = message;
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                toast.remove();
+            }, duration);
         }
 
         function updateActiveUsers() {
@@ -672,20 +719,16 @@
             selector.innerHTML = characters.map(char => `
                 <div class="char-selector-btn ${char.callback_key === currentCharacter ? 'active' : ''}" data-key="${char.callback_key}">
                     <i class="bi bi-robot"></i>
-                    <span class="char-selector-name">${char.name}</span>
+                    <span class="char-selector-name">${escapeHtml(char.name)}</span>
                 </div>
             `).join('');
             
-            // Check if overflowing and add class for centering
             if (charScrollWrapper) {
                 const isOverflowing = selector.scrollWidth > charScrollWrapper.clientWidth;
                 if (isOverflowing) {
                     charScrollWrapper.classList.add('overflowing');
-                    charScrollWrapper.classList.remove('centered');
                 } else {
                     charScrollWrapper.classList.remove('overflowing');
-                    charScrollWrapper.classList.add('centered');
-                    // Force center using flex
                     charScrollWrapper.style.display = 'flex';
                     charScrollWrapper.style.justifyContent = 'center';
                 }
@@ -731,7 +774,7 @@
             const subtitle = document.getElementById('welcomeSubtitle');
             if (char) {
                 if (char.logo_url) {
-                    logoContainer.innerHTML = `<img src="${char.logo_url}" class="character-logo" alt="${char.name}">`;
+                    logoContainer.innerHTML = `<img src="${escapeHtml(char.logo_url)}" class="character-logo" alt="${escapeHtml(char.name)}">`;
                 } else {
                     logoContainer.innerHTML = `<div class="sparkle-icon"><i class="bi bi-stars"></i></div>`;
                 }
@@ -746,34 +789,40 @@
                 <div class="char-list-item ${char.callback_key === currentCharacter ? 'active' : ''}" onclick="selectCharacter('${char.callback_key}')">
                     <div class="char-list-icon"><i class="bi bi-robot"></i></div>
                     <div class="char-list-info">
-                        <div class="char-list-name">${char.name}</div>
-                        <div class="char-list-desc">${char.description}</div>
+                        <div class="char-list-name">${escapeHtml(char.name)}</div>
+                        <div class="char-list-desc">${escapeHtml(char.description)}</div>
                     </div>
                     <div class="char-list-check"><i class="bi bi-check-lg"></i></div>
                 </div>
             `).join('');
         }
 
-        function renderNotificationsSheet() {
-            const list = document.getElementById('notificationsList');
-            const badge = document.getElementById('notifBadge');
-            if (notifications.length === 0) {
-                list.innerHTML = '<div class="notif-item" style="justify-content: center; text-align: center;">لا توجد إشعارات</div>';
-                badge.style.display = 'none';
-                return;
-            }
-            badge.textContent = notifications.length;
-            badge.style.display = 'flex';
-            list.innerHTML = notifications.map(notif => `
-                <div class="notif-item">
-                    <div class="notif-icon"><i class="bi bi-bell"></i></div>
-                    <div class="notif-content">
-                        <div class="notif-title">${notif.title}</div>
-                        <div class="notif-text">${notif.text}</div>
-                        <div class="notif-time">${notif.created_at}</div>
+        async function renderNotificationsSheet() {
+            try {
+                const res = await fetch('/api/notifications');
+                const notifications = await res.json();
+                const list = document.getElementById('notificationsList');
+                const badge = document.getElementById('notifBadge');
+                if (notifications.length === 0) {
+                    list.innerHTML = '<div class="notif-item" style="justify-content: center; text-align: center;">لا توجد إشعارات</div>';
+                    badge.style.display = 'none';
+                    return;
+                }
+                badge.textContent = notifications.length;
+                badge.style.display = 'flex';
+                list.innerHTML = notifications.map(notif => `
+                    <div class="notif-item">
+                        <div class="notif-icon"><i class="bi bi-bell"></i></div>
+                        <div class="notif-content">
+                            <div class="notif-title">${escapeHtml(notif.title)}</div>
+                            <div class="notif-text">${escapeHtml(notif.text)}</div>
+                            <div class="notif-time">${escapeHtml(notif.created_at)}</div>
+                        </div>
                     </div>
-                </div>
-            `).join('');
+                `).join('');
+            } catch (err) {
+                console.error('Failed to load notifications', err);
+            }
         }
 
         function setButtonLoading(btn, loading) {
@@ -812,51 +861,13 @@
                 let data = await res.json();
                 setButtonLoading(btn, false);
                 if (data.success) {
-                    telegramId = id;
-                    if (data.subscribed) {
-                        location.reload();
-                    } else {
-                        showInlineSubscription(id);
-                    }
+                    location.reload();
                 } else {
                     showSplashError(data.message || 'فشل التسجيل');
                 }
             } catch (err) {
                 setButtonLoading(btn, false);
                 showSplashError('خطأ في الاتصال');
-            }
-        }
-
-        function showInlineSubscription(existingId) {
-            const wrapper = document.querySelector('.splash-input-wrapper');
-            wrapper.innerHTML = `
-                <input type="text" id="subTelegramId" class="splash-input" value="${existingId}" readonly disabled style="opacity:0.7;">
-                <button id="subscribeBtn" class="splash-btn" style="background: linear-gradient(135deg, #6b7280, #4b5563);">
-                    <i class="bi bi-telegram"></i>
-                </button>
-                <button id="verifySubBtn" class="splash-btn" style="background: rgba(80,80,100,0.6);">
-                    <i class="bi bi-check-lg"></i>
-                </button>
-            `;
-            document.getElementById('subscribeBtn').onclick = () => { window.open('{{ channel_url }}', '_blank'); };
-            document.getElementById('verifySubBtn').onclick = () => verifySubscriptionAndProceed();
-        }
-
-        async function verifySubscriptionAndProceed() {
-            const btn = document.getElementById('verifySubBtn');
-            setButtonLoading(btn, true);
-            try {
-                let res = await fetch('/api/verify_subscription', { method: 'POST' });
-                let data = await res.json();
-                setButtonLoading(btn, false);
-                if (data.success) {
-                    location.reload();
-                } else {
-                    showSplashError('لم يتم الاشتراك بعد. تأكد من الاشتراك ثم اضغط تحقق.');
-                }
-            } catch (err) {
-                setButtonLoading(btn, false);
-                showSplashError('خطأ في التحقق');
             }
         }
 
@@ -875,7 +886,7 @@
             const div = document.createElement('div');
             div.id = 'loadingMessage';
             div.className = 'message';
-            div.innerHTML = '<div class="loading-container"><div class="loading-spinner"></div></div>';
+            div.innerHTML = '<div class="loading-container"><div class="spinner"></div></div>';
             container.appendChild(div);
             container.scrollTop = container.scrollHeight;
         }
@@ -886,12 +897,16 @@
         }
 
         function escapeHtml(str) {
-            const div = document.createElement('div');
-            div.textContent = str;
-            return div.innerHTML;
+            if (!str) return '';
+            return str.replace(/[&<>]/g, function(m) {
+                if (m === '&') return '&amp;';
+                if (m === '<') return '&lt;';
+                if (m === '>') return '&gt;';
+                return m;
+            });
         }
 
-        function streamResponse(text) {
+        async function streamResponse(text) {
             return new Promise((resolve) => {
                 const container = document.getElementById('messagesContainer');
                 const time = new Date().toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' });
@@ -904,12 +919,21 @@
                 bubble.innerHTML = `
                     <div class="ai-bubble-label"><i class="bi bi-cpu"></i> AI</div>
                     <div class="ai-bubble-text"></div>
-                    <div class="ai-bubble-copy"><i class="bi bi-files copy-icon"></i><span class="copy-text">نسخ</span></div>
+                    <div class="ai-bubble-footer">
+                        <div class="ai-social-icons">
+                            <a href="https://t.me/Evile_Prompts" target="_blank" class="bi bi-telegram"></a>
+                            <a href="https://www.instagram.com/bla6c7" target="_blank" class="bi bi-instagram"></a>
+                        </div>
+                        <div class="ai-bubble-copy">
+                            <i class="bi bi-files"></i>
+                            <span>نسخ</span>
+                        </div>
+                    </div>
                 `;
                 msgDiv.appendChild(bubble);
                 const textEl = bubble.querySelector('.ai-bubble-text');
                 const copyBtn = bubble.querySelector('.ai-bubble-copy');
-                copyBtn.onclick = () => copyBubbleContent(copyBtn, textEl.textContent);
+                copyBtn.onclick = () => copyBubbleContent(copyBtn, textEl.innerText);
                 const cursor = document.createElement('span');
                 cursor.className = 'cursor';
                 textEl.appendChild(cursor);
@@ -924,22 +948,55 @@
                     } else {
                         clearInterval(interval);
                         cursor.remove();
-                        setTimeout(() => copyBtn.classList.add('visible'), 100);
                         resolve();
                     }
-                }, 12);
+                }, 20);
             });
         }
 
         function copyBubbleContent(button, text) {
             navigator.clipboard.writeText(text).then(() => {
-                button.classList.add('copied');
-                button.innerHTML = '<i class="bi bi-check-lg copy-icon"></i><span class="copy-text">تم النسخ</span>';
+                const original = button.innerHTML;
+                button.innerHTML = '<i class="bi bi-check-lg"></i><span>تم النسخ</span>';
                 setTimeout(() => {
-                    button.classList.remove('copied');
-                    button.innerHTML = '<i class="bi bi-files copy-icon"></i><span class="copy-text">نسخ</span>';
+                    button.innerHTML = original;
+                }, 1500);
+            }).catch(() => {
+                button.innerHTML = '<i class="bi bi-x-lg"></i><span>فشل</span>';
+                setTimeout(() => {
+                    button.innerHTML = '<i class="bi bi-files"></i><span>نسخ</span>';
                 }, 1500);
             });
+        }
+
+        async function actuallySendMessage(message) {
+            if (isProcessing) return;
+            isProcessing = true;
+            const sendBtn = document.getElementById('sendBtn') || document.getElementById('welcomeSendBtn');
+            setButtonLoading(sendBtn, true);
+            addMessage(message, true);
+            document.getElementById('welcomeInput').value = '';
+            showLoading();
+            try {
+                const res = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ character: currentCharacter, message: message })
+                });
+                const data = await res.json();
+                removeLoading();
+                if (data.response) {
+                    await streamResponse(data.response);
+                } else {
+                    addMessage('حدث خطأ في المعالجة. حاول مرة أخرى.', false);
+                }
+            } catch (err) {
+                removeLoading();
+                addMessage('خطأ في الاتصال بالخادم. تأكد من اتصالك بالإنترنت.', false);
+                console.error(err);
+            }
+            isProcessing = false;
+            setButtonLoading(sendBtn, false);
         }
 
         async function sendWelcomeMessage() {
@@ -948,49 +1005,11 @@
             const msg = input.value.trim();
             if (!msg) return;
             if (isFirstMessage) {
-                const btn = document.getElementById('welcomeSendBtn');
-                setButtonLoading(btn, true);
-                try {
-                    const subCheck = await fetch('/api/verify_subscription', { method: 'POST' }).then(r => r.json());
-                    setButtonLoading(btn, false);
-                    if (!subCheck.success) {
-                        showInlineSubscription(telegramId);
-                        return;
-                    }
-                } catch (err) {
-                    setButtonLoading(btn, false);
-                    addMessage('خطأ في التحقق من الاشتراك', false);
-                    return;
-                }
                 welcomeSection.classList.remove('active');
                 chatSection.classList.add('active');
                 isFirstMessage = false;
             }
-            isProcessing = true;
-            const sendBtn = document.getElementById('welcomeSendBtn');
-            setButtonLoading(sendBtn, true);
-            addMessage(msg, true);
-            input.value = '';
-            showLoading();
-            try {
-                const res = await fetch('/api/chat', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ character: currentCharacter, message: msg })
-                });
-                const data = await res.json();
-                removeLoading();
-                if (data.response) {
-                    await streamResponse(data.response);
-                } else {
-                    addMessage('حدث خطأ في المعالجة', false);
-                }
-            } catch (err) {
-                removeLoading();
-                addMessage('خطأ في الاتصال', false);
-            }
-            isProcessing = false;
-            setButtonLoading(sendBtn, false);
+            await actuallySendMessage(msg);
         }
 
         async function sendChatMessage() {
@@ -998,38 +1017,14 @@
             const input = document.getElementById('chatInput');
             const msg = input.value.trim();
             if (!msg) return;
-            isProcessing = true;
-            const sendBtn = document.getElementById('sendBtn');
-            setButtonLoading(sendBtn, true);
-            addMessage(msg, true);
-            input.value = '';
-            showLoading();
-            try {
-                const res = await fetch('/api/chat', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ character: currentCharacter, message: msg })
-                });
-                const data = await res.json();
-                removeLoading();
-                if (data.response) {
-                    await streamResponse(data.response);
-                } else {
-                    addMessage('حدث خطأ في المعالجة', false);
-                }
-            } catch (err) {
-                removeLoading();
-                addMessage('خطأ في الاتصال', false);
-            }
-            isProcessing = false;
-            setButtonLoading(sendBtn, false);
+            await actuallySendMessage(msg);
         }
 
         function handleWelcomeKey(e) { if (e.key === 'Enter' && !isProcessing) sendWelcomeMessage(); }
         function handleChatKey(e) { if (e.key === 'Enter' && !isProcessing) sendChatMessage(); }
 
         function openCharactersSheet() { renderCharactersSheet(); document.getElementById('charactersSheet').classList.add('active'); }
-        function openNotificationsSheet() { renderNotificationsSheet(); document.getElementById('notificationsSheet').classList.add('active'); document.getElementById('notifBadge').style.display = 'none'; }
+        async function openNotificationsSheet() { await renderNotificationsSheet(); document.getElementById('notificationsSheet').classList.add('active'); document.getElementById('notifBadge').style.display = 'none'; }
         function closeSheet(id) { document.getElementById(id).classList.remove('active'); }
         function closeSheetOnBackdrop(e, id) { if (e.target === e.currentTarget) closeSheet(id); }
         function selectCharacter(key) {
