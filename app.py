@@ -2,10 +2,11 @@ import os
 import logging
 import requests
 import time
+import json
 from datetime import datetime, timedelta
 from functools import wraps
 from contextlib import contextmanager
-from flask import Flask, render_template, request, redirect, url_for, session, flash, jsonify
+from flask import Flask, render_template, request, redirect, url_for, session, flash, jsonify, Response
 
 import psycopg2
 from psycopg2.extras import RealDictCursor
@@ -46,8 +47,6 @@ def get_db():
             conn.close()
 
 def ensure_notification_columns(cur):
-    """إضافة الأعمدة المفقودة في جدول notifications إذا لم تكن موجودة"""
-    # التحقق من وجود عمود duration_hours
     cur.execute("""
         SELECT column_name 
         FROM information_schema.columns 
@@ -57,7 +56,6 @@ def ensure_notification_columns(cur):
         cur.execute("ALTER TABLE notifications ADD COLUMN duration_hours INTEGER DEFAULT 1")
         logger.info("Added column duration_hours to notifications table")
     
-    # التحقق من وجود عمود show_in_chat
     cur.execute("""
         SELECT column_name 
         FROM information_schema.columns 
@@ -70,7 +68,6 @@ def ensure_notification_columns(cur):
 def init_db():
     try:
         with get_db() as cur:
-            # إنشاء الجداول إذا لم تكن موجودة
             cur.execute('''CREATE TABLE IF NOT EXISTS characters (
                 id SERIAL PRIMARY KEY,
                 name TEXT NOT NULL,
@@ -90,18 +87,14 @@ def init_db():
                 telegram_id TEXT UNIQUE NOT NULL,
                 last_active TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )''')
-            
-            # إضافة الأعمدة المفقودة في جدول notifications (لتحديث القاعدة القديمة)
             ensure_notification_columns(cur)
-            
             logger.info("Database initialized/updated successfully")
     except Exception as e:
         logger.error(f"Database initialization error: {e}")
         raise
 
 def update_user_activity(telegram_id):
-    if not telegram_id:
-        return
+    if not telegram_id: return
     try:
         with get_db() as cur:
             cur.execute("UPDATE users SET last_active = CURRENT_TIMESTAMP WHERE telegram_id = %s", (telegram_id,))
@@ -112,20 +105,18 @@ def admin_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
         if not session.get('logged_in'):
-            return redirect(url_for('login'))
+            return redirect(url_for('admin_panel'))  # إعادة التوجيه إلى لوحة التحكم لعرض نموذج الدخول
         return f(*args, **kwargs)
     return decorated
 
 @app.route('/')
 def index():
     telegram_id = session.get('telegram_id')
-    if telegram_id:
-        update_user_activity(telegram_id)
+    if telegram_id: update_user_activity(telegram_id)
     try:
         with get_db() as cur:
             cur.execute('SELECT * FROM characters ORDER BY id')
             characters = cur.fetchall()
-            # جلب أحدث إشعار للعرض في الدردشة (إذا كان show_in_chat = true)
             cur.execute('SELECT * FROM notifications WHERE show_in_chat = true ORDER BY created_at DESC LIMIT 1')
             latest_notification = cur.fetchone()
     except Exception as e:
@@ -186,36 +177,38 @@ def health_check():
     except Exception as e:
         return jsonify({'status': 'unhealthy', 'error': str(e)}), 500
 
-@app.route('/admin/login', methods=['GET', 'POST'])
-def login():
+@app.route('/admin', methods=['GET', 'POST'])
+def admin_panel():
+    # إذا كان الطلب POST (محاولة تسجيل الدخول)
     if request.method == 'POST':
         if request.form.get('password') == ADMIN_PASSWORD:
             session['logged_in'] = True
             return redirect(url_for('admin_panel'))
         flash('كلمة المرور غير صحيحة', 'error')
-    return render_template('login.html')
+    
+    # إذا كان المستخدم مسجل الدخول، نعرض البيانات
+    if session.get('logged_in'):
+        try:
+            with get_db() as cur:
+                cur.execute('SELECT * FROM characters ORDER BY id DESC')
+                characters = cur.fetchall()
+                cur.execute('SELECT * FROM notifications ORDER BY id DESC')
+                notifications = cur.fetchall()
+                cur.execute('SELECT COUNT(*) FROM users')
+                row = cur.fetchone()
+                users_count = row['count'] if row else 0
+        except Exception as e:
+            logger.error(f"Admin panel data error: {e}")
+            characters, notifications, users_count = [], [], 0
+        return render_template('admin.html', characters=characters, notifications=notifications, users_count=users_count)
+    
+    # إذا لم يكن مسجل الدخول، نعرض نفس الصفحة ولكن مع نموذج الدخول
+    return render_template('admin.html')
 
 @app.route('/admin/logout')
 def logout():
     session.clear()
-    return redirect(url_for('login'))
-
-@app.route('/admin')
-@admin_required
-def admin_panel():
-    try:
-        with get_db() as cur:
-            cur.execute('SELECT * FROM characters ORDER BY id DESC')
-            characters = cur.fetchall()
-            cur.execute('SELECT * FROM notifications ORDER BY id DESC')
-            notifications = cur.fetchall()
-            cur.execute('SELECT COUNT(*) FROM users')
-            row = cur.fetchone()
-            users_count = row['count'] if row else 0
-    except Exception as e:
-        logger.error(f"Admin panel error: {e}")
-        characters, notifications, users_count = [], [], 0
-    return render_template('admin.html', characters=characters, notifications=notifications, users_count=users_count)
+    return redirect(url_for('admin_panel'))
 
 @app.route('/admin/character/add', methods=['POST'])
 @admin_required
@@ -333,6 +326,7 @@ def api_chat():
         return jsonify({'error': str(e)}), 500
     if not character:
         return jsonify({'error': 'Character not found'}), 404
+    
     headers = {
         'Authorization': f'Bearer {OPENROUTER_API_KEY}',
         'Content-Type': 'application/json',
@@ -345,15 +339,31 @@ def api_chat():
             {'role': 'system', 'content': character['prompt']},
             {'role': 'user', 'content': message}
         ],
-        'temperature': 0.7
+        'temperature': 0.7,
+        'stream': True  # تفعيل التدفق للخادم
     }
-    try:
-        response = requests.post(OPENROUTER_URL, json=payload, headers=headers, timeout=30)
-        result = response.json()
-        return jsonify({'response': result['choices'][0]['message']['content']})
-    except Exception as e:
-        logger.error(f"API chat error: {e}")
-        return jsonify({'error': str(e)}), 500
+    
+    def generate():
+        try:
+            response = requests.post(OPENROUTER_URL, json=payload, headers=headers, stream=True, timeout=30)
+            for chunk in response.iter_lines():
+                if chunk:
+                    decoded = chunk.decode('utf-8')
+                    if decoded.startswith('data: '):
+                        data_str = decoded[6:]
+                        if data_str != '[DONE]':
+                            try:
+                                json_data = json.loads(data_str)
+                                content = json_data['choices'][0]['delta'].get('content', '')
+                                if content:
+                                    yield content
+                            except Exception:
+                                pass
+        except Exception as e:
+            logger.error(f"Stream error: {e}")
+            yield "حدث خطأ أثناء توليد الرد."
+    
+    return Response(generate(), mimetype='text/plain')
 
 if __name__ == '__main__':
     init_db()
