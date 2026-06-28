@@ -10,51 +10,49 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Tajawal', sans-serif;
-            background: #121212;
+            background: #0a0a0a;
             min-height: 100vh;
+            padding-bottom: 90px; /* مساحة للشريط السفلي العائم */
             color: #e0e0e0;
-            padding: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
         }
-        /* تمويه زجاجي موحد */
-        .glass-card, .admin-tabs, .tab-content, .modal-content, .character-card, .notification-item, .login-card {
-            background: rgba(255, 255, 255, 0.06);
-            backdrop-filter: blur(4px);
-            -webkit-backdrop-filter: blur(4px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+        /* تمويه زجاجي أحمر */
+        .glass-card, .modal-content, .character-card, .notification-item, .login-card, .bottom-nav {
+            background: rgba(255, 0, 0, 0.04);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            border: 1px solid rgba(255, 50, 50, 0.15);
+            box-shadow: 0 4px 30px rgba(255, 0, 0, 0.1);
             border-radius: 18px;
         }
-        .admin-container { max-width: 1200px; width: 100%; margin: 0 auto; }
+        .admin-container { max-width: 1200px; width: 100%; margin: 0 auto; padding: 20px; }
         
         /* نموذج الدخول */
         .login-wrapper { max-width: 420px; margin: 0 auto; width: 100%; }
-        .login-card { padding: 40px 32px; text-align: center; transition: transform 0.3s ease; }
-        .login-card:hover { transform: translateY(-5px); }
-        .login-logo { margin-bottom: 32px; }
-        .login-icon { width: 64px; height: 64px; background: rgba(255,255,255,0.05); border-radius: 20px; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; border: 1px solid rgba(255,255,255,0.05); }
-        .login-icon i { font-size: 36px; color: #fff; }
+        .login-card { padding: 40px 32px; text-align: center; }
+        .login-icon { width: 64px; height: 64px; background: rgba(255,0,0,0.08); border-radius: 20px; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; border: 1px solid rgba(255,50,50,0.2); }
+        .login-icon i { font-size: 36px; color: #ff4d4d; }
         .login-title { font-size: 28px; font-weight: 800; color: #fff; margin-bottom: 8px; }
-        .login-subtitle { color: #888; font-size: 14px; text-align: center; }
+        .login-subtitle { color: #888; font-size: 14px; }
         .form-group { margin-bottom: 24px; text-align: right; }
-        label { display: block; margin-bottom: 8px; color: #888; font-weight: 500; font-size: 14px; }
+        label { display: block; margin-bottom: 8px; color: #aaa; font-weight: 500; font-size: 14px; }
         input, textarea, select {
             width: 100%; padding: 12px 16px;
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.08);
+            background: rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,50,50,0.1);
             border-radius: 12px;
             color: #fff;
             font-family: 'Tajawal', sans-serif;
             font-size: 14px; outline: none;
         }
-        input:focus, textarea:focus { border-color: rgba(255,255,255,0.2); }
+        input:focus, textarea:focus { border-color: rgba(255,50,50,0.4); }
         textarea { min-height: 80px; resize: vertical; }
         .btn {
             padding: 10px 20px;
-            background: rgba(255,255,255,0.08);
-            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255, 0, 0, 0.15);
+            border: 1px solid rgba(255, 0, 0, 0.25);
             border-radius: 40px;
             color: #fff;
             font-weight: 600;
@@ -65,60 +63,103 @@
             align-items: center;
             gap: 6px;
         }
-        .btn-danger { background: rgba(255,50,50,0.2); border-color: rgba(255,50,50,0.3); color: #ff6b6b; }
+        .btn-danger { background: rgba(255,0,0,0.2); border-color: rgba(255,0,0,0.4); color: #ff6b6b; }
         .btn:active { transform: scale(0.96); }
         .btn-login { width: 100%; padding: 14px; font-size: 16px; }
         
-        .flash { padding: 12px; background: rgba(255,50,50,0.1); border: 1px solid rgba(255,50,50,0.2); border-radius: 14px; color: #ff6b6b; margin-bottom: 24px; text-align: center; font-size: 14px; }
-        .flash.success { background: rgba(50,255,50,0.1); border-color: rgba(50,255,50,0.2); color: #6bff6b; }
+        .flash { padding: 12px; background: rgba(255,0,0,0.1); border: 1px solid rgba(255,0,0,0.2); border-radius: 14px; color: #ff6b6b; margin-bottom: 24px; text-align: center; font-size: 14px; }
+        .flash.success { background: rgba(50,255,50,0.05); border-color: rgba(50,255,50,0.1); color: #6bff6b; }
 
-        /* لوحة التحكم */
-        .admin-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; padding: 8px 12px; }
-        .tab-btn { padding: 8px 16px; background: transparent; border: 1px solid rgba(255,255,255,0.05); border-radius: 40px; color: #888; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 6px; }
-        .tab-btn.active { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.2); color: #fff; }
-        .tab-btn:active { transform: scale(0.96); }
-        .tab-content { display: none; padding: 20px; }
+        /* --- شريط التبويبات السفلي العائم 360 --- */
+        .bottom-nav {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            z-index: 999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+            background: rgba(255, 0, 0, 0.05); /* زجاجي أحمر */
+            border: 1px solid rgba(255, 50, 50, 0.15);
+            border-radius: 60px;
+            backdrop-filter: blur(10px);
+            max-width: 700px;
+            margin: 0 auto;
+            overflow: hidden;
+            gap: 12px;
+            flex-wrap: nowrap;
+        }
+        .nav-track {
+            display: flex;
+            gap: 10px;
+            animation: spin360 12s linear infinite;
+            transition: all 0.3s;
+        }
+        .nav-track:hover { animation-play-state: paused; } /* إيقاف الحركة عند التمرير */
+        
+        @keyframes spin360 {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .bottom-nav-btn {
+            flex-shrink: 0;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: rgba(255, 0, 0, 0.1);
+            border: 1px solid rgba(255, 0, 0, 0.2);
+            color: #aaa;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .bottom-nav-btn.active {
+            background: rgba(255, 0, 0, 0.2);
+            border-color: #ff4d4d;
+            color: #fff;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.3);
+        }
+        .bottom-nav-btn:active { transform: scale(0.85); }
+
+        /* المحتوى */
+        .tab-content { display: none; padding: 20px; margin-top: 10px; }
         .tab-content.active { display: block; }
-        .section-title { font-size: 18px; font-weight: 700; margin-bottom: 16px; padding-right: 12px; border-right: 3px solid rgba(255,255,255,0.1); display: flex; align-items: center; gap: 8px; color: #fff; }
-        .section-title i { font-size: 18px; color: #888; }
+        .section-title { font-size: 18px; font-weight: 700; margin-bottom: 16px; padding-right: 12px; border-right: 3px solid rgba(255,50,50,0.3); display: flex; align-items: center; gap: 8px; color: #fff; }
         .form-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; margin-bottom: 20px; }
         .checkbox-group { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
         .checkbox-group input { width: auto; margin: 0; }
-        
-        .characters-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; margin-top: 16px; }
         .character-card { padding: 12px; }
-        .character-header { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
-        .character-avatar { width: 40px; height: 40px; border-radius: 12px; background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; font-size: 20px; }
+        .character-avatar { width: 40px; height: 40px; border-radius: 12px; background: rgba(255,0,0,0.1); display: flex; align-items: center; justify-content: center; font-size: 20px; }
         .character-name { font-size: 15px; font-weight: 700; color: #fff; }
         .character-desc { font-size: 11px; color: #888; margin-bottom: 8px; }
-        .character-prompt { background: rgba(255,255,255,0.03); padding: 6px; border-radius: 10px; font-size: 10px; color: #aaa; max-height: 60px; overflow-y: auto; margin-bottom: 12px; }
+        .character-prompt { background: rgba(255,0,0,0.03); padding: 6px; border-radius: 10px; font-size: 10px; color: #aaa; max-height: 60px; overflow-y: auto; margin-bottom: 12px; }
         .card-actions { display: flex; gap: 8px; }
         .notification-item { padding: 12px; margin-bottom: 10px; }
         .notification-title { font-weight: 700; font-size: 13px; margin-bottom: 4px; color: #fff; }
         .notification-text { font-size: 11px; color: #888; }
-        .notification-meta { font-size: 10px; color: #666; margin-top: 5px; }
-        
-        .modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(4px); z-index: 1000; align-items: center; justify-content: center; padding: 20px; }
+        .modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); z-index: 1000; align-items: center; justify-content: center; padding: 20px; }
         .modal.active { display: flex; }
         .modal-content { padding: 20px; max-width: 500px; width: 100%; }
-        .logout-btn { position: absolute; top: 30px; left: 30px; }
-        @media (max-width: 640px) { body { padding: 12px; } .admin-tabs { gap: 6px; } .tab-btn { padding: 6px 12px; font-size: 11px; } .logout-btn { top: 20px; left: 20px; } }
+        
+        @media (max-width: 600px) {
+            .bottom-nav { padding: 8px; gap: 8px; border-radius: 40px; }
+            .bottom-nav-btn { width: 40px; height: 40px; font-size: 16px; }
+        }
     </style>
 </head>
 <body>
     <div class="admin-container">
         {% if session.get('logged_in') %}
-            <!-- تسجيل الخروج -->
-            <a href="/admin/logout" class="btn btn-danger logout-btn"><i class="bi bi-box-arrow-left"></i> خروج</a>
+            <!-- مساحة فارغة أعلى الصفحة -->
+            <div style="height: 20px;"></div>
 
-            <!-- لوحة التحكم -->
-            <div class="admin-tabs">
-                <button class="tab-btn active" data-tab="characters"><i class="bi bi-people"></i> الشخصيات</button>
-                <button class="tab-btn" data-tab="notifications"><i class="bi bi-bell"></i> الإشعارات</button>
-                <button class="tab-btn" data-tab="channels"><i class="bi bi-megaphone"></i> قنوات الاشتراك</button>
-                <button class="tab-btn" data-tab="banned"><i class="bi bi-ban"></i> حظر المستخدمين</button>
-            </div>
-
+            <!-- المحتوى -->
             <div id="tab-characters" class="tab-content active glass-card">
                 <div class="section-title"><i class="bi bi-plus-circle"></i> إضافة شخصية جديدة</div>
                 <form method="POST" action="/admin/character/add">
@@ -136,7 +177,7 @@
                 <div class="characters-grid">
                     {% for char in characters %}
                     <div class="character-card glass-card">
-                        <div class="character-header">
+                        <div class="character-header" style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
                             <div class="character-avatar">
                                 {% if char.logo_url %}<img src="{{ char.logo_url }}" width="40" height="40" style="border-radius:12px; object-fit:cover;">{% else %}<i class="bi bi-robot"></i>{% endif %}
                             </div>
@@ -161,7 +202,7 @@
                     <div class="form-group"><label>مدة الظهور (ساعات)</label><input type="number" name="duration_hours" value="1" min="1" step="1"></div>
                     <div class="checkbox-group">
                         <input type="checkbox" name="show_in_chat" id="show_in_chat">
-                        <label for="show_in_chat">ظهور إجباري في واجهة الدردشة (لمدة 10 ثوانٍ)</label>
+                        <label for="show_in_chat" style="color: #aaa;">ظهور إجباري في واجهة الدردشة (لمدة 10 ثوانٍ)</label>
                     </div>
                     <button type="submit" class="btn"><i class="bi bi-bell"></i> إرسال الإشعار</button>
                 </form>
@@ -170,7 +211,7 @@
                 <div class="notification-item glass-card">
                     <div class="notification-title"><i class="bi bi-bell"></i> {{ notif.title }} <span style="font-size: 10px; color:#666;">({{ notif.created_at }})</span></div>
                     <div class="notification-text">{{ notif.text }}</div>
-                    <div class="notification-meta">المدة: {{ notif.duration_hours }} ساعة | ظهور إجباري: {{ 'نعم' if notif.show_in_chat else 'لا' }}</div>
+                    <div class="notification-meta" style="font-size: 10px; color:#666; margin-top:5px;">المدة: {{ notif.duration_hours }} ساعة | ظهور إجباري: {{ 'نعم' if notif.show_in_chat else 'لا' }}</div>
                 </div>
                 {% else %}
                 <p style="text-align:center; color:#666;">لا توجد إشعارات بعد</p>
@@ -178,11 +219,8 @@
             </div>
 
             <div id="tab-channels" class="tab-content glass-card">
-                <div class="section-title"><i class="bi bi-link-45deg"></i> قنوات الاشتراك الإجباري</div>
-                <div style="padding: 16px;">
-                    <p style="margin-bottom: 12px;"><strong>رابط تيليجرام:</strong> <a href="https://t.me/Evile_Prompts" target="_blank" style="color: #0088cc;">https://t.me/Evile_Prompts</a></p>
-                    <p><strong>رابط إنستغرام:</strong> <a href="https://www.instagram.com/bla6c7" target="_blank" style="color: #e4405f;">https://www.instagram.com/bla6c7</a></p>
-                </div>
+                <div class="section-title"><i class="bi bi-link-45deg"></i> إدارة القنوات</div>
+                <p style="color: #666;">(تم إلغاء الإجبار، لا توجد قنوات مفروضة حالياً)</p>
             </div>
 
             <div id="tab-banned" class="tab-content glass-card">
@@ -200,7 +238,7 @@
                 <div class="modal-content glass-card">
                     <div style="display:flex; justify-content:space-between; margin-bottom:16px;">
                         <h3 style="color:#fff;"><i class="bi bi-pencil-square"></i> تعديل الشخصية</h3>
-                        <button onclick="closeEditModal()" style="background:none; border:none; font-size:20px; color:#fff;"><i class="bi bi-x-lg"></i></button>
+                        <button onclick="closeEditModal()" style="background:none; border:none; font-size:20px; color:#aaa;"><i class="bi bi-x-lg"></i></button>
                     </div>
                     <form method="POST" id="editForm">
                         <div class="form-group"><label>اسم الشخصية</label><input type="text" name="name" id="editName" required></div>
@@ -212,15 +250,23 @@
                 </div>
             </div>
 
+            <!-- الشريط السفلي العائم للتبويبات -->
+            <div class="bottom-nav" id="bottomNav">
+                <div class="nav-track">
+                    <button class="bottom-nav-btn active" data-tab="characters"><i class="bi bi-people"></i></button>
+                    <button class="bottom-nav-btn" data-tab="notifications"><i class="bi bi-bell"></i></button>
+                    <button class="bottom-nav-btn" data-tab="channels"><i class="bi bi-megaphone"></i></button>
+                    <button class="bottom-nav-btn" data-tab="banned"><i class="bi bi-ban"></i></button>
+                </div>
+            </div>
+
         {% else %}
-            <!-- نموذج تسجيل الدخول (مدمج) -->
+            <!-- نموذج الدخول المدمج -->
             <div class="login-wrapper">
                 <div class="login-card glass-card">
-                    <div class="login-logo">
-                        <div class="login-icon"><i class="bi bi-shield-lock"></i></div>
-                        <div class="login-title">لوحة التحكم</div>
-                        <div class="login-subtitle">EVILE Admin Panel</div>
-                    </div>
+                    <div class="login-icon"><i class="bi bi-shield-lock"></i></div>
+                    <div class="login-title">لوحة التحكم</div>
+                    <div class="login-subtitle">EVILE Admin Panel</div>
                     {% with messages = get_flashed_messages(with_categories=true) %}
                         {% if messages %}
                             {% for category, message in messages %}
@@ -241,13 +287,13 @@
     </div>
 
     <script>
-        // JavaScript الخاص بالتبويبات والنوافذ
-        document.querySelectorAll('.tab-btn').forEach(btn => {
+        // تعديل التبويبات الخاصة بالشريط السفلي
+        document.querySelectorAll('.bottom-nav-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 const tabId = btn.getAttribute('data-tab');
                 document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
                 document.getElementById(`tab-${tabId}`).classList.add('active');
-                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.bottom-nav-btn').forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
             });
         });
