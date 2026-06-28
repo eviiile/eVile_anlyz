@@ -48,7 +48,7 @@
         .logo-center {
             flex: 1; height: 40px; background: rgba(255, 255, 255, 0.02);
             border-radius: 12px; display: flex; align-items: center; justify-content: center;
-            cursor: pointer; /* تم إضافة المؤشر */
+            cursor: pointer;
         }
         .logo-text { font-size: 20px; font-weight: 900; letter-spacing: 3px; color: #fff; user-select: none; }
         .active-users-box {
@@ -88,13 +88,17 @@
         .input-card { padding: 6px 6px 6px 12px; transition: all 0.3s; }
         .input-wrapper { display: flex; align-items: center; gap: 6px; }
         .message-input { flex: 1; background: transparent; border: none; padding: 8px 0; font-family: 'Tajawal', sans-serif; font-size: 13px; outline: none; color: #fff; resize: none; min-height: 40px; max-height: 80px; }
-        .send-btn { width: 34px; height: 34px; background: rgba(255, 255, 255, 0.1); border: none; border-radius: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; }
+        .send-btn { width: 34px; height: 34px; border: none; border-radius: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; }
         .send-btn:disabled { opacity: 0.5; }
         .send-btn:active:not(:disabled) { transform: scale(0.94); }
-        .send-btn i { font-size: 18px; color: #fff; }
-        .send-btn.stop-btn { background: rgba(255, 50, 50, 0.3); color: #fff; }
+        
+        /* حالات زر الإرسال */
+        .send-btn-normal { background: rgba(255, 255, 255, 0.1); color: #fff; }
+        .send-btn-max { background: rgba(255, 0, 0, 0.4); color: #fff; border: 1px solid rgba(255, 0, 0, 0.5); box-shadow: 0 0 15px rgba(255, 0, 0, 0.2); }
+        .send-btn-max i { color: #fff; }
+        .send-btn.stop-btn { background: rgba(255, 50, 50, 0.8); color: #fff; border: none; }
 
-        /* شريط الشخصيات العادي (بدون لانهائي) */
+        /* شريط الشخصيات العادي */
         .char-scroll-container { position: relative; width: 100%; max-width: 320px; margin: 8px auto 12px; overflow: hidden; }
         .char-scroll-wrapper {
             display: flex;
@@ -117,7 +121,6 @@
         }
         .char-selector-btn i { font-size: 14px; }
         .char-selector-name { font-size: 11px; font-weight: 500; }
-        /* علامة MAX في شريط التمرير */
         .char-selector-badge-max { background: #ff4d4d; color: white; font-size: 8px; padding: 1px 5px; border-radius: 8px; margin-right: 3px; }
 
         /* Chat Section */
@@ -225,7 +228,6 @@
             <div class="header-circle" onclick="openCharactersSheet()"><i class="bi bi-people"></i></div>
         </div>
         <div class="logo-wrapper">
-            <!-- تم إضافة oncontextmenu لمنع القائمة، و id للنسخ -->
             <div class="logo-center" id="evileLogoBox" onclick="handleTripleClick()" oncontextmenu="return false;">
                 <span class="logo-text" id="evileLogoText">EVILE</span>
             </div>
@@ -262,7 +264,7 @@
                 <div class="input-card">
                     <div class="input-wrapper">
                         <textarea class="message-input" id="welcomeInput" placeholder="اكتب رسالتك..." rows="1"></textarea>
-                        <button class="send-btn" id="welcomeSendBtn" onclick="handleSendWelcome()"><i class="bi bi-send"></i></button>
+                        <button class="send-btn send-btn-normal" id="welcomeSendBtn" onclick="handleSendWelcome()"><i class="bi bi-send"></i></button>
                     </div>
                 </div>
             </div>
@@ -281,7 +283,7 @@
                     <div class="input-wrapper">
                         <button class="header-circle" style="width:34px;height:34px;" onclick="goHome()"><i class="bi bi-house-door" style="font-size:16px;"></i></button>
                         <textarea class="message-input" id="chatInput" placeholder="اكتب رسالتك..." rows="1"></textarea>
-                        <button class="send-btn" id="sendBtn" onclick="handleSendChat()"><i class="bi bi-send"></i></button>
+                        <button class="send-btn send-btn-normal" id="sendBtn" onclick="handleSendChat()"><i class="bi bi-send"></i></button>
                     </div>
                 </div>
             </div>
@@ -321,7 +323,6 @@
         let isProcessing = false;
         let isStreaming = false;
         let abortController = null;
-        let isMaxMember = false; // سيتم تحديث هذا بطلب من الخادم في المستقبل.
 
         // متغير النقرات الثلاث
         let clickCount = 0;
@@ -376,7 +377,6 @@
                     showToastNotification('⚠️ لم يتم تسجيل حسابك بعد، سجل دخولك أولاً.');
                 }
             }
-            // إعادة الضبط بعد ثانية واحدة من عدم النقر
             setTimeout(() => { clickCount = 0; }, 1000);
         }
 
@@ -394,18 +394,37 @@
             } else {
                 showToastNotification('⚠️ يرجى إدخال معرف تيليجرام الخاص بك أولاً.');
             }
-            // هنا يمكن إرسال معرف تيليجرام إلى الخادم مستقبلاً.
             closeMaxModal();
         }
 
-        // ---- شريط الشخصيات (عاد عادياً بدون لانهائي) ----
+        // ---- تحديث مظهر زر الإرسال بناءً على الشخصية ----
+        function updateSendButtonBasedOnCharacter() {
+            const char = characters.find(c => c.callback_key === currentCharacter);
+            const welcomeBtn = document.getElementById('welcomeSendBtn');
+            const chatBtn = document.getElementById('sendBtn');
+            const isMax = char && char.is_max === true;
+
+            [welcomeBtn, chatBtn].forEach(btn => {
+                if (!btn) return;
+                // إزالة الكلاسات السابقة
+                btn.classList.remove('send-btn-normal', 'send-btn-max');
+                if (isMax) {
+                    btn.classList.add('send-btn-max');
+                    btn.innerHTML = '<i class="bi bi-lock-fill"></i>'; // إضافة قفل كدليل بصري
+                } else {
+                    btn.classList.add('send-btn-normal');
+                    btn.innerHTML = '<i class="bi bi-send"></i>';
+                }
+            });
+        }
+
+        // ---- شريط الشخصيات ----
         function renderCharSelector() {
             const selector = document.getElementById('charSelector');
             if (!characters || characters.length === 0) {
                 selector.innerHTML = '<div class="char-selector-btn" style="cursor:default; color:rgba(255,255,255,0.5);">لا توجد شخصيات</div>';
                 return;
             }
-            // تم إزالة التكرار (3 مرات). أصبح شريطاً عادياً.
             selector.innerHTML = characters.map(char => `
                 <div class="char-selector-btn ${char.callback_key === currentCharacter ? 'active' : ''}" data-key="${char.callback_key}" data-is-max="${char.is_max}">
                     ${char.is_max ? '<span class="char-selector-badge-max">MAX</span>' : ''}
@@ -448,6 +467,8 @@
                 title.textContent = "ابنِ أفكارك مع EVILE";
                 subtitle.textContent = "أضف شخصيات من لوحة التحكم";
             }
+            // تحديث الزر بعد تغيير الشخصية
+            updateSendButtonBasedOnCharacter();
         }
 
         function renderCharactersSheet() {
@@ -499,11 +520,13 @@
                 if (!btn) return;
                 if (isStreamingActive) {
                     btn.disabled = false;
+                    btn.classList.remove('send-btn-normal', 'send-btn-max');
                     btn.classList.add('stop-btn');
                     btn.innerHTML = '<i class="bi bi-stop-circle"></i>';
                 } else {
                     btn.classList.remove('stop-btn');
-                    btn.innerHTML = '<i class="bi bi-send"></i>';
+                    // استعادة الحالة بناءً على الشخصية
+                    updateSendButtonBasedOnCharacter();
                 }
             });
         }
@@ -608,10 +631,9 @@
         function checkIfAllowedToSend() {
             const char = characters.find(c => c.callback_key === currentCharacter);
             if (char && char.is_max === true) {
-                // TODO: في المستقبل، يجب التحقق من قاعدة البيانات إذا كان المستخدم لديه صلاحية MAX.
-                // حالياً، نعرض النافذة فقط.
+                // إذا كانت الشخصية MAX، تظهر النافذة وتمنع الإرسال
                 openMaxModal();
-                return false; // منع الإرسال
+                return false;
             }
             return true;
         }
@@ -664,7 +686,7 @@
             actuallySendMessage(msg);
         }
 
-        // منع زر Enter من الإرسال (السماح فقط بالسطر الجديد)
+        // منع زر Enter من الإرسال
         document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('welcomeInput').addEventListener('keydown', (e) => {
                 if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); } 
