@@ -105,7 +105,7 @@ def admin_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
         if not session.get('logged_in'):
-            return redirect(url_for('admin_panel'))  # إعادة التوجيه إلى لوحة التحكم لعرض نموذج الدخول
+            return redirect(url_for('admin_panel'))
         return f(*args, **kwargs)
     return decorated
 
@@ -123,14 +123,11 @@ def index():
         logger.error(f"Index error: {e}")
         characters = []
         latest_notification = None
-    channel_url = "https://t.me/Evile_Prompts"
-    instagram_url = "https://www.instagram.com/bla6c7"
+    # تم حذف إرسال روابط القنوات الاجبارية
     return render_template('index.html',
                          characters=characters,
                          telegram_id=telegram_id,
-                         latest_notification=latest_notification,
-                         channel_url=channel_url,
-                         instagram_url=instagram_url)
+                         latest_notification=latest_notification)
 
 @app.route('/register', methods=['POST'])
 def register():
@@ -179,14 +176,12 @@ def health_check():
 
 @app.route('/admin', methods=['GET', 'POST'])
 def admin_panel():
-    # إذا كان الطلب POST (محاولة تسجيل الدخول)
     if request.method == 'POST':
         if request.form.get('password') == ADMIN_PASSWORD:
             session['logged_in'] = True
             return redirect(url_for('admin_panel'))
         flash('كلمة المرور غير صحيحة', 'error')
     
-    # إذا كان المستخدم مسجل الدخول، نعرض البيانات
     if session.get('logged_in'):
         try:
             with get_db() as cur:
@@ -202,7 +197,6 @@ def admin_panel():
             characters, notifications, users_count = [], [], 0
         return render_template('admin.html', characters=characters, notifications=notifications, users_count=users_count)
     
-    # إذا لم يكن مسجل الدخول، نعرض نفس الصفحة ولكن مع نموذج الدخول
     return render_template('admin.html')
 
 @app.route('/admin/logout')
@@ -340,7 +334,7 @@ def api_chat():
             {'role': 'user', 'content': message}
         ],
         'temperature': 0.7,
-        'stream': True  # تفعيل التدفق للخادم
+        'stream': True
     }
     
     def generate():
