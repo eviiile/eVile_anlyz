@@ -123,7 +123,6 @@ def index():
         logger.error(f"Index error: {e}")
         characters = []
         latest_notification = None
-    # تم حذف إرسال روابط القنوات الاجبارية
     return render_template('index.html',
                          characters=characters,
                          telegram_id=telegram_id,
