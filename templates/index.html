@@ -10,7 +10,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body {
             font-family: 'Tajawal', sans-serif;
-            background: linear-gradient(135deg, #06143d 0%, #25819e 100%); /* التدرج الأزرق الجديد */
+            background: linear-gradient(135deg, #06143d 0%, #25819e 100%);
             color: #ffffff;
             overflow: hidden;
             touch-action: manipulation;
@@ -18,7 +18,6 @@
         }
         .main-container { width: 100%; height: 100vh; height: 100dvh; display: flex; flex-direction: column; padding: 12px; padding-top: 70px; }
         
-        /* التصميم الزجاجي الشفاف الجديد (بدون حدود بارزة) */
         .glass-card, .floating-header, .input-card, .bottom-sheet, .message-content, .ai-bubble, .splash-input-wrapper {
             background: rgba(255, 255, 255, 0.06);
             backdrop-filter: blur(14px);
@@ -28,7 +27,6 @@
             border-radius: 18px;
         }
         
-        /* الهيدر العائم */
         .floating-header {
             position: fixed; top: 12px; left: 12px; right: 12px; z-index: 100;
             display: flex; align-items: center; justify-content: space-between; padding: 6px;
@@ -50,8 +48,9 @@
         .logo-center {
             flex: 1; height: 40px; background: rgba(255, 255, 255, 0.02);
             border-radius: 12px; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; /* تم إضافة المؤشر */
         }
-        .logo-text { font-size: 20px; font-weight: 900; letter-spacing: 3px; color: #fff; }
+        .logo-text { font-size: 20px; font-weight: 900; letter-spacing: 3px; color: #fff; user-select: none; }
         .active-users-box {
             height: 40px; padding: 0 10px; border-radius: 12px;
             background: rgba(255, 255, 255, 0.03);
@@ -95,21 +94,19 @@
         .send-btn i { font-size: 18px; color: #fff; }
         .send-btn.stop-btn { background: rgba(255, 50, 50, 0.3); color: #fff; }
 
-        /* Infinite Scroll Carousel (تم تحسين القوة) */
+        /* شريط الشخصيات العادي (بدون لانهائي) */
         .char-scroll-container { position: relative; width: 100%; max-width: 320px; margin: 8px auto 12px; overflow: hidden; }
         .char-scroll-wrapper {
             display: flex;
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
             scrollbar-width: none;
-            scroll-snap-type: x mandatory; /* يضمن التقاط العناصر بشكل مثالي */
             mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
             -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
         }
         .char-scroll-wrapper::-webkit-scrollbar { display: none; }
         .char-selector { display: flex; gap: 8px; padding: 6px 0; width: max-content; }
         .char-selector-btn {
-            scroll-snap-align: start; /* يربط العنصر بنقطة البداية عند التمرير */
             display: flex; align-items: center; gap: 4px; padding: 4px 10px;
             background: rgba(255, 255, 255, 0.04);
             border-radius: 24px; cursor: pointer; transition: all 0.2s; white-space: nowrap; font-size: 11px; color: rgba(255,255,255,0.7);
@@ -120,6 +117,8 @@
         }
         .char-selector-btn i { font-size: 14px; }
         .char-selector-name { font-size: 11px; font-weight: 500; }
+        /* علامة MAX في شريط التمرير */
+        .char-selector-badge-max { background: #ff4d4d; color: white; font-size: 8px; padding: 1px 5px; border-radius: 8px; margin-right: 3px; }
 
         /* Chat Section */
         .chat-section { flex: 1; display: none; flex-direction: column; overflow: hidden; }
@@ -140,7 +139,40 @@
         .ai-bubble-copy { cursor: pointer; display: flex; align-items: center; gap: 4px; color: rgba(255,255,255,0.6); }
         .ai-bubble-copy:active { opacity: 0.6; }
         
-        /* Bottom Sheets (نوافذ جانبية) */
+        /* MAX Block Modal (النافذة السياسية الصارمة) */
+        .max-modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(5px);
+            z-index: 9999; display: none; justify-content: center; align-items: center;
+        }
+        .max-modal-overlay.active { display: flex; }
+        .max-modal-box {
+            background: #1c1c1c;
+            border: 2px solid #cc0000;
+            padding: 25px; border-radius: 12px; max-width: 420px; width: 90%;
+            text-align: center; position: relative; box-shadow: 0 0 30px rgba(255, 0, 0, 0.2);
+        }
+        .max-close-x { position: absolute; top: 12px; right: 18px; font-size: 24px; cursor: pointer; color: #888; transition: 0.2s; }
+        .max-close-x:hover { color: #fff; }
+        .max-modal-box h2 { color: #ff3333; font-weight: 900; margin-bottom: 15px; font-size: 22px; letter-spacing: 1px; }
+        .max-modal-box p { color: #ccc; font-size: 14px; line-height: 1.6; margin-bottom: 20px; text-align: right; font-weight: 300; }
+        .max-modal-box p strong { color: #fff; }
+        .max-modal-box .input-field {
+            width: 100%; padding: 12px; background: #2a2a2a; border: 1px solid #444;
+            border-radius: 6px; color: #fff; margin-bottom: 15px; text-align: center; outline: none;
+        }
+        .max-modal-box .input-field:focus { border-color: #666; }
+        .btn-max-action {
+            display: block; width: 100%; padding: 12px; border: none;
+            border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 15px;
+            text-decoration: none; transition: 0.2s; margin-bottom: 10px;
+        }
+        .btn-max-telegram { background: #0088cc; color: white; }
+        .btn-max-telegram:hover { background: #0077b3; }
+        .btn-max-save { background: #333; color: #ccc; border: 1px solid #555; }
+        .btn-max-save:hover { background: #444; color: #fff; }
+
+        /* Bottom Sheets */
         .bottom-sheet-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(8px); z-index: 1000; display: none; align-items: flex-end; justify-content: center; }
         .bottom-sheet-overlay.active { display: flex; }
         .bottom-sheet { width: 100%; max-width: 600px; max-height: 80vh; border-radius: 25px 25px 0 0; padding: 20px; animation: slideUp 0.4s ease; overflow-y: auto; display: flex; flex-direction: column; }
@@ -168,15 +200,35 @@
 </head>
 <body>
 
-    <!-- الهيدر العائم -->
+    <!-- نافذة منع MAX السياسية -->
+    <div class="max-modal-overlay" id="maxModal">
+        <div class="max-modal-box">
+            <div class="max-close-x" onclick="closeMaxModal()">×</div>
+            <h2>⚠️ تحذير أمني</h2>
+            <p>
+                لقد حاولت الوصول إلى محتوى مقيد من الفئة <strong>"MAX"</strong>.<br>
+                هذا الإجراء يتطلب تصريحاً خاصاً من الإدارة.<br><br>
+                للتواصل المباشر مع المسؤول والحصول على التصريح، يرجى التواصل عبر القناة الرسمية:
+            </p>
+            <div style="margin-bottom: 15px;">
+                <input type="text" class="input-field" id="maxTelegramIdInput" placeholder="أدخل معرف تيليجرام الخاص بك">
+            </div>
+            <a href="https://t.me/OlIiIl7" target="_blank" class="btn-max-action btn-max-telegram">
+                <i class="bi bi-telegram"></i> تواصل مع الإدارة @OlIiIl7
+            </a>
+            <button class="btn-max-action btn-max-save" onclick="submitMaxRequest()">تأكيد إرسال الطلب</button>
+        </div>
+    </div>
+
     <header class="floating-header">
         <div style="display: flex; gap: 6px;">
-            <div class="header-circle" onclick="openCharactersSheet()">
-                <i class="bi bi-people"></i>
-            </div>
+            <div class="header-circle" onclick="openCharactersSheet()"><i class="bi bi-people"></i></div>
         </div>
         <div class="logo-wrapper">
-            <div class="logo-center"><span class="logo-text">EVILE</span></div>
+            <!-- تم إضافة oncontextmenu لمنع القائمة، و id للنسخ -->
+            <div class="logo-center" id="evileLogoBox" onclick="handleTripleClick()" oncontextmenu="return false;">
+                <span class="logo-text" id="evileLogoText">EVILE</span>
+            </div>
             <div class="active-users-box">
                 <i class="bi bi-person-friends"></i>
                 <span id="activeCount">0</span>
@@ -189,24 +241,23 @@
     </header>
 
     <div class="main-container">
-        <!-- Splash Screen (تسجيل المعرف) -->
+        <!-- Splash -->
         <div class="splash-section" id="splashSection">
             <div class="splash-icon"><i class="bi bi-chat-dots"></i></div>
             <div class="splash-title">مرحباً بك في EVILE</div>
             <div class="splash-text">أدخل معرف تيليجرام الخاص بك لبدء المحادثة</div>
             <div class="splash-input-wrapper">
-                <input type="text" id="splashTelegramId" class="splash-input" placeholder="معرف تيليجرام (أرقام فقط)" autocomplete="off">
+                <input type="text" id="splashTelegramId" class="splash-input" placeholder="معرف تيليجرام (أرقام فقط)">
                 <button id="splashRegisterBtn" class="splash-btn"><i class="bi bi-arrow-left"></i></button>
             </div>
             <div id="splashError" class="splash-error" style="display: none;"></div>
         </div>
 
-        <!-- الواجهة الرئيسية -->
+        <!-- Welcome -->
         <div class="welcome-section" id="welcomeSection">
             <div id="welcomeLogo"><div class="sparkle-icon"><i class="bi bi-stars"></i></div></div>
             <h1 class="welcome-title" id="welcomeTitle">ابنِ أفكارك مع EVILE</h1>
             <p class="welcome-subtitle" id="welcomeSubtitle">اختر شخصية وابدأ محادثة إبداعية</p>
-
             <div class="welcome-input-card">
                 <div class="input-card">
                     <div class="input-wrapper">
@@ -215,8 +266,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- شريط الشخصيات -->
             <div class="char-scroll-container">
                 <div class="char-scroll-wrapper" id="charScrollWrapper">
                     <div class="char-selector" id="charSelector"></div>
@@ -224,13 +273,13 @@
             </div>
         </div>
 
-        <!-- واجهة الدردشة -->
+        <!-- Chat -->
         <div class="chat-section" id="chatSection">
             <div class="messages-container" id="messagesContainer"></div>
             <div class="input-section">
                 <div class="input-card">
                     <div class="input-wrapper">
-                        <button class="header-circle" style="width:34px;height:34px;" onclick="goHome()" title="العودة"><i class="bi bi-house-door" style="font-size:16px;"></i></button>
+                        <button class="header-circle" style="width:34px;height:34px;" onclick="goHome()"><i class="bi bi-house-door" style="font-size:16px;"></i></button>
                         <textarea class="message-input" id="chatInput" placeholder="اكتب رسالتك..." rows="1"></textarea>
                         <button class="send-btn" id="sendBtn" onclick="handleSendChat()"><i class="bi bi-send"></i></button>
                     </div>
@@ -272,6 +321,10 @@
         let isProcessing = false;
         let isStreaming = false;
         let abortController = null;
+        let isMaxMember = false; // سيتم تحديث هذا بطلب من الخادم في المستقبل.
+
+        // متغير النقرات الثلاث
+        let clickCount = 0;
 
         const splashSection = document.getElementById('splashSection');
         const welcomeSection = document.getElementById('welcomeSection');
@@ -308,19 +361,54 @@
                 .catch(() => {});
         }
 
-        // ---- شريط التمرير اللانهائي (تم تطوير تقنية "Carousel Loop" الموثوقة) ----
+        // ---- وظيفة النقر 3 مرات لنسخ المعرف ----
+        function handleTripleClick() {
+            clickCount++;
+            if (clickCount === 3) {
+                clickCount = 0;
+                if (telegramId && telegramId !== 'null') {
+                    navigator.clipboard.writeText(telegramId).then(() => {
+                        showToastNotification('✅ تم نسخ معرف تيليجرام الخاص بك: ' + telegramId);
+                    }).catch(() => {
+                        showToastNotification('⚠️ فشل النسخ، حاول يدوياً: ' + telegramId);
+                    });
+                } else {
+                    showToastNotification('⚠️ لم يتم تسجيل حسابك بعد، سجل دخولك أولاً.');
+                }
+            }
+            // إعادة الضبط بعد ثانية واحدة من عدم النقر
+            setTimeout(() => { clickCount = 0; }, 1000);
+        }
+
+        // ---- دوال النافذة المنبثقة MAX ----
+        function openMaxModal() {
+            document.getElementById('maxModal').classList.add('active');
+        }
+        function closeMaxModal() {
+            document.getElementById('maxModal').classList.remove('active');
+        }
+        function submitMaxRequest() {
+            const idInput = document.getElementById('maxTelegramIdInput').value.trim();
+            if (idInput) {
+                showToastNotification('📩 تم استلام طلبك. سيتم التواصل معك عبر تيليجرام.');
+            } else {
+                showToastNotification('⚠️ يرجى إدخال معرف تيليجرام الخاص بك أولاً.');
+            }
+            // هنا يمكن إرسال معرف تيليجرام إلى الخادم مستقبلاً.
+            closeMaxModal();
+        }
+
+        // ---- شريط الشخصيات (عاد عادياً بدون لانهائي) ----
         function renderCharSelector() {
             const selector = document.getElementById('charSelector');
             if (!characters || characters.length === 0) {
                 selector.innerHTML = '<div class="char-selector-btn" style="cursor:default; color:rgba(255,255,255,0.5);">لا توجد شخصيات</div>';
                 return;
             }
-            // تكرار العناصر 3 مرات للحركة اللامتناهية
-            let repeatedChars = [];
-            for(let i=0; i<3; i++) { repeatedChars = repeatedChars.concat(characters); }
-
-            selector.innerHTML = repeatedChars.map(char => `
-                <div class="char-selector-btn ${char.callback_key === currentCharacter ? 'active' : ''}" data-key="${char.callback_key}">
+            // تم إزالة التكرار (3 مرات). أصبح شريطاً عادياً.
+            selector.innerHTML = characters.map(char => `
+                <div class="char-selector-btn ${char.callback_key === currentCharacter ? 'active' : ''}" data-key="${char.callback_key}" data-is-max="${char.is_max}">
+                    ${char.is_max ? '<span class="char-selector-badge-max">MAX</span>' : ''}
                     <i class="bi bi-robot"></i>
                     <span class="char-selector-name">${escapeHtml(char.name)}</span>
                 </div>
@@ -335,44 +423,11 @@
             
             if (charScrollWrapper) {
                 const isOverflowing = selector.scrollWidth > charScrollWrapper.clientWidth;
-                if (isOverflowing) {
-                    charScrollWrapper.classList.add('overflowing');
-                    // ضبط موضع التمرير ليكون في منتصف المجموعة الوسطى (لضمان عمل الحلقة من البداية)
-                    const singleSetWidth = selector.scrollWidth / 3;
-                    charScrollWrapper.scrollLeft = singleSetWidth;
-                } else {
+                if (!isOverflowing) {
                     charScrollWrapper.style.display = 'flex';
                     charScrollWrapper.style.justifyContent = 'center';
                 }
             }
-        }
-
-        // مرفق مستمع التمرير اللامتناهي (حل موثوق ومعتمد)
-        function attachInfiniteScrollListener() {
-            if (!charScrollWrapper) return;
-            let isResetting = false;
-            charScrollWrapper.addEventListener('scroll', () => {
-                if (isResetting) return;
-                
-                const totalWidth = document.getElementById('charSelector').scrollWidth;
-                if (totalWidth === 0) return;
-                
-                const singleSetWidth = totalWidth / 3;
-                const scrollLeft = charScrollWrapper.scrollLeft;
-
-                // إذا وصلنا إلى نهاية الشريط (المجموعة الثالثة)، نقفز للمجموعة الثانية
-                if (scrollLeft >= singleSetWidth * 2 - 10) {
-                    isResetting = true;
-                    charScrollWrapper.scrollLeft = singleSetWidth;
-                    setTimeout(() => { isResetting = false; }, 50); // حاجز يمنع القفز المتكرر
-                } 
-                // إذا وصلنا إلى بداية الشريط (المجموعة الأولى)، نقفز للمجموعة الثالثة
-                else if (scrollLeft <= 10) {
-                    isResetting = true;
-                    charScrollWrapper.scrollLeft = singleSetWidth * 2;
-                    setTimeout(() => { isResetting = false; }, 50);
-                }
-            });
         }
 
         function updateWelcomeDisplay() {
@@ -405,7 +460,7 @@
                 <div class="char-list-item ${char.callback_key === currentCharacter ? 'active' : ''}" onclick="selectCharacter('${char.callback_key}')">
                     <div class="char-list-icon"><i class="bi bi-robot"></i></div>
                     <div class="char-list-info">
-                        <div class="char-list-name">${escapeHtml(char.name)}</div>
+                        <div class="char-list-name">${escapeHtml(char.name)} ${char.is_max ? '<span style="background:#ff4d4d;color:white;font-size:9px;padding:0 6px;border-radius:8px;margin-right:5px;">MAX</span>' : ''}</div>
                         <div class="char-list-desc">${escapeHtml(char.description)}</div>
                     </div>
                     <div class="char-list-check"><i class="bi bi-check-lg"></i></div>
@@ -549,6 +604,18 @@
             });
         }
 
+        // ---- فحص الحظر قبل إرسال الرسالة ----
+        function checkIfAllowedToSend() {
+            const char = characters.find(c => c.callback_key === currentCharacter);
+            if (char && char.is_max === true) {
+                // TODO: في المستقبل، يجب التحقق من قاعدة البيانات إذا كان المستخدم لديه صلاحية MAX.
+                // حالياً، نعرض النافذة فقط.
+                openMaxModal();
+                return false; // منع الإرسال
+            }
+            return true;
+        }
+
         async function actuallySendMessage(message) {
             if (isProcessing) return;
             isProcessing = true; abortController = new AbortController(); isStreaming = true;
@@ -563,7 +630,6 @@
                 const response = await fetch('/api/chat', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ character: currentCharacter, message: message }), signal: abortController.signal });
                 if (!isStreaming) { removeLoading(); throw new Error('Stream cancelled'); }
                 
-                // قراءة الـ Stream
                 const reader = response.body.getReader(); const decoder = new TextDecoder(); let fullText = '';
                 while (true) { const { done, value } = await reader.read(); if (done) break; fullText += decoder.decode(value, { stream: true }); }
                 
@@ -582,6 +648,7 @@
         function handleSendWelcome() {
             if (isStreaming) { stopStreaming(); return; }
             if (isProcessing) return;
+            if (!checkIfAllowedToSend()) return; // فحص الحظر
             const input = document.getElementById('welcomeInput'); const msg = input.value.trim();
             if (!msg) return;
             if (isFirstMessage) { welcomeSection.classList.remove('active'); chatSection.classList.add('active'); isFirstMessage = false; }
@@ -591,6 +658,7 @@
         function handleSendChat() {
             if (isStreaming) { stopStreaming(); return; }
             if (isProcessing) return;
+            if (!checkIfAllowedToSend()) return; // فحص الحظر
             const input = document.getElementById('chatInput'); const msg = input.value.trim();
             if (!msg) return;
             actuallySendMessage(msg);
@@ -599,10 +667,10 @@
         // منع زر Enter من الإرسال (السماح فقط بالسطر الجديد)
         document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('welcomeInput').addEventListener('keydown', (e) => {
-                if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); } // منع الإرسال بالإنتر
+                if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); } 
             });
             document.getElementById('chatInput').addEventListener('keydown', (e) => {
-                if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); } // منع الإرسال بالإنتر
+                if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); } 
             });
         });
 
@@ -629,7 +697,6 @@
         document.addEventListener('DOMContentLoaded', () => {
             initScreen(); updateActiveUsers(); setInterval(updateActiveUsers, 30000);
             renderCharSelector(); 
-            attachInfiniteScrollListener(); // تفعيل المستمع الجديد للحلقة اللامتناهية
             renderNotificationsSheet(); updateWelcomeDisplay();
             
             document.getElementById('splashRegisterBtn').onclick = performSplashRegister;
