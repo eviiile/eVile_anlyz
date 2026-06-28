@@ -3,7 +3,6 @@ import logging
 import requests
 import time
 import json
-import traceback  # تمت الإضافة لطباعة الأخطاء التفصيلية
 from datetime import datetime, timedelta
 from functools import wraps
 from contextlib import contextmanager
@@ -69,13 +68,15 @@ def ensure_notification_columns(cur):
 def init_db():
     try:
         with get_db() as cur:
+            # تم إضافة حقل is_max
             cur.execute('''CREATE TABLE IF NOT EXISTS characters (
                 id SERIAL PRIMARY KEY,
                 name TEXT NOT NULL,
                 description TEXT NOT NULL,
                 prompt TEXT NOT NULL,
                 callback_key TEXT UNIQUE NOT NULL,
-                logo_url TEXT DEFAULT ''
+                logo_url TEXT DEFAULT '',
+                is_max BOOLEAN DEFAULT FALSE
             )''')
             cur.execute('''CREATE TABLE IF NOT EXISTS notifications (
                 id SERIAL PRIMARY KEY,
@@ -214,11 +215,12 @@ def add_character():
     prompt = request.form.get('prompt')
     callback_key = request.form.get('callback_key', name.lower().replace(' ', '_'))
     logo_url = request.form.get('logo_url', '')
+    is_max = request.form.get('is_max') == 'on'
     if name and description and prompt:
         try:
             with get_db() as cur:
-                cur.execute("INSERT INTO characters (name, description, prompt, callback_key, logo_url) VALUES (%s, %s, %s, %s, %s)",
-                    (name, description, prompt, callback_key, logo_url))
+                cur.execute("INSERT INTO characters (name, description, prompt, callback_key, logo_url, is_max) VALUES (%s, %s, %s, %s, %s, %s)",
+                    (name, description, prompt, callback_key, logo_url, is_max))
             flash('تمت إضافة الشخصية بنجاح', 'success')
         except Exception as e:
             flash('مفتاح الشخصية موجود مسبقاً' if 'unique' in str(e).lower() else str(e), 'error')
@@ -231,11 +233,12 @@ def edit_character(char_id):
     description = request.form.get('description')
     prompt = request.form.get('prompt')
     logo_url = request.form.get('logo_url', '')
+    is_max = request.form.get('is_max') == 'on'
     if name and description and prompt:
         try:
             with get_db() as cur:
-                cur.execute("UPDATE characters SET name=%s, description=%s, prompt=%s, logo_url=%s WHERE id=%s",
-                    (name, description, prompt, logo_url, char_id))
+                cur.execute("UPDATE characters SET name=%s, description=%s, prompt=%s, logo_url=%s, is_max=%s WHERE id=%s",
+                    (name, description, prompt, logo_url, is_max, char_id))
             flash('تم تعديل الشخصية بنجاح', 'success')
         except Exception as e:
             flash(str(e), 'error')
@@ -342,7 +345,7 @@ def api_chat():
     def generate():
         try:
             response = requests.post(OPENROUTER_URL, json=payload, headers=headers, stream=True, timeout=30)
-            response.raise_for_status()  # التحقق من حالة الاستجابة
+            response.raise_for_status()
             for chunk in response.iter_lines():
                 if chunk:
                     decoded = chunk.decode('utf-8')
@@ -357,16 +360,13 @@ def api_chat():
                             except Exception as e:
                                 logger.error(f"JSON decode error in stream: {e}")
         except requests.exceptions.RequestException as e:
-            # طباعة تفاصيل الخطأ الكاملة في السجلات
             logger.error(f"OpenRouter API Request Exception: {str(e)}")
             if hasattr(e, 'response') and e.response is not None:
                 logger.error(f"Status Code: {e.response.status_code}")
                 logger.error(f"Response Body: {e.response.text}")
-            logger.error(traceback.format_exc())
             yield f"خطأ في الاتصال بـ OpenRouter (تفاصيل الخطأ موجودة في السجلات)"
         except Exception as e:
             logger.error(f"Unexpected error in OpenRouter stream: {e}")
-            logger.error(traceback.format_exc())
             yield f"حدث خطأ غير متوقع: {str(e)}"
     
     return Response(generate(), mimetype='text/plain')
