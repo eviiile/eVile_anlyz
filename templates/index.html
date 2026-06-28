@@ -16,92 +16,77 @@
         }
         /* الثيم الفاتح (الافتراضي) */
         body.light {
-            background: #f5f5f5;
-            color: #1a1a1a;
+            background: #121212;
+            color: #e0e0e0;
         }
         body.light .bg-animation {
-            background: radial-gradient(circle at 20% 80%, rgba(200,200,200,0.3) 0%, transparent 50%),
-                        radial-gradient(circle at 80% 20%, rgba(150,150,150,0.2) 0%, transparent 50%);
+            background: radial-gradient(circle at 20% 80%, rgba(200,200,200,0.05) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(150,150,150,0.03) 0%, transparent 50%);
         }
-        body.light .floating-header,
-        body.light .input-card,
-        body.light .bottom-sheet,
-        body.light .char-selector-btn,
-        body.light .char-list-item,
-        body.light .notif-item,
-        body.light .message-content,
-        body.light .ai-bubble,
-        body.light .splash-input-wrapper,
+        body.light .floating-header, body.light .input-card, body.light .bottom-sheet,
+        body.light .char-selector-btn, body.light .char-list-item, body.light .notif-item,
+        body.light .message-content, body.light .ai-bubble, body.light .splash-input-wrapper, 
         body.light .login-card {
-            background: rgba(255,255,255,0.75);
-            border-color: rgba(0,0,0,0.1);
-            color: #1a1a1a;
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
+            background: rgba(255, 255, 255, 0.06); /* تمويه زجاجي خفيف جداً */
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: #e0e0e0;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
         }
-        body.light .header-circle,
-        body.light .home-btn,
-        body.light .send-btn {
-            background: rgba(0,0,0,0.05);
-            border-color: rgba(0,0,0,0.1);
+        body.light .header-circle, body.light .home-btn, body.light .send-btn {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
-        body.light .header-circle i,
-        body.light .home-btn i,
-        body.light .send-btn i,
-        body.light .active-users-box i,
-        body.light .active-users-box span {
-            color: #333;
+        body.light .header-circle i, body.light .home-btn i, body.light .send-btn i,
+        body.light .active-users-box i, body.light .active-users-box span {
+            color: #fff;
         }
-        body.light .welcome-title,
-        body.light .logo-text {
-            background: linear-gradient(135deg, #333, #888);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
+        body.light .welcome-title, body.light .logo-text {
+            color: #fff;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
         }
+        body.light .send-btn.stop-btn {
+            background: rgba(255, 50, 50, 0.3);
+            border-color: rgba(255, 50, 50, 0.5);
+        }
+
         /* الثيم الداكن */
         body.dark {
             background: #0a0a0a;
             color: #e0e0e0;
         }
         body.dark .bg-animation {
-            background: radial-gradient(circle at 20% 80%, rgba(80,80,80,0.2) 0%, transparent 50%),
-                        radial-gradient(circle at 80% 20%, rgba(50,50,50,0.15) 0%, transparent 50%);
+            background: radial-gradient(circle at 20% 80%, rgba(80,80,80,0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(50,50,50,0.08) 0%, transparent 50%);
         }
-        body.dark .floating-header,
-        body.dark .input-card,
-        body.dark .bottom-sheet,
-        body.dark .char-selector-btn,
-        body.dark .char-list-item,
-        body.dark .notif-item,
-        body.dark .message-content,
-        body.dark .ai-bubble,
-        body.dark .splash-input-wrapper,
-        body.dark .login-card {
-            background: rgba(20,20,30,0.85);
-            border-color: rgba(150,150,150,0.3);
+        body.dark .floating-header, body.dark .input-card, body.dark .bottom-sheet,
+        body.dark .char-selector-btn, body.dark .char-list-item, body.dark .notif-item,
+        body.dark .message-content, body.dark .ai-bubble, body.dark .splash-input-wrapper {
+            background: rgba(20, 20, 30, 0.25); /* تمويه زجاجي خفيف جداً */
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
             color: #e0e0e0;
-            box-shadow: inset 0 0 10px rgba(255,255,255,0.05);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
         }
-        body.dark .header-circle,
-        body.dark .home-btn,
-        body.dark .send-btn {
-            background: rgba(40,40,55,0.6);
-            border-color: rgba(150,150,150,0.4);
+        body.dark .header-circle, body.dark .home-btn, body.dark .send-btn {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
-        body.dark .header-circle i,
-        body.dark .home-btn i,
-        body.dark .send-btn i,
-        body.dark .active-users-box i,
-        body.dark .active-users-box span {
+        body.dark .header-circle i, body.dark .home-btn i, body.dark .send-btn i,
+        body.dark .active-users-box i, body.dark .active-users-box span {
             color: #ccc;
         }
-        body.dark .welcome-title,
-        body.dark .logo-text {
-            background: linear-gradient(135deg, #eee, #aaa);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
+        body.dark .welcome-title, body.dark .logo-text {
+            color: #fff;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
         }
+        body.dark .send-btn.stop-btn {
+            background: rgba(255, 50, 50, 0.4);
+            border-color: rgba(255, 50, 50, 0.6);
+        }
+
         /* أنماط عامة */
         .bg-animation {
             position: fixed; width: 100%; height: 100%; top: 0; left: 0; z-index: -1;
@@ -113,7 +98,7 @@
         .floating-header {
             position: fixed; top: 12px; left: 12px; right: 12px; z-index: 100;
             display: flex; align-items: center; justify-content: space-between; padding: 6px;
-            backdrop-filter: blur(25px);
+            backdrop-filter: blur(4px); /* تمويه خفيف */
             border-radius: 18px; gap: 6px;
             transition: all 0.3s;
         }
@@ -132,7 +117,8 @@
         .logo-wrapper { flex: 1; display: flex; align-items: center; gap: 6px; }
         .logo-center {
             flex: 1; height: 40px; background: transparent;
-            border: 1px solid; border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 12px;
             display: flex; align-items: center; justify-content: center;
         }
         .logo-text {
@@ -149,447 +135,118 @@
 
         /* Splash Screen (تسجيل المعرف فقط) */
         .splash-section {
-            flex: 1;
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            text-align: center;
-            overflow-y: auto;
+            flex: 1; display: none; flex-direction: column; align-items: center; justify-content: center; padding: 20px; text-align: center; overflow-y: auto;
         }
         .splash-section.active { display: flex; }
         .splash-icon {
-            width: 100px;
-            height: 100px;
-            background: rgba(0,0,0,0.05);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 24px;
-            animation: pulse 2s infinite;
-            backdrop-filter: blur(10px);
-            border: 1px solid;
+            width: 100px; height: 100px; background: rgba(255,255,255,0.04); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 24px; animation: pulse 2s infinite; backdrop-filter: blur(4px); border: 1px solid rgba(255,255,255,0.05);
         }
         @keyframes pulse { 0%,100% { transform: scale(1); opacity: 0.7; } 50% { transform: scale(1.05); opacity: 1; } }
-        .splash-icon i { font-size: 56px; }
+        .splash-icon i { font-size: 56px; color: #fff; }
         .splash-title {
-            font-size: 28px;
-            font-weight: 800;
-            background: linear-gradient(135deg, #333, #888);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            margin-bottom: 16px;
+            font-size: 28px; font-weight: 800; color: #fff; margin-bottom: 16px; text-shadow: 0 0 10px rgba(255,255,255,0.1);
         }
-        .splash-text {
-            font-size: 16px;
-            max-width: 280px;
-            line-height: 1.6;
-            margin-bottom: 32px;
-        }
+        .splash-text { font-size: 16px; max-width: 280px; line-height: 1.6; margin-bottom: 32px; color: #ccc; }
         .splash-input-wrapper {
-            width: 100%;
-            max-width: 320px;
-            display: flex;
-            gap: 12px;
-            backdrop-filter: blur(16px);
-            border-radius: 48px;
-            padding: 6px 6px 6px 16px;
-            align-items: center;
+            width: 100%; max-width: 320px; display: flex; gap: 12px; backdrop-filter: blur(4px); border-radius: 48px; padding: 6px 6px 6px 16px; align-items: center;
         }
         .splash-input {
-            flex: 1;
-            background: transparent;
-            border: none;
-            padding: 14px 0;
-            font-size: 16px;
-            font-family: 'Tajawal', sans-serif;
-            outline: none;
+            flex: 1; background: transparent; border: none; padding: 14px 0; font-size: 16px; font-family: 'Tajawal', sans-serif; outline: none; color: #fff;
         }
-        .splash-input::placeholder { font-size: 14px; }
+        .splash-input::placeholder { font-size: 14px; color: #888; }
         .splash-btn {
-            width: 48px;
-            height: 48px;
-            border-radius: 40px;
-            background: linear-gradient(135deg, #ddd, #bbb);
-            border: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.2s;
+            width: 48px; height: 48px; border-radius: 40px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s;
         }
         .splash-btn:active { transform: scale(0.94); }
-        .splash-btn i { font-size: 24px; color: #333; }
-        .splash-error {
-            margin-top: 16px;
-            font-size: 12px;
-            color: #dc3545;
-            background: rgba(220,53,69,0.1);
-            border-radius: 40px;
-            padding: 8px 16px;
-        }
+        .splash-btn i { font-size: 24px; color: #fff; }
+        .splash-error { margin-top: 16px; font-size: 12px; color: #ff6b6b; background: rgba(255,50,50,0.1); border-radius: 40px; padding: 8px 16px; border: 1px solid rgba(255,50,50,0.1); }
 
         /* Main Welcome */
         .welcome-section {
-            flex: 1;
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 16px;
-            text-align: center;
-            overflow-y: auto;
+            flex: 1; display: none; flex-direction: column; align-items: center; justify-content: center; padding: 16px; text-align: center; overflow-y: auto;
         }
         .welcome-section.active { display: flex; }
-        .character-logo {
-            width: 100px;
-            height: 100px;
-            border-radius: 28px;
-            object-fit: cover;
-            margin-bottom: 20px;
-            border: 1px solid;
-            background: rgba(255,255,255,0.5);
-        }
+        .character-logo { width: 100px; height: 100px; border-radius: 28px; object-fit: cover; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.05); background: rgba(255,255,255,0.05); }
         .sparkle-icon { width: 60px; height: 60px; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; }
-        .sparkle-icon i { font-size: 60px; }
-        .welcome-title {
-            font-size: 24px;
-            font-weight: 800;
-            margin-bottom: 6px;
-            background: linear-gradient(135deg, #333, #888);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-        .welcome-subtitle {
-            font-size: 12px;
-            max-width: 260px;
-            line-height: 1.4;
-            margin-bottom: 16px;
-        }
-        .welcome-input-card {
-            width: 100%;
-            max-width: 320px;
-            margin-bottom: 8px;
-        }
-        .input-card {
-            backdrop-filter: blur(25px);
-            border-radius: 18px;
-            padding: 6px 6px 6px 12px;
-            transition: all 0.3s;
-        }
-        .input-wrapper {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .message-input {
-            flex: 1;
-            background: transparent;
-            border: none;
-            padding: 8px 0;
-            font-family: 'Tajawal', sans-serif;
-            font-size: 13px;
-            outline: none;
-        }
+        .sparkle-icon i { font-size: 60px; color: #fff; }
+        .welcome-title { font-size: 24px; font-weight: 800; margin-bottom: 6px; color: #fff; }
+        .welcome-subtitle { font-size: 12px; max-width: 260px; line-height: 1.4; margin-bottom: 16px; color: #aaa; }
+        .welcome-input-card { width: 100%; max-width: 320px; margin-bottom: 8px; }
+        .input-card { backdrop-filter: blur(4px); border-radius: 18px; padding: 6px 6px 6px 12px; transition: all 0.3s; }
+        .input-wrapper { display: flex; align-items: center; gap: 6px; }
+        .message-input { flex: 1; background: transparent; border: none; padding: 8px 0; font-family: 'Tajawal', sans-serif; font-size: 13px; outline: none; color: #fff; }
         .send-btn {
-            width: 34px;
-            height: 34px;
-            border-radius: 10px;
-            border: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
+            width: 34px; height: 34px; border-radius: 10px; border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s;
         }
         .send-btn:disabled { opacity: 0.5; }
         .send-btn:active:not(:disabled) { transform: scale(0.94); }
         .send-btn i { font-size: 18px; }
-        .spinner {
-            width: 16px;
-            height: 16px;
-            border: 2px solid rgba(0,0,0,0.2);
-            border-top-color: #333;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-        }
-        @keyframes spin { to { transform: rotate(360deg); } }
 
         /* Character scroll */
-        .char-scroll-container {
-            position: relative;
-            width: 100%;
-            max-width: 320px;
-            margin: 8px auto 12px;
-        }
-        .char-scroll-wrapper {
-            overflow-x: auto;
-            scroll-behavior: smooth;
-            scroll-snap-type: x mandatory;
-            -webkit-overflow-scrolling: touch;
-            scrollbar-width: thin;
-            mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
-            -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
-        }
-        .char-scroll-wrapper:not(.overflowing) {
-            display: flex;
-            justify-content: center;
-        }
-        .char-selector {
-            display: flex;
-            gap: 8px;
-            padding: 6px 0;
-            width: max-content;
-        }
-        .char-selector-btn {
-            scroll-snap-align: center;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            padding: 4px 10px;
-            backdrop-filter: blur(20px);
-            border-radius: 24px;
-            cursor: pointer;
-            transition: all 0.2s;
-            white-space: nowrap;
-            font-size: 11px;
-        }
-        .char-selector-btn.active {
-            background: rgba(0,0,0,0.1);
-            border-color: #aaa;
-        }
-        .char-selector-btn i { font-size: 14px; }
-        .char-selector-name {
-            font-size: 11px;
-            font-weight: 500;
-        }
+        .char-scroll-container { position: relative; width: 100%; max-width: 320px; margin: 8px auto 12px; }
+        .char-scroll-wrapper { overflow-x: auto; scroll-behavior: smooth; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: thin; mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent); -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent); }
+        .char-scroll-wrapper:not(.overflowing) { display: flex; justify-content: center; }
+        .char-selector { display: flex; gap: 8px; padding: 6px 0; width: max-content; }
+        .char-selector-btn { scroll-snap-align: center; display: flex; align-items: center; gap: 4px; padding: 4px 10px; backdrop-filter: blur(4px); border-radius: 24px; cursor: pointer; transition: all 0.2s; white-space: nowrap; font-size: 11px; }
+        .char-selector-btn.active { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); }
+        .char-selector-btn i { font-size: 14px; color: #fff; }
+        .char-selector-name { font-size: 11px; font-weight: 500; color: #ccc; }
 
         /* Chat Section */
-        .chat-section {
-            flex: 1;
-            display: none;
-            flex-direction: column;
-            overflow: hidden;
-        }
+        .chat-section { flex: 1; display: none; flex-direction: column; overflow: hidden; }
         .chat-section.active { display: flex; }
-        .messages-container {
-            flex: 1;
-            overflow-y: auto;
-            padding: 12px;
-            margin-bottom: 10px;
-            backdrop-filter: blur(15px);
-            border-radius: 20px;
-        }
+        .messages-container { flex: 1; overflow-y: auto; padding: 12px; margin-bottom: 10px; backdrop-filter: blur(4px); border-radius: 20px; }
         .message { margin-bottom: 10px; animation: messageSlide 0.3s ease; }
         @keyframes messageSlide { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .message-time { font-size: 9px; margin-bottom: 3px; }
-        .message-content {
-            border: 1px solid;
-            padding: 8px 12px;
-            border-radius: 12px;
-            font-size: 12px;
-            line-height: 1.5;
-            word-wrap: break-word;
-            max-width: 85%;
-        }
+        .message-time { font-size: 9px; margin-bottom: 3px; color: #888; }
+        .message-content { border: 1px solid rgba(255,255,255,0.05); padding: 8px 12px; border-radius: 12px; font-size: 12px; line-height: 1.5; word-wrap: break-word; max-width: 85%; }
         .message.own { text-align: left; }
-        .message.own .message-content {
-            margin-right: auto;
-            margin-left: 0;
-        }
-        .ai-bubble {
-            border: 1px solid;
-            border-radius: 12px;
-            overflow: hidden;
-            max-width: 85%;
-        }
-        .ai-bubble-label {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            padding: 6px 10px 0;
-            font-size: 9px;
-            font-weight: 700;
-        }
+        .message.own .message-content { margin-right: auto; margin-left: 0; }
+        .ai-bubble { border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; overflow: hidden; max-width: 85%; }
+        .ai-bubble-label { display: flex; align-items: center; gap: 4px; padding: 6px 10px 0; font-size: 9px; font-weight: 700; color: #aaa; }
         .ai-bubble-label i { font-size: 11px; }
-        .ai-bubble-text { padding: 4px 10px 8px; font-size: 12px; line-height: 1.5; word-wrap: break-word; }
-        .ai-bubble-footer {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 4px 10px 6px;
-            border-top: 1px solid rgba(0,0,0,0.05);
-        }
-        .ai-social-icons {
-            display: flex;
-            gap: 8px;
-        }
-        .ai-social-icons a {
-            text-decoration: none;
-            font-size: 14px;
-            transition: transform 0.2s;
-        }
+        .ai-bubble-text { padding: 4px 10px 8px; font-size: 12px; line-height: 1.5; word-wrap: break-word; color: #fff; }
+        .ai-bubble-footer { display: flex; align-items: center; justify-content: space-between; padding: 4px 10px 6px; border-top: 1px solid rgba(255,255,255,0.03); }
+        .ai-social-icons { display: flex; gap: 8px; }
+        .ai-social-icons a { text-decoration: none; font-size: 14px; transition: transform 0.2s; }
         .ai-social-icons a:active { transform: scale(0.9); }
         .ai-social-icons .bi-telegram { color: #0088cc; }
         .ai-social-icons .bi-instagram { color: #e4405f; }
-        .ai-bubble-copy {
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
+        .ai-bubble-copy { cursor: pointer; display: flex; align-items: center; gap: 4px; }
         .ai-bubble-copy i { font-size: 12px; }
-        .ai-bubble-copy span { font-size: 10px; }
+        .ai-bubble-copy span { font-size: 10px; color: #888; }
         .ai-bubble-copy:active { opacity: 0.6; }
 
         .input-section { padding: 6px 0; flex-shrink: 0; }
-        .chat-section .input-card {
-            padding: 8px 10px;
-        }
-        .home-btn {
-            width: 34px;
-            height: 34px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-        }
+        .chat-section .input-card { padding: 8px 10px; }
+        .home-btn { width: 34px; height: 34px; border-radius: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
         .home-btn:active { transform: scale(0.9); }
-        .home-btn i { font-size: 18px; }
+        .home-btn i { font-size: 18px; color: #fff; }
 
         /* Toast Notification */
-        .toast-notification {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            right: 20px;
-            background: rgba(0,0,0,0.85);
-            color: white;
-            padding: 12px 16px;
-            border-radius: 16px;
-            font-size: 13px;
-            z-index: 200;
-            backdrop-filter: blur(10px);
-            animation: fadeInUp 0.3s ease;
-            box-shadow: none;
-            text-align: center;
-        }
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        .toast-notification { position: fixed; bottom: 20px; left: 20px; right: 20px; background: rgba(0,0,0,0.85); color: white; padding: 12px 16px; border-radius: 16px; font-size: 13px; z-index: 200; backdrop-filter: blur(10px); animation: fadeInUp 0.3s ease; box-shadow: none; text-align: center; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
         /* Bottom Sheets */
-        .bottom-sheet-overlay {
-            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.5);
-            backdrop-filter: blur(8px);
-            z-index: 1000;
-            display: none;
-            align-items: flex-end;
-            justify-content: center;
-        }
+        .bottom-sheet-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(4px); z-index: 1000; display: none; align-items: flex-end; justify-content: center; }
         .bottom-sheet-overlay.active { display: flex; }
-        .bottom-sheet {
-            width: 100%;
-            max-width: 600px;
-            max-height: 80vh;
-            backdrop-filter: blur(25px);
-            border-radius: 25px 25px 0 0;
-            padding: 20px;
-            animation: slideUp 0.4s ease;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-        }
+        .bottom-sheet { width: 100%; max-width: 600px; max-height: 80vh; backdrop-filter: blur(4px); border-radius: 25px 25px 0 0; padding: 20px; animation: slideUp 0.4s ease; overflow-y: auto; display: flex; flex-direction: column; border: 1px solid rgba(255,255,255,0.05); }
         @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-        .sheet-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 12px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid rgba(0,0,0,0.1);
-        }
-        .sheet-title {
-            font-size: 16px;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
+        .sheet-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .sheet-title { font-size: 16px; font-weight: 700; display: flex; align-items: center; gap: 8px; color: #fff; }
         .sheet-title i { font-size: 18px; }
-        .sheet-close {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-        }
-        .sheet-close i { font-size: 16px; }
-        .sheet-instruction {
-            font-size: 11px;
-            text-align: center;
-            margin-bottom: 16px;
-            padding: 6px;
-            border-radius: 30px;
-        }
-        .characters-list, .notifications-list {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            overflow-y: auto;
-            max-height: 50vh;
-        }
-        .char-list-item, .notif-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 10px 14px;
-            border-radius: 16px;
-            width: 100%;
-        }
-        .char-list-icon, .notif-icon {
-            width: 36px;
-            height: 36px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-        .char-list-icon i, .notif-icon i { font-size: 20px; }
-        .char-list-info, .notif-content {
-            flex: 1;
-            text-align: right;
-        }
-        .char-list-name, .notif-title {
-            font-size: 13px;
-            font-weight: 700;
-            margin-bottom: 2px;
-        }
-        .char-list-desc, .notif-text {
-            font-size: 10px;
-            line-height: 1.3;
-        }
-        .char-list-check {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-        }
-        .char-list-item.active .char-list-check {
-            opacity: 1;
-        }
+        .sheet-close { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+        .sheet-close i { font-size: 16px; color: #fff; }
+        .sheet-instruction { font-size: 11px; text-align: center; margin-bottom: 16px; padding: 6px; border-radius: 30px; color: #aaa; }
+        .characters-list, .notifications-list { display: flex; flex-direction: column; gap: 10px; overflow-y: auto; max-height: 50vh; }
+        .char-list-item, .notif-item { display: flex; align-items: center; gap: 12px; padding: 10px 14px; border-radius: 16px; width: 100%; }
+        .char-list-icon, .notif-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .char-list-icon i, .notif-icon i { font-size: 20px; color: #fff; }
+        .char-list-info, .notif-content { flex: 1; text-align: right; }
+        .char-list-name, .notif-title { font-size: 13px; font-weight: 700; margin-bottom: 2px; color: #fff; }
+        .char-list-desc, .notif-text { font-size: 10px; line-height: 1.3; color: #aaa; }
+        .char-list-check { width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; opacity: 0; }
+        .char-list-item.active .char-list-check { opacity: 1; }
         .char-list-check i { font-size: 12px; color: white; }
 
         @media (min-width: 768px) {
@@ -624,7 +281,7 @@
     </header>
 
     <div class="main-container">
-        <!-- Splash screen (تسجيل المعرف فقط) -->
+        <!-- Splash screen -->
         <div class="splash-section" id="splashSection">
             <div class="splash-icon">
                 <i class="bi bi-chat-dots"></i>
@@ -654,7 +311,7 @@
                 <div class="input-card">
                     <div class="input-wrapper">
                         <input type="text" class="message-input" id="welcomeInput" placeholder="اكتب رسالتك..." onkeypress="handleWelcomeKey(event)">
-                        <button class="send-btn" id="welcomeSendBtn" onclick="sendWelcomeMessage()">
+                        <button class="send-btn" id="welcomeSendBtn" onclick="handleSendWelcome()">
                             <i class="bi bi-send"></i>
                         </button>
                     </div>
@@ -679,7 +336,7 @@
                             <i class="bi bi-house-door"></i>
                         </button>
                         <input type="text" class="message-input" id="chatInput" placeholder="اكتب رسالتك..." onkeypress="handleChatKey(event)">
-                        <button class="send-btn" id="sendBtn" onclick="sendChatMessage()">
+                        <button class="send-btn" id="sendBtn" onclick="handleSendChat()">
                             <i class="bi bi-send"></i>
                         </button>
                     </div>
@@ -719,7 +376,10 @@
         let currentCharacter = characters.length > 0 ? characters[0].callback_key : 'logo_maker';
         let isFirstMessage = true;
         let isProcessing = false;
-        let pendingMessage = null;
+        
+        // متغيرات التحكم في الـ Stream والإيقاف
+        let isStreaming = false;
+        let abortController = null;
 
         const splashSection = document.getElementById('splashSection');
         const welcomeSection = document.getElementById('welcomeSection');
@@ -742,7 +402,6 @@
                 localStorage.setItem('theme', 'light');
             }
         }
-        // Load saved theme
         const savedTheme = localStorage.getItem('theme');
         if (savedTheme === 'dark') {
             document.body.classList.remove('light');
@@ -759,7 +418,6 @@
                 welcomeSection.classList.add('active');
                 chatSection.classList.remove('active');
                 document.getElementById('welcomeInput').placeholder = 'اكتب رسالتك...';
-                // عرض الإشعار إذا كان موجوداً وفي الدردشة
                 if (latestNotification && latestNotification.show_in_chat) {
                     showToastNotification(latestNotification.title + ': ' + latestNotification.text, 10000);
                 }
@@ -775,17 +433,13 @@
             toast.className = 'toast-notification';
             toast.innerText = message;
             document.body.appendChild(toast);
-            setTimeout(() => {
-                toast.remove();
-            }, duration);
+            setTimeout(() => { toast.remove(); }, duration);
         }
 
         function updateActiveUsers() {
             fetch('/api/active_users')
                 .then(res => res.json())
-                .then(data => {
-                    document.getElementById('activeCount').textContent = data.count;
-                })
+                .then(data => { document.getElementById('activeCount').textContent = data.count; })
                 .catch(() => {});
         }
 
@@ -830,15 +484,11 @@
             const buttons = document.querySelectorAll('.char-selector-btn');
             if (buttons.length === 0) return;
             const containerCenter = container.scrollLeft + container.clientWidth / 2;
-            let nearest = null;
-            let minDistance = Infinity;
+            let nearest = null; let minDistance = Infinity;
             buttons.forEach(btn => {
                 const btnCenter = btn.offsetLeft + btn.offsetWidth / 2;
                 const distance = Math.abs(btnCenter - containerCenter);
-                if (distance < minDistance) {
-                    minDistance = distance;
-                    nearest = btn;
-                }
+                if (distance < minDistance) { minDistance = distance; nearest = btn; }
             });
             if (nearest) {
                 const scrollTo = nearest.offsetLeft - (container.clientWidth / 2) + (nearest.offsetWidth / 2);
@@ -860,7 +510,6 @@
                 title.textContent = char.name;
                 subtitle.textContent = char.description;
             } else if (characters.length > 0) {
-                // fallback to first character
                 const first = characters[0];
                 if (first.logo_url) {
                     logoContainer.innerHTML = `<img src="${escapeHtml(first.logo_url)}" class="character-logo" alt="${escapeHtml(first.name)}">`;
@@ -902,11 +551,9 @@
                 const badge = document.getElementById('notifBadge');
                 if (notifications.length === 0) {
                     list.innerHTML = '<div class="notif-item" style="justify-content: center; text-align: center;">لا توجد إشعارات</div>';
-                    badge.style.display = 'none';
-                    return;
+                    badge.style.display = 'none'; return;
                 }
-                badge.textContent = notifications.length;
-                badge.style.display = 'flex';
+                badge.textContent = notifications.length; badge.style.display = 'flex';
                 list.innerHTML = notifications.map(notif => `
                     <div class="notif-item">
                         <div class="notif-icon"><i class="bi bi-bell"></i></div>
@@ -917,9 +564,7 @@
                         </div>
                     </div>
                 `).join('');
-            } catch (err) {
-                console.error('Failed to load notifications', err);
-            }
+            } catch (err) { console.error('Failed to load notifications', err); }
         }
 
         function setButtonLoading(btn, loading) {
@@ -933,20 +578,48 @@
             }
         }
 
+        // ---- دالة تحديث الزر للتبديل بين الإرسال والإيقاف ----
+        function updateSendButton(isStreamingActive) {
+            const welcomeBtn = document.getElementById('welcomeSendBtn');
+            const chatBtn = document.getElementById('sendBtn');
+            
+            const btns = [welcomeBtn, chatBtn];
+            btns.forEach(btn => {
+                if (!btn) return;
+                if (isStreamingActive) {
+                    btn.disabled = false; // يمكن الضغط عليه للإيقاف
+                    btn.classList.add('stop-btn');
+                    btn.innerHTML = '<i class="bi bi-stop-circle"></i>';
+                } else {
+                    btn.classList.remove('stop-btn');
+                    btn.innerHTML = '<i class="bi bi-send"></i>';
+                }
+            });
+        }
+
+        // ---- دالة إيقاف التدفق ----
+        function stopStreaming() {
+            if (abortController) {
+                abortController.abort();
+                abortController = null;
+                isStreaming = false;
+                isProcessing = false;
+                updateSendButton(false);
+                removeLoading();
+                addMessage('تم إيقاف توليد الرد.', false);
+            }
+        }
+
         function showSplashError(msg) {
             const errDiv = document.getElementById('splashError');
-            errDiv.textContent = msg;
-            errDiv.style.display = 'block';
+            errDiv.textContent = msg; errDiv.style.display = 'block';
             setTimeout(() => errDiv.style.display = 'none', 4000);
         }
 
         async function performSplashRegister() {
             const idInput = document.getElementById('splashTelegramId');
             const id = idInput.value.trim();
-            if (!/^\d+$/.test(id)) {
-                showSplashError('المعرف يجب أن يحتوي على أرقام فقط');
-                return;
-            }
+            if (!/^\d+$/.test(id)) { showSplashError('المعرف يجب أن يحتوي على أرقام فقط'); return; }
             const btn = document.getElementById('splashRegisterBtn');
             setButtonLoading(btn, true);
             try {
@@ -957,15 +630,9 @@
                 });
                 let data = await res.json();
                 setButtonLoading(btn, false);
-                if (data.success) {
-                    location.reload();
-                } else {
-                    showSplashError(data.message || 'فشل التسجيل');
-                }
-            } catch (err) {
-                setButtonLoading(btn, false);
-                showSplashError('خطأ في الاتصال');
-            }
+                if (data.success) { location.reload(); } 
+                else { showSplashError(data.message || 'فشل التسجيل'); }
+            } catch (err) { setButtonLoading(btn, false); showSplashError('خطأ في الاتصال'); }
         }
 
         function addMessage(text, isOwn) {
@@ -1004,7 +671,10 @@
         }
 
         async function streamResponse(text) {
-            return new Promise((resolve) => {
+            return new Promise((resolve, reject) => {
+                // التحقق مما إذا تم إلغاء الطلب قبل بدء التدفق
+                if (!isStreaming) return reject(new Error('Stream cancelled'));
+
                 const container = document.getElementById('messagesContainer');
                 const time = new Date().toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' });
                 const msgDiv = document.createElement('div');
@@ -1031,11 +701,21 @@
                 const textEl = bubble.querySelector('.ai-bubble-text');
                 const copyBtn = bubble.querySelector('.ai-bubble-copy');
                 copyBtn.onclick = () => copyBubbleContent(copyBtn, textEl.innerText);
+                
                 const cursor = document.createElement('span');
                 cursor.className = 'cursor';
                 textEl.appendChild(cursor);
                 let idx = 0;
+                
                 const interval = setInterval(() => {
+                    // إذا تم إلغاء التدفق (isStreaming = false)، نوقف الكتابة ونرفض
+                    if (!isStreaming) {
+                        clearInterval(interval);
+                        cursor.remove();
+                        reject(new Error('Stream cancelled by user'));
+                        return;
+                    }
+                    
                     if (idx < text.length) {
                         const span = document.createElement('span');
                         span.textContent = text.charAt(idx);
@@ -1055,33 +735,44 @@
             navigator.clipboard.writeText(text).then(() => {
                 const original = button.innerHTML;
                 button.innerHTML = '<i class="bi bi-check-lg"></i><span>تم النسخ</span>';
-                setTimeout(() => {
-                    button.innerHTML = original;
-                }, 1500);
+                setTimeout(() => { button.innerHTML = original; }, 1500);
             }).catch(() => {
                 button.innerHTML = '<i class="bi bi-x-lg"></i><span>فشل</span>';
-                setTimeout(() => {
-                    button.innerHTML = '<i class="bi bi-files"></i><span>نسخ</span>';
-                }, 1500);
+                setTimeout(() => { button.innerHTML = '<i class="bi bi-files"></i><span>نسخ</span>'; }, 1500);
             });
         }
 
         async function actuallySendMessage(message) {
             if (isProcessing) return;
             isProcessing = true;
-            const sendBtn = document.getElementById('sendBtn') || document.getElementById('welcomeSendBtn');
-            setButtonLoading(sendBtn, true);
+            
+            // إعداد AbortController للسماح بإلغاء الطلب
+            abortController = new AbortController();
+            isStreaming = true;
+            updateSendButton(true); // تحويل زر الإرسال إلى زر إيقاف
+
             addMessage(message, true);
             document.getElementById('welcomeInput').value = '';
+            document.getElementById('chatInput').value = '';
             showLoading();
+            
             try {
                 const res = await fetch('/api/chat', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ character: currentCharacter, message: message })
+                    body: JSON.stringify({ character: currentCharacter, message: message }),
+                    signal: abortController.signal // ربط إشارة الإلغاء
                 });
+                
+                // إذا تم الإلغاء أثناء انتظار الـ fetch
+                if (!isStreaming) {
+                    removeLoading();
+                    throw new Error('Stream cancelled');
+                }
+
                 const data = await res.json();
                 removeLoading();
+                
                 if (data.response) {
                     await streamResponse(data.response);
                 } else {
@@ -1089,14 +780,27 @@
                 }
             } catch (err) {
                 removeLoading();
-                addMessage('خطأ في الاتصال بالخادم. تأكد من اتصالك بالإنترنت.', false);
-                console.error(err);
+                // تجاهل خطأ الإلغاء لأنه مقصود
+                if (err.name !== 'AbortError' && err.message !== 'Stream cancelled') {
+                    addMessage('خطأ في الاتصال بالخادم. تأكد من اتصالك بالإنترنت.', false);
+                    console.error(err);
+                }
+            } finally {
+                // إعادة تعيين الحالة بعد الانتهاء أو الإلغاء
+                isStreaming = false;
+                isProcessing = false;
+                abortController = null;
+                updateSendButton(false); // إعادة زر الإرسال لحالته الطبيعية
             }
-            isProcessing = false;
-            setButtonLoading(sendBtn, false);
         }
 
-        async function sendWelcomeMessage() {
+        // دالة معالجة الضغط على زر الإرسال في صفحة الترحيب
+        function handleSendWelcome() {
+            if (isStreaming) {
+                // إذا كان الـ stream يعمل، الزر يقوم بإيقافه
+                stopStreaming();
+                return;
+            }
             if (isProcessing) return;
             const input = document.getElementById('welcomeInput');
             const msg = input.value.trim();
@@ -1106,19 +810,25 @@
                 chatSection.classList.add('active');
                 isFirstMessage = false;
             }
-            await actuallySendMessage(msg);
+            actuallySendMessage(msg);
         }
 
-        async function sendChatMessage() {
+        // دالة معالجة الضغط على زر الإرسال في صفحة الدردشة
+        function handleSendChat() {
+            if (isStreaming) {
+                // إذا كان الـ stream يعمل، الزر يقوم بإيقافه
+                stopStreaming();
+                return;
+            }
             if (isProcessing) return;
             const input = document.getElementById('chatInput');
             const msg = input.value.trim();
             if (!msg) return;
-            await actuallySendMessage(msg);
+            actuallySendMessage(msg);
         }
 
-        function handleWelcomeKey(e) { if (e.key === 'Enter' && !isProcessing) sendWelcomeMessage(); }
-        function handleChatKey(e) { if (e.key === 'Enter' && !isProcessing) sendChatMessage(); }
+        function handleWelcomeKey(e) { if (e.key === 'Enter') handleSendWelcome(); }
+        function handleChatKey(e) { if (e.key === 'Enter') handleSendChat(); }
 
         function openCharactersSheet() { renderCharactersSheet(); document.getElementById('charactersSheet').classList.add('active'); }
         async function openNotificationsSheet() { await renderNotificationsSheet(); document.getElementById('notificationsSheet').classList.add('active'); document.getElementById('notifBadge').style.display = 'none'; }
@@ -1126,9 +836,7 @@
         function closeSheetOnBackdrop(e, id) { if (e.target === e.currentTarget) closeSheet(id); }
         function selectCharacter(key) {
             currentCharacter = key;
-            renderCharSelector();
-            renderCharactersSheet();
-            updateWelcomeDisplay();
+            renderCharSelector(); renderCharactersSheet(); updateWelcomeDisplay();
             closeSheet('charactersSheet');
             const char = characters.find(c => c.callback_key === key);
             if (char) {
@@ -1137,19 +845,14 @@
             }
         }
         function goHome() {
-            chatSection.classList.remove('active');
-            welcomeSection.classList.add('active');
+            chatSection.classList.remove('active'); welcomeSection.classList.add('active');
             document.getElementById('messagesContainer').innerHTML = '';
             isFirstMessage = true;
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            initScreen();
-            updateActiveUsers();
-            setInterval(updateActiveUsers, 30000);
-            renderCharSelector();
-            renderNotificationsSheet();
-            updateWelcomeDisplay();
+            initScreen(); updateActiveUsers(); setInterval(updateActiveUsers, 30000);
+            renderCharSelector(); renderNotificationsSheet(); updateWelcomeDisplay();
             document.getElementById('splashRegisterBtn').onclick = performSplashRegister;
             document.getElementById('splashTelegramId').addEventListener('keypress', (e) => {
                 if (e.key === 'Enter') performSplashRegister();
