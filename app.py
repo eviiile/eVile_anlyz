@@ -3,6 +3,7 @@ import logging
 import requests
 import time
 import json
+import traceback  # تمت الإضافة لطباعة الأخطاء التفصيلية
 from datetime import datetime, timedelta
 from functools import wraps
 from contextlib import contextmanager
@@ -341,6 +342,7 @@ def api_chat():
     def generate():
         try:
             response = requests.post(OPENROUTER_URL, json=payload, headers=headers, stream=True, timeout=30)
+            response.raise_for_status()  # التحقق من حالة الاستجابة
             for chunk in response.iter_lines():
                 if chunk:
                     decoded = chunk.decode('utf-8')
@@ -352,18 +354,23 @@ def api_chat():
                                 content = json_data['choices'][0]['delta'].get('content', '')
                                 if content:
                                     yield content
-                            except Exception:
-                                pass
+                            except Exception as e:
+                                logger.error(f"JSON decode error in stream: {e}")
+        except requests.exceptions.RequestException as e:
+            # طباعة تفاصيل الخطأ الكاملة في السجلات
+            logger.error(f"OpenRouter API Request Exception: {str(e)}")
+            if hasattr(e, 'response') and e.response is not None:
+                logger.error(f"Status Code: {e.response.status_code}")
+                logger.error(f"Response Body: {e.response.text}")
+            logger.error(traceback.format_exc())
+            yield f"خطأ في الاتصال بـ OpenRouter (تفاصيل الخطأ موجودة في السجلات)"
         except Exception as e:
-            logger.error(f"Stream error: {e}")
-            yield f"حدث خطأ في الاتصال بـ OpenRouter: {str(e)}"
+            logger.error(f"Unexpected error in OpenRouter stream: {e}")
+            logger.error(traceback.format_exc())
+            yield f"حدث خطأ غير متوقع: {str(e)}"
     
     return Response(generate(), mimetype='text/plain')
 
-# =======================================================
-# تعديل مهم جداً: تهيئة قاعدة البيانات خارج `if __name__`
-# لكي تعمل مع Gunicorn على Render.com
-# =======================================================
 print("🚀 Starting EVILE Application...")
 try:
     init_db()
