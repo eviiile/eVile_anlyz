@@ -89,8 +89,10 @@ def init_db():
             )''')
             ensure_notification_columns(cur)
             logger.info("Database initialized/updated successfully")
+            print("✅ Database tables ensured successfully.")
     except Exception as e:
         logger.error(f"Database initialization error: {e}")
+        print(f"❌ Critical DB Init Error: {e}")
         raise
 
 def update_user_activity(telegram_id):
@@ -316,7 +318,7 @@ def api_chat():
             character = cur.fetchone()
     except Exception as e:
         logger.error(f"Get character error: {e}")
-        return jsonify({'error': str(e)}), 500
+        return jsonify({'error': 'Database connection error: ' + str(e)}), 500
     if not character:
         return jsonify({'error': 'Character not found'}), 404
     
@@ -354,10 +356,19 @@ def api_chat():
                                 pass
         except Exception as e:
             logger.error(f"Stream error: {e}")
-            yield "حدث خطأ أثناء توليد الرد."
+            yield f"حدث خطأ في الاتصال بـ OpenRouter: {str(e)}"
     
     return Response(generate(), mimetype='text/plain')
 
-if __name__ == '__main__':
+# =======================================================
+# تعديل مهم جداً: تهيئة قاعدة البيانات خارج `if __name__`
+# لكي تعمل مع Gunicorn على Render.com
+# =======================================================
+print("🚀 Starting EVILE Application...")
+try:
     init_db()
+except Exception as e:
+    print(f"❌ FATAL ERROR: Database initialization failed! {e}")
+
+if __name__ == '__main__':
     app.run(host='0.0.0.0', port=int(os.getenv('PORT', 5000)), debug=False)
