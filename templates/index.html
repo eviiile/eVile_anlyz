@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -22,9 +23,9 @@
         .floating-header {
             position: fixed; top: 12px; left: 12px; right: 12px; z-index: 100;
             display: flex; align-items: center; justify-content: space-between; padding: 6px;
-            background: rgba(255, 255, 255, 0.03); /* شفافية زجاجية عالية */
+            background: rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(6px);
-            border: none; /* إزالة أي حدود */
+            border: none;
             border-radius: 18px; gap: 6px;
             transition: all 0.3s;
             box-shadow: inset 0 0 20px rgba(255, 0, 0, 0.02); 
@@ -585,6 +586,7 @@
             });
         }
 
+        // دالة عرض النص المتدفق (التي كانت موجودة وتعمل)
         async function streamResponse(text) {
             return new Promise((resolve, reject) => {
                 if (!isStreaming) return reject(new Error('Stream cancelled'));
@@ -648,6 +650,7 @@
             });
         }
 
+        // --- التعديل الحاسم هنا: قراءة التدفق (Stream) من الخادم بدلاً من JSON ---
         async function actuallySendMessage(message) {
             if (isProcessing) return;
             isProcessing = true;
@@ -661,7 +664,7 @@
             showLoading();
             
             try {
-                const res = await fetch('/api/chat', {
+                const response = await fetch('/api/chat', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ character: currentCharacter, message: message }),
@@ -669,13 +672,28 @@
                 });
                 
                 if (!isStreaming) { removeLoading(); throw new Error('Stream cancelled'); }
-                const data = await res.json();
-                removeLoading();
-                if (data.response) {
-                    await streamResponse(data.response);
-                } else {
-                    addMessage('حدث خطأ في المعالجة. حاول مرة أخرى.', false);
+
+                // الحصول على القارئ لقراءة النص المتدفق
+                const reader = response.body.getReader();
+                const decoder = new TextDecoder();
+                let fullText = '';
+
+                while (true) {
+                    const { done, value } = await reader.read();
+                    if (done) break;
+                    // فك تشفير الجزء الوارد وإضافته للنص الكامل
+                    const chunk = decoder.decode(value, { stream: true });
+                    fullText += chunk;
                 }
+                
+                removeLoading();
+                // بعد تجميع النص بالكامل، نقوم بإرساله إلى دالة التدفق الوهمي للكتابة حرف بحرف
+                if (fullText) {
+                    await streamResponse(fullText);
+                } else {
+                    addMessage('لم يتم استلام رد من الخادم.', false);
+                }
+
             } catch (err) {
                 removeLoading();
                 if (err.name !== 'AbortError' && err.message !== 'Stream cancelled') {
