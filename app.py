@@ -65,18 +65,27 @@ def ensure_notification_columns(cur):
         cur.execute("ALTER TABLE notifications ADD COLUMN show_in_chat BOOLEAN DEFAULT FALSE")
         logger.info("Added column show_in_chat to notifications table")
 
+# --- تمت إضافة هذه الدالة لإصلاح العمود المفقود ---
+def ensure_character_columns(cur):
+    cur.execute("""
+        SELECT column_name 
+        FROM information_schema.columns 
+        WHERE table_name='characters' AND column_name='is_max'
+    """)
+    if not cur.fetchone():
+        cur.execute("ALTER TABLE characters ADD COLUMN is_max BOOLEAN DEFAULT FALSE")
+        logger.info("✅ Added missing column 'is_max' to characters table")
+
 def init_db():
     try:
         with get_db() as cur:
-            # تم إضافة حقل is_max
             cur.execute('''CREATE TABLE IF NOT EXISTS characters (
                 id SERIAL PRIMARY KEY,
                 name TEXT NOT NULL,
                 description TEXT NOT NULL,
                 prompt TEXT NOT NULL,
                 callback_key TEXT UNIQUE NOT NULL,
-                logo_url TEXT DEFAULT '',
-                is_max BOOLEAN DEFAULT FALSE
+                logo_url TEXT DEFAULT ''
             )''')
             cur.execute('''CREATE TABLE IF NOT EXISTS notifications (
                 id SERIAL PRIMARY KEY,
@@ -89,7 +98,11 @@ def init_db():
                 telegram_id TEXT UNIQUE NOT NULL,
                 last_active TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )''')
+            
+            # استدعاء دالة إضافة الأعمدة المفقودة
             ensure_notification_columns(cur)
+            ensure_character_columns(cur) # إصلاح الخطأ الذي ظهر في السجلات
+            
             logger.info("Database initialized/updated successfully")
             print("✅ Database tables ensured successfully.")
     except Exception as e:
