@@ -10,7 +10,8 @@
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body {
             font-family: 'Tajawal', sans-serif;
-            background: linear-gradient(135deg, #06143d 0%, #25819e 100%);
+            /* تغيير الخلفية إلى الأزرق الليلي العميق والبنفسجي الملكي الداكن */
+            background: linear-gradient(135deg, #080C1A 0%, #1F0B3A 100%);
             color: #ffffff;
             overflow: hidden;
             touch-action: manipulation;
@@ -18,12 +19,13 @@
         }
         .main-container { width: 100%; height: 100vh; height: 100dvh; display: flex; flex-direction: column; padding: 12px; padding-top: 70px; }
         
+        /* تحسين التباين للعناصر الزجاجية + حدود بيضاء شفافة (0.4) */
         .glass-card, .floating-header, .input-card, .bottom-sheet, .message-content, .ai-bubble, .splash-input-wrapper {
-            background: rgba(255, 255, 255, 0.06);
+            background: rgba(255, 255, 255, 0.12); /* تم زيادة الشفافية قليلاً لرفع التباين */
             backdrop-filter: blur(14px);
             -webkit-backdrop-filter: blur(14px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.4); /* حدود بيضاء شفافة عالية التباين */
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
             border-radius: 18px;
         }
         
@@ -34,6 +36,7 @@
         .header-circle {
             width: 40px; height: 40px; border-radius: 12px;
             background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             display: flex; align-items: center; justify-content: center;
             cursor: pointer; transition: all 0.3s; flex-shrink: 0; position: relative;
         }
@@ -42,7 +45,7 @@
         .header-circle .notif-badge {
             position: absolute; top: -3px; right: -3px; width: 16px; height: 16px; background: #ff4d4d;
             border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            font-size: 9px; font-weight: bold; color: #fff; border: 2px solid #06143d;
+            font-size: 9px; font-weight: bold; color: #fff; border: 2px solid #0a0d23;
         }
         .logo-wrapper { flex: 1; display: flex; align-items: center; gap: 6px; }
         .logo-center {
@@ -54,6 +57,7 @@
         .active-users-box {
             height: 40px; padding: 0 10px; border-radius: 12px;
             background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             display: flex; align-items: center; justify-content: center; gap: 4px;
             font-size: 11px; font-weight: 700; white-space: nowrap;
         }
@@ -63,7 +67,7 @@
         /* Splash Screen */
         .splash-section { flex: 1; display: none; flex-direction: column; align-items: center; justify-content: center; padding: 20px; text-align: center; }
         .splash-section.active { display: flex; }
-        .splash-icon { width: 100px; height: 100px; background: rgba(255, 255, 255, 0.05); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 24px; animation: pulse 2s infinite; }
+        .splash-icon { width: 100px; height: 100px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.4); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 24px; animation: pulse 2s infinite; }
         @keyframes pulse { 0%,100% { transform: scale(1); opacity: 0.7; } 50% { transform: scale(1.05); opacity: 1; } }
         .splash-icon i { font-size: 56px; color: #fff; }
         .splash-title { font-size: 28px; font-weight: 800; color: #fff; margin-bottom: 16px; }
@@ -71,15 +75,15 @@
         .splash-input-wrapper { width: 100%; max-width: 320px; display: flex; gap: 12px; border-radius: 48px; padding: 6px 6px 6px 16px; align-items: center; }
         .splash-input { flex: 1; background: transparent; border: none; padding: 14px 0; font-size: 16px; font-family: 'Tajawal', sans-serif; outline: none; color: #fff; }
         .splash-input::placeholder { font-size: 14px; color: rgba(255,255,255,0.5); }
-        .splash-btn { width: 48px; height: 48px; border-radius: 40px; background: rgba(255, 255, 255, 0.1); border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; }
+        .splash-btn { width: 48px; height: 48px; border-radius: 40px; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.4); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; }
         .splash-btn:active { transform: scale(0.94); }
         .splash-btn i { font-size: 24px; color: #fff; }
-        .splash-error { margin-top: 16px; font-size: 12px; color: #ff6b6b; background: rgba(255,0,0,0.1); border-radius: 40px; padding: 8px 16px; }
+        .splash-error { margin-top: 16px; font-size: 12px; color: #ff6b6b; background: rgba(255,0,0,0.1); border: 1px solid rgba(255,0,0,0.2); border-radius: 40px; padding: 8px 16px; }
 
         /* Welcome Section */
         .welcome-section { flex: 1; display: none; flex-direction: column; align-items: center; justify-content: center; padding: 16px; text-align: center; }
         .welcome-section.active { display: flex; }
-        .character-logo { width: 100%; max-width: 260px; height: auto; border-radius: 28px; object-fit: contain; margin-bottom: 20px; background: rgba(255, 255, 255, 0.02); padding: 5px; }
+        .character-logo { width: 100%; max-width: 260px; height: auto; border-radius: 28px; object-fit: contain; margin-bottom: 20px; background: rgba(255, 255, 255, 0.02); padding: 5px; border: 1px solid rgba(255, 255, 255, 0.4); }
         .sparkle-icon { width: 60px; height: 60px; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; }
         .sparkle-icon i { font-size: 60px; color: #fff; }
         .welcome-title { font-size: 24px; font-weight: 800; margin-bottom: 6px; color: #fff; }
@@ -92,10 +96,24 @@
         .send-btn:disabled { opacity: 0.5; }
         .send-btn:active:not(:disabled) { transform: scale(0.94); }
         
-        .send-btn-normal { background: rgba(255, 255, 255, 0.1); color: #fff; }
-        .send-btn-max { background: rgba(255, 0, 0, 0.4); color: #fff; border: 1px solid rgba(255, 0, 0, 0.5); box-shadow: 0 0 15px rgba(255, 0, 0, 0.2); }
-        .send-btn-max i { color: #fff; }
-        .send-btn.stop-btn { background: rgba(255, 50, 50, 0.8); color: #fff; border: none; }
+        /* زر الإرسال العادي مع وهج أزرق فاتح خفيف */
+        .send-btn-normal { 
+            background: rgba(255, 255, 255, 0.15); 
+            color: #fff; 
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 0 20px rgba(77, 166, 255, 0.3); /* وهج أزرق فاتح */
+        }
+        .send-btn-max { 
+            background: rgba(255, 0, 0, 0.4); 
+            color: #fff; 
+            border: 1px solid rgba(255, 0, 0, 0.6); 
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.2); 
+        }
+        .send-btn.stop-btn { 
+            background: rgba(255, 50, 50, 0.8); 
+            color: #fff; 
+            border: none; 
+        }
 
         /* شريط الشخصيات */
         .char-scroll-container { position: relative; width: 100%; max-width: 320px; margin: 8px auto 12px; overflow: hidden; }
@@ -111,11 +129,13 @@
         .char-selector { display: flex; gap: 8px; padding: 6px 0; width: max-content; }
         .char-selector-btn {
             display: flex; align-items: center; gap: 4px; padding: 4px 10px;
-            background: rgba(255, 255, 255, 0.04);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.4);
             border-radius: 24px; cursor: pointer; transition: all 0.2s; white-space: nowrap; font-size: 11px; color: rgba(255,255,255,0.7);
         }
         .char-selector-btn.active {
-            background: rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.2);
+            border-color: #ffffff;
             color: #fff;
         }
         .char-selector-btn i { font-size: 14px; }
@@ -137,23 +157,23 @@
         .ai-bubble-label { display: flex; align-items: center; gap: 4px; padding: 6px 10px 0; font-size: 9px; font-weight: 700; color: #8effa0; }
         .ai-bubble-label i { font-size: 11px; }
         .ai-bubble-text { padding: 4px 10px 8px; font-size: 12px; line-height: 1.5; word-wrap: break-word; color: #fff; }
-        .ai-bubble-footer { display: flex; align-items: center; justify-content: flex-end; padding: 4px 10px 6px; border-top: 1px solid rgba(255,255,255,0.05); }
+        .ai-bubble-footer { display: flex; align-items: center; justify-content: flex-end; padding: 4px 10px 6px; border-top: 1px solid rgba(255,255,255,0.1); }
         .ai-bubble-copy { cursor: pointer; display: flex; align-items: center; gap: 4px; color: rgba(255,255,255,0.6); }
         .ai-bubble-copy:active { opacity: 0.6; }
         
-        /* نافذة MAX المنبثقة (تصميم جديد ودود وملون) */
+        /* نافذة MAX المنبثقة */
         .max-modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(6px);
+            background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(6px);
             z-index: 9999; display: none; justify-content: center; align-items: center;
         }
         .max-modal-overlay.active { display: flex; }
         .max-modal-box {
-            background: rgba(255, 255, 255, 0.08); /* زجاجي */
-            backdrop-filter: blur(16px); /* تمويه زجاجي قوي */
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-            border-radius: 24px; /* زوايا ناعمة */
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            border-radius: 24px;
             padding: 30px; max-width: 400px; width: 90%;
             text-align: center; position: relative;
             color: #fff;
@@ -164,7 +184,7 @@
         .max-modal-box p { color: rgba(255,255,255,0.8); font-size: 14px; line-height: 1.6; margin-bottom: 20px; }
         .max-modal-box .input-field {
             width: 100%; padding: 12px; background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.4); border-radius: 12px;
             color: #fff; margin-bottom: 15px; text-align: center; outline: none;
         }
         .max-modal-box .input-field:focus { border-color: #8effa0; }
@@ -175,28 +195,28 @@
         }
         .btn-max-telegram { background: #0088cc; color: white; }
         .btn-max-telegram:hover { background: #0077b3; }
-        .btn-max-save { background: rgba(255, 255, 255, 0.1); color: #fff; border: 1px solid rgba(255, 255, 255, 0.1); }
+        .btn-max-save { background: rgba(255, 255, 255, 0.1); color: #fff; border: 1px solid rgba(255, 255, 255, 0.4); }
         .btn-max-save:hover { background: rgba(255, 255, 255, 0.2); }
 
         /* Bottom Sheets */
-        .bottom-sheet-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(8px); z-index: 1000; display: none; align-items: flex-end; justify-content: center; }
+        .bottom-sheet-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); z-index: 1000; display: none; align-items: flex-end; justify-content: center; }
         .bottom-sheet-overlay.active { display: flex; }
         .bottom-sheet { width: 100%; max-width: 600px; max-height: 80vh; border-radius: 25px 25px 0 0; padding: 20px; animation: slideUp 0.4s ease; overflow-y: auto; display: flex; flex-direction: column; }
         @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-        .sheet-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .sheet-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.2); }
         .sheet-title { font-size: 16px; font-weight: 700; display: flex; align-items: center; gap: 8px; color: #fff; }
-        .sheet-close { width: 30px; height: 30px; border-radius: 50%; background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; cursor: pointer; }
+        .sheet-close { width: 30px; height: 30px; border-radius: 50%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.4); display: flex; align-items: center; justify-content: center; cursor: pointer; }
         .sheet-close i { font-size: 16px; color: #fff; }
         .sheet-instruction { font-size: 11px; text-align: center; margin-bottom: 16px; padding: 6px; border-radius: 30px; color: rgba(255,255,255,0.6); }
         .characters-list, .notifications-list { display: flex; flex-direction: column; gap: 10px; overflow-y: auto; max-height: 50vh; }
-        .char-list-item, .notif-item { display: flex; align-items: center; gap: 12px; padding: 10px 14px; border-radius: 16px; width: 100%; background: rgba(255,255,255,0.03); }
-        .char-list-icon, .notif-icon { width: 36px; height: 36px; border-radius: 10px; background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .char-list-item, .notif-item { display: flex; align-items: center; gap: 12px; padding: 10px 14px; border-radius: 16px; width: 100%; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.4); }
+        .char-list-icon, .notif-icon { width: 36px; height: 36px; border-radius: 10px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.4); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
         .char-list-icon i, .notif-icon i { font-size: 20px; color: #fff; }
         .char-list-info, .notif-content { flex: 1; text-align: right; }
         .char-list-name, .notif-title { font-size: 13px; font-weight: 700; margin-bottom: 2px; color: #fff; }
         .char-list-desc, .notif-text { font-size: 10px; line-height: 1.3; color: rgba(255,255,255,0.6); }
-        .char-list-check { width: 20px; height: 20px; border-radius: 50%; background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; opacity: 0; }
-        .char-list-item.active .char-list-check { opacity: 1; background: #8effa0; color: #06143d; }
+        .char-list-check { width: 20px; height: 20px; border-radius: 50%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.4); display: flex; align-items: center; justify-content: center; opacity: 0; }
+        .char-list-item.active .char-list-check { opacity: 1; background: #8effa0; color: #06143d; border: none; }
 
         @media (min-width: 768px) {
             .main-container { max-width: 700px; margin: 0 auto; padding: 20px; padding-top: 80px; }
@@ -206,7 +226,7 @@
 </head>
 <body>
 
-    <!-- نافذة منع MAX (نمط جديد ودود وزجاجي) -->
+    <!-- نافذة منع MAX -->
     <div class="max-modal-overlay" id="maxModal">
         <div class="max-modal-box">
             <div class="max-close-x" onclick="closeMaxModal()">×</div>
@@ -326,7 +346,6 @@
         let isStreaming = false;
         let abortController = null;
 
-        // متغير النقرات الثلاث
         let clickCount = 0;
 
         const splashSection = document.getElementById('splashSection');
@@ -364,7 +383,6 @@
                 .catch(() => {});
         }
 
-        // ---- وظيفة النقر 3 مرات لنسخ المعرف ----
         function handleTripleClick() {
             clickCount++;
             if (clickCount === 3) {
@@ -382,7 +400,6 @@
             setTimeout(() => { clickCount = 0; }, 1000);
         }
 
-        // ---- دوال النافذة المنبثقة MAX (محدثة) ----
         function openMaxModal() {
             document.getElementById('maxModal').classList.add('active');
         }
@@ -410,7 +427,6 @@
             }
         }
 
-        // ---- تحديث مظهر زر الإرسال بناءً على الشخصية ----
         function updateSendButtonBasedOnCharacter() {
             const char = characters.find(c => c.callback_key === currentCharacter);
             const welcomeBtn = document.getElementById('welcomeSendBtn');
@@ -430,7 +446,6 @@
             });
         }
 
-        // ---- شريط الشخصيات ----
         function renderCharSelector() {
             const selector = document.getElementById('charSelector');
             if (!characters || characters.length === 0) {
@@ -637,7 +652,6 @@
             });
         }
 
-        // ---- فحص الحظر قبل إرسال الرسالة ----
         function checkIfAllowedToSend() {
             const char = characters.find(c => c.callback_key === currentCharacter);
             if (char && char.is_max === true) {
@@ -695,7 +709,6 @@
             actuallySendMessage(msg);
         }
 
-        // منع زر Enter من الإرسال
         document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('welcomeInput').addEventListener('keydown', (e) => {
                 if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); } 
