@@ -10,242 +10,140 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Tajawal', sans-serif;
-            background: #FBEFEF;
-            color: #2C1A34;
-            min-height: 100vh;
+            background: linear-gradient(160deg, #ffffff 0%, #e4d8ff 100%);
+            color: #1f153f;
+            height: 100vh; height: 100dvh;
             display: flex;
             align-items: center;
             justify-content: center;
-            position: relative;
+            overflow: hidden; /* منع التمرير تماماً */
         }
-
         .sign-wrapper {
-            width: 100%; max-width: 480px; 
+            width: 100%; max-width: 400px; 
             height: 100vh; height: 100dvh;
-            overflow-y: auto;
             display: flex; flex-direction: column;
-            padding: 20px 20px 30px 20px;
-            scroll-behavior: smooth;
-            position: relative; z-index: 1;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
         }
         
-        /* القسم العلوي (يملأ الشاشة بالكامل) */
-        .sign-hero {
-            min-height: 100vh; 
-            display: flex; flex-direction: column;
-            justify-content: center; align-items: center;
-            text-align: center;
-            padding-bottom: 20px;
-        }
-        .hero-animated-icon {
-            position: relative; margin-bottom: 20px;
-        }
-        .hero-animated-icon i {
-            font-size: 60px;
-            background: linear-gradient(135deg, #2C1A34 0%, #8E6A9A 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            animation: float 3s ease-in-out infinite;
-        }
-        .hero-animated-icon .sparkle {
-            position: absolute; top: -10px; right: -15px;
-            font-size: 20px; color: #ffc107;
-            animation: spin 4s linear infinite;
-        }
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-12px); }
-        }
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        .hero-title { 
-            font-size: 32px; font-weight: 800; 
-            color: #2C1A34;
-            margin-bottom: 15px;
-        }
-        .hero-subtitle { font-size: 15px; color: #6B4C7A; line-height: 1.7; max-width: 320px; margin: 0 auto; }
-        
-        .hero-features-grid {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 25px;
-        }
-        .hero-feature {
-            background: rgba(197, 179, 211, 0.4);
-            backdrop-filter: blur(8px);
-            border: 1px solid #FFE2E2;
-            padding: 15px 10px; border-radius: 16px;
-            animation: fadeInUp 0.8s ease-out forwards;
-            opacity: 0;
-            box-shadow: none;
-        }
-        .hero-feature:nth-child(1) { animation-delay: 0.1s; }
-        .hero-feature:nth-child(2) { animation-delay: 0.3s; }
-        .hero-feature:nth-child(3) { animation-delay: 0.5s; }
-        .hero-feature:nth-child(4) { animation-delay: 0.7s; }
-
-        .hero-feature i { display: block; font-size: 30px; margin-bottom: 8px; color: #4A2E5C; }
-        .hero-feature h3 { font-size: 14px; font-weight: 700; color: #2C1A34; margin-bottom: 4px; }
-        .hero-feature p { font-size: 11px; color: #6B4C7A; line-height: 1.4; }
-        
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .scroll-down-indicator {
-            margin-top: 20px; display: flex; flex-direction: column; align-items: center;
-            color: #8E6A9A; font-size: 12px; font-weight: 600;
-            animation: bounce-down 2s infinite;
-        }
-        @keyframes bounce-down {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(10px); }
-        }
-
-        /* القسم السفلي (يملأ الشاشة بالكامل عند التمرير) */
-        .sign-form-section { 
-            min-height: 100vh; /* أخذ ارتفاع الشاشة بالكامل */
-            width: 100%; 
+        /* الشعار */
+        .logo-area { text-align: center; margin-bottom: 12px; }
+        .logo-icon {
+            width: 48px; height: 48px; border-radius: 16px;
+            background: #6535e0; color: white;
             display: flex; align-items: center; justify-content: center;
-            padding-top: 30px; padding-bottom: 30px;
-            opacity: 0; transform: translateY(30px); transition: all 0.6s ease;
+            margin: 0 auto 8px auto;
+            box-shadow: 0 8px 20px rgba(101, 53, 224, 0.2);
         }
-        .sign-form-section.visible { opacity: 1; transform: translateY(0); }
+        .logo-icon i { font-size: 24px; }
+        .logo-title { font-size: 22px; font-weight: 800; color: #1f153f; letter-spacing: 1px; }
+        
+        /* الميزات (مصغرة جداً) */
+        .features-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 6px;
+            width: 100%; margin-bottom: 16px;
+        }
+        .feature-item {
+            background: rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(101, 53, 224, 0.08);
+            border-radius: 12px; padding: 10px 8px;
+            text-align: center; transition: 0.2s;
+        }
+        .feature-item i { font-size: 20px; color: #6535e0; display: block; margin-bottom: 2px; }
+        .feature-item span { font-size: 10px; font-weight: 600; color: #3b2b66; }
 
+        /* بطاقة النموذج */
         .sign-card {
-            background: rgba(197, 179, 211, 0.4);
+            background: rgba(255, 255, 255, 0.6);
             backdrop-filter: blur(12px);
-            border: 1px solid #FFE2E2;
-            border-radius: 24px;
-            padding: 30px 25px; width: 100%;
-            box-shadow: none;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            border-radius: 20px;
+            padding: 20px 20px; width: 100%;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.02);
         }
-        .sign-inputs { text-align: right; }
-        .input-group { margin-bottom: 16px; }
-        .input-group label { display: block; font-size: 12px; font-weight: 700; color: #6B4C7A; margin-bottom: 5px; }
+        .form-title { font-size: 16px; font-weight: 700; margin-bottom: 16px; text-align: center; color: #1f153f; }
+        .input-group { margin-bottom: 12px; }
+        .input-group label { display: block; font-size: 11px; font-weight: 700; color: #3b2b66; margin-bottom: 4px; }
         .input-group input {
-            width: 100%; padding: 12px 16px; background: rgba(255, 255, 255, 0.3);
-            border: 1px solid #FFE2E2; border-radius: 12px; font-family: 'Tajawal', sans-serif;
-            font-size: 14px; color: #2C1A34; outline: none; transition: 0.2s;
-            box-shadow: none;
+            width: 100%; padding: 10px 14px; background: rgba(255, 255, 255, 0.5);
+            border: 1px solid rgba(101, 53, 224, 0.1); border-radius: 12px; 
+            font-family: 'Tajawal', sans-serif; font-size: 14px; color: #1f153f; outline: none; transition: 0.2s;
         }
-        .input-group input:focus { border-color: #A188B5; background: rgba(255, 255, 255, 0.5); }
+        .input-group input:focus { border-color: #6535e0; background: #ffffff; }
         .btn-primary {
-            width: 100%; padding: 14px; margin-top: 10px;
-            background: rgba(197, 179, 211, 0.6);
-            border: 1px solid #FFE2E2; border-radius: 14px;
-            color: #2C1A34; font-weight: 700; font-size: 16px;
-            cursor: pointer; transition: all 0.2s;
-            box-shadow: none;
+            width: 100%; padding: 12px; margin-top: 6px;
+            background: #6535e0; border: none; border-radius: 12px;
+            color: #fff; font-weight: 700; font-size: 15px;
+            cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 15px rgba(101, 53, 224, 0.3);
         }
         .btn-primary:active { transform: scale(0.96); }
-        .sign-error { color: #ff4d4d; font-size: 13px; margin-top: 10px; display: none; }
+        .sign-error { color: #dc3545; font-size: 12px; margin-top: 8px; display: none; text-align: center; }
+        .auth-switch { text-align: center; margin-top: 12px; font-size: 12px; color: #5a4591; }
+        .auth-switch a { color: #6535e0; font-weight: 700; text-decoration: none; }
 
-        @media (max-width: 500px) {
-            .sign-card { padding: 20px; }
-            .hero-title { font-size: 26px; }
-            .hero-features-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+        /* إخفاء التمرير للموبايل */
+        @media (max-width: 480px) {
+            .sign-wrapper { max-width: 100%; padding: 16px; }
+            .feature-item span { font-size: 9px; }
         }
     </style>
 </head>
 <body>
 
     <div class="sign-wrapper">
-        <!-- القسم العلوي المتحرك -->
-        <div class="sign-hero" id="signHero">
-            <div class="hero-animated-icon">
-                <i class="bi bi-magic"></i>
-                <i class="bi bi-star-fill sparkle"></i>
-            </div>
-            <h1 class="hero-title">حوّل أفكارك إلى واقع</h1>
-            <p class="hero-subtitle">منصة EVILE للذكاء الاصطناعي تمنحك أدوات إبداعية لتوليد النصوص والشعارات بسهولة.</p>
-            
-            <div class="hero-features-grid">
-                <div class="hero-feature">
-                    <i class="bi bi-lightning-charge-fill"></i>
-                    <h3>توليد نصوص إبداعية</h3>
-                    <p>احصل على أفكار ونصوص مميزة في ثوانٍ باستخدام تقنيات الذكاء الاصطناعي.</p>
-                </div>
-                <div class="hero-feature">
-                    <i class="bi bi-robot"></i>
-                    <h3>شخصيات ذكية متعددة</h3>
-                    <p>اختر من بين أنماط وأدوار مختلفة (لوجو ميكر، إبداعي، فاخر) لتناسب احتياجاتك.</p>
-                </div>
-                <div class="hero-feature">
-                    <i class="bi bi-pencil-square"></i>
-                    <h3>تصميم شعارات احترافية</h3>
-                    <p>قم بوصف فكرتك ودع الذكاء الاصطناعي يصمم لك برومبت شعار فريد ومخصص.</p>
-                </div>
-                <div class="hero-feature">
-                    <i class="bi bi-gem"></i>
-                    <h3>10 نقاط مجانية للبدء</h3>
-                    <p>ابدأ رحلتك الإبداعية فوراً مع 10 نقاط توليد مجانية بالكامل.</p>
-                </div>
-            </div>
-
-            <div class="scroll-down-indicator">
-                <span>اسحب للأسفل للبدء</span>
-                <i class="bi bi-chevron-double-down"></i>
-            </div>
+        <!-- الشعار -->
+        <div class="logo-area">
+            <div class="logo-icon"><i class="bi bi-magic"></i></div>
+            <div class="logo-title">EVILE</div>
         </div>
 
-        <!-- القسم السفلي (نموذج التسجيل / الدخول) -->
-        <div class="sign-form-section" id="signFormSection">
-            <div class="sign-card">
-                <form id="signForm" onsubmit="handleSignup(event)">
-                    <div class="input-group">
-                        <label><i class="bi bi-person"></i> اسم المستخدم (فريد)</label>
-                        <input type="text" id="username" placeholder="أدخل اسم المستخدم" required>
-                    </div>
-                    <div class="input-group">
-                        <label><i class="bi bi-lock"></i> كلمة المرور</label>
-                        <input type="password" id="password" placeholder="******" required>
-                    </div>
-                    <button type="submit" class="btn-primary">ابدأ مجاناً <i class="bi bi-arrow-left"></i></button>
-                    <div id="signError" class="sign-error"></div>
-                    <div style="text-align:center; margin-top:15px; font-size:13px; color:#6B4C7A;">
-                        لديك حساب بالفعل؟ <a href="#" onclick="switchToLogin()" style="color:#2C1A34; text-decoration:none; font-weight:700;">تسجيل الدخول</a>
-                    </div>
-                </form>
-                
-                <!-- نموذج الدخول (مخفي) -->
-                <form id="loginForm" onsubmit="handleLogin(event)" style="display:none;">
-                    <div class="input-group">
-                        <label><i class="bi bi-person"></i> اسم المستخدم</label>
-                        <input type="text" id="loginUsername" placeholder="اسم المستخدم" required>
-                    </div>
-                    <div class="input-group">
-                        <label><i class="bi bi-lock"></i> كلمة المرور</label>
-                        <input type="password" id="loginPassword" placeholder="******" required>
-                    </div>
-                    <button type="submit" class="btn-primary">دخول <i class="bi bi-box-arrow-in-left"></i></button>
-                    <div id="loginError" class="sign-error"></div>
-                    <div style="text-align:center; margin-top:15px; font-size:13px; color:#6B4C7A;">
-                        جديد هنا؟ <a href="#" onclick="switchToSignup()" style="color:#2C1A34; text-decoration:none; font-weight:700;">إنشاء حساب</a>
-                    </div>
-                </form>
-            </div>
+        <!-- الميزات المصغرة -->
+        <div class="features-grid">
+            <div class="feature-item"><i class="bi bi-lightning-charge-fill"></i><span>توليد نصوص</span></div>
+            <div class="feature-item"><i class="bi bi-robot"></i><span>شخصيات ذكية</span></div>
+            <div class="feature-item"><i class="bi bi-pencil-square"></i><span>تصاميم شعارات</span></div>
+            <div class="feature-item"><i class="bi bi-gem"></i><span>10 نقاط مجانية</span></div>
+        </div>
+
+        <!-- النموذج -->
+        <div class="sign-card">
+            <div class="form-title">انضم لتبدأ الإبداع</div>
+            <form id="signForm" onsubmit="handleSignup(event)">
+                <div class="input-group">
+                    <label><i class="bi bi-person"></i> اسم المستخدم</label>
+                    <input type="text" id="username" placeholder="أدخل اسماً فريداً" required>
+                </div>
+                <div class="input-group">
+                    <label><i class="bi bi-lock"></i> كلمة المرور</label>
+                    <input type="password" id="password" placeholder="******" required>
+                </div>
+                <button type="submit" class="btn-primary">ابدأ مجاناً <i class="bi bi-arrow-left"></i></button>
+                <div id="signError" class="sign-error"></div>
+                <div class="auth-switch">
+                    لديك حساب؟ <a href="#" onclick="switchToLogin()">سجل دخولك</a>
+                </div>
+            </form>
+            
+            <form id="loginForm" onsubmit="handleLogin(event)" style="display:none;">
+                <div class="input-group">
+                    <label><i class="bi bi-person"></i> اسم المستخدم</label>
+                    <input type="text" id="loginUsername" placeholder="اسم المستخدم" required>
+                </div>
+                <div class="input-group">
+                    <label><i class="bi bi-lock"></i> كلمة المرور</label>
+                    <input type="password" id="loginPassword" placeholder="******" required>
+                </div>
+                <button type="submit" class="btn-primary">دخول <i class="bi bi-box-arrow-in-left"></i></button>
+                <div id="loginError" class="sign-error"></div>
+                <div class="auth-switch">
+                    جديد هنا؟ <a href="#" onclick="switchToSignup()">أنشئ حساباً</a>
+                </div>
+            </form>
         </div>
     </div>
 
     <script>
-        // إظهار النموذج عند التمرير للأسفل
-        const signFormSection = document.getElementById('signFormSection');
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    signFormSection.classList.add('visible');
-                }
-            });
-        }, { threshold: 0.1 });
-        
-        document.addEventListener('DOMContentLoaded', () => {
-            observer.observe(signFormSection);
-        });
-
         function handleSignup(e) {
             e.preventDefault();
             const username = document.getElementById('username').value.trim();
