@@ -54,7 +54,6 @@ def ensure_notification_columns(cur):
     """)
     if not cur.fetchone():
         cur.execute("ALTER TABLE notifications ADD COLUMN duration_hours INTEGER DEFAULT 1")
-        logger.info("Added column duration_hours to notifications table")
     
     cur.execute("""
         SELECT column_name 
@@ -63,7 +62,6 @@ def ensure_notification_columns(cur):
     """)
     if not cur.fetchone():
         cur.execute("ALTER TABLE notifications ADD COLUMN show_in_chat BOOLEAN DEFAULT FALSE")
-        logger.info("Added column show_in_chat to notifications table")
 
 def ensure_ads_table(cur):
     cur.execute('''CREATE TABLE IF NOT EXISTS ads (
@@ -75,7 +73,35 @@ def ensure_ads_table(cur):
         duration_seconds INTEGER DEFAULT 5,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )''')
-    logger.info("✅ Ensured ads table exists (Duration in Seconds)")
+
+def ensure_users_columns(cur):
+    # إضافة أعمدة اسم المستخدم، كلمة المرور، والنقاط لجدول users
+    cur.execute("""
+        SELECT column_name 
+        FROM information_schema.columns 
+        WHERE table_name='users' AND column_name='username'
+    """)
+    if not cur.fetchone():
+        cur.execute("ALTER TABLE users ADD COLUMN username TEXT UNIQUE")
+        logger.info("Added column username to users table")
+
+    cur.execute("""
+        SELECT column_name 
+        FROM information_schema.columns 
+        WHERE table_name='users' AND column_name='password'
+    """)
+    if not cur.fetchone():
+        cur.execute("ALTER TABLE users ADD COLUMN password TEXT")
+        logger.info("Added column password to users table")
+
+    cur.execute("""
+        SELECT column_name 
+        FROM information_schema.columns 
+        WHERE table_name='users' AND column_name='credits'
+    """)
+    if not cur.fetchone():
+        cur.execute("ALTER TABLE users ADD COLUMN credits INTEGER DEFAULT 10")
+        logger.info("Added column credits to users table (Default 10)")
 
 def init_db():
     try:
@@ -102,6 +128,7 @@ def init_db():
             
             ensure_notification_columns(cur)
             ensure_ads_table(cur)
+            ensure_users_columns(cur) # تحديث جدول المستخدمين
             
             logger.info("Database initialized/updated successfully")
             print("✅ Database tables ensured successfully.")
@@ -130,27 +157,152 @@ def admin_required(f):
 def index():
     telegram_id = session.get('telegram_id')
     if telegram_id: update_user_activity(telegram_id)
+    user_data = None
     try:
         with get_db() as cur:
             cur.execute('SELECT * FROM characters ORDER BY id')
             characters = cur.fetchall()
             cur.execute('SELECT * FROM notifications WHERE show_in_chat = true ORDER BY created_at DESC LIMIT 1')
             latest_notification = cur.fetchone()
-            
             cur.execute('SELECT * FROM ads ORDER BY created_at DESC LIMIT 1')
             latest_ad = cur.fetchone()
+            
+            if telegram_id:
+                cur.execute('SELECT username, credits FROM users WHERE telegram_id=%s', (telegram_id,))
+                user_data = cur.fetchone()
     except Exception as e:
         logger.error(f"Index error: {e}")
         characters = []
         latest_notification = None
         latest_ad = None
+        user_data = None
+        
     return render_template('index.html',
                          characters=characters,
                          telegram_id=telegram_id,
                          latest_notification=latest_notification,
-                         latest_ad=latest_ad)
+                         latest_ad=latest_ad,
+                         user_data=user_data)
 
-@app.route('/register', methods=['POST'])
+@app.route('/sign')
+def sign():
+    return render_template('sign.html')
+
+@app.route('/api/signup', methods=['POST'])
+def signup():
+    data = request.json
+    username = data.get('username')
+    password = data.get('password')
+    telegram_id = data.get('telegram_id')
+    
+    if not username or not password or not telegram_id:
+        return jsonify({'success': False, 'message': 'بيانات غير كاملة'}), 400
+    
+    try:
+        with get_db() as cur:
+            # التحقق من عدم تكرار اسم المستخدم
+            cur.execute("SELECT id FROM users WHERE username=%s", (username,))
+            if cur.fetchone():
+                return jsonify({'success': False, 'message': 'اسم المستخدم موجود مسبقاً'}), 400
+            
+            # التحقق من عدم تكرار المعرف
+            cur.execute("SELECT id FROM users WHERE telegram_id=%s", (telegram_id,))
+            if cur.fetchone():
+                return jsonify({'success': False, 'message': 'معرف تيليجرام مستخدم بالفعل'}), 400
+                
+            cur.execute("INSERT INTO users (telegram_id, username, password, credits) VALUES (%s, %s, %s, %s)",
+                        (telegram_id, username, password, 10))
+            session['telegram_id'] = telegram_id
+        return jsonify({'success': True, 'message': 'تم التسجيل بنجاح! مرحباً بك.', 'credits': 10})
+    except Exception as e:
+        logger.error(f"Signup error: {e}")
+        return jsonify({'success': False, 'message': str(e)}), 500
+
+@app.route('/api/login', methods=['POST'])
+def login():
+    data = request.json
+    username = data.get('username')
+    password = data.get('password')
+    telegram_id = data.get('telegram_id')
+    
+    if not username or not password:
+        return jsonify({'success': False, 'message': 'بيانات ناقصة'}), 400
+    
+    try:
+        with get_db() as cur:
+            if telegram_id:
+                cur.execute("SELECT id, credits FROM users WHERE username=%s AND password=%s AND telegram_id=%s", (username, password, telegram_id))
+            else:
+                cur.execute("SELECT id, telegram_id, credits FROM users WHERE username=%s AND password=%s", (username, password))
+            user = cur.fetchone()
+            
+            if user:
+                if not telegram_id:
+                    telegram_id = user['telegram_id']
+                session['telegram_id'] = telegram_id
+                return jsonify({'success': True, 'message': 'تم تسجيل الدخول بنجاح', 'credits': user['credits']})
+            else:
+                return jsonify({'success': False, 'message': 'بيانات الدخول غير صحيحة أو لا يوجد معرف'}), 401
+    except Exception as e:
+        logger.error(f"Login error: {e}")
+        return jsonify({'success': False, 'message': str(e)}), 500
+
+@app.route('/api/user_info')
+def user_info():
+    telegram_id = session.get('telegram_id')
+    if not telegram_id:
+        return jsonify(None)
+    try:
+        with get_db() as cur:
+            cur.execute("SELECT username, credits FROM users WHERE telegram_id=%s", (telegram_id,))
+            user = cur.fetchone()
+        return jsonify(user)
+    except Exception as e:
+        logger.error(f"User info error: {e}")
+        return jsonify(None)
+
+@app.route('/api/update_user', methods=['POST'])
+def update_user():
+    if not session.get('telegram_id'):
+        return jsonify({'success': False, 'message': 'غير مسجل'}), 401
+    
+    data = request.json
+    new_username = data.get('username')
+    new_password = data.get('password')
+    
+    if not new_username or not new_password:
+        return jsonify({'success': False, 'message': 'بيانات ناقصة'}), 400
+        
+    try:
+        with get_db() as cur:
+            # التحقق من عدم تكرار اسم المستخدم الجديد
+            cur.execute("SELECT id FROM users WHERE username=%s AND telegram_id!=%s", (new_username, session['telegram_id']))
+            if cur.fetchone():
+                return jsonify({'success': False, 'message': 'اسم المستخدم مستخدم بالفعل'}), 400
+                
+            cur.execute("UPDATE users SET username=%s, password=%s WHERE telegram_id=%s", 
+                        (new_username, new_password, session['telegram_id']))
+        return jsonify({'success': True, 'message': 'تم تحديث البيانات'})
+    except Exception as e:
+        logger.error(f"Update user error: {e}")
+        return jsonify({'success': False, 'message': str(e)}), 500
+
+@app.route('/api/deduct_credit', methods=['POST'])
+def deduct_credit():
+    if not session.get('telegram_id'):
+        return jsonify({'success': False, 'message': 'غير مسجل'}), 401
+        
+    try:
+        with get_db() as cur:
+            cur.execute("UPDATE users SET credits = credits - 1 WHERE telegram_id=%s AND credits > 0", (session['telegram_id'],))
+            cur.execute("SELECT credits FROM users WHERE telegram_id=%s", (session['telegram_id'],))
+            updated = cur.fetchone()
+            return jsonify({'success': True, 'credits': updated['credits'] if updated else 0})
+    except Exception as e:
+        logger.error(f"Deduct credit error: {e}")
+        return jsonify({'success': False, 'message': str(e)}), 500
+
+@app.route('/api/register', methods=['POST'])
 def register():
     try:
         telegram_id = request.form.get('telegram_id', '').strip()
@@ -303,7 +455,6 @@ def delete_notification(notif_id):
         flash(str(e), 'error')
     return redirect(url_for('admin_panel'))
 
-# --- مسارات الإعلانات ---
 @app.route('/admin/ad/add', methods=['POST'])
 @admin_required
 def add_ad():
@@ -336,20 +487,6 @@ def delete_ad(ad_id):
         flash(str(e), 'error')
     return redirect(url_for('admin_panel'))
 
-@app.route('/api/latest_ad')
-def api_latest_ad():
-    try:
-        with get_db() as cur:
-            cur.execute('SELECT * FROM ads ORDER BY created_at DESC LIMIT 1')
-            ad = cur.fetchone()
-        if ad:
-            return jsonify(ad)
-        return jsonify(None)
-    except Exception as e:
-        logger.error(f"API latest ad error: {e}")
-        return jsonify(None)
-
-# --- مسارات الدردشة ---
 @app.route('/api/characters')
 def api_characters():
     now = time.time()
@@ -381,6 +518,22 @@ def api_chat():
     data = request.json
     character_key = data.get('character', 'logo_maker')
     message = data.get('message', '')
+    telegram_id = session.get('telegram_id')
+    
+    if not telegram_id:
+        return jsonify({'error': 'غير مسجل'}), 401
+        
+    # التحقق من وجود نقاط قبل البدء
+    try:
+        with get_db() as cur:
+            cur.execute("SELECT credits FROM users WHERE telegram_id=%s", (telegram_id,))
+            user = cur.fetchone()
+            if not user or user['credits'] <= 0:
+                return jsonify({'error': 'no_credits'}), 402
+    except Exception as e:
+        logger.error(f"Check credits error: {e}")
+        return jsonify({'error': 'Database error'}), 500
+        
     try:
         with get_db() as cur:
             cur.execute("SELECT * FROM characters WHERE callback_key=%s", (character_key,))
