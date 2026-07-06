@@ -75,7 +75,6 @@ def ensure_ads_table(cur):
     )''')
 
 def ensure_users_table(cur):
-    # إنشاء جدول المستخدمين بدون telegram_id
     cur.execute('''CREATE TABLE IF NOT EXISTS users (
         id SERIAL PRIMARY KEY,
         username TEXT UNIQUE NOT NULL,
@@ -83,7 +82,7 @@ def ensure_users_table(cur):
         credits INTEGER DEFAULT 10,
         last_active TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )''')
-    logger.info("✅ Ensured users table (without telegram_id)")
+    logger.info("✅ Ensured users table")
 
 def init_db():
     try:
@@ -105,7 +104,7 @@ def init_db():
             
             ensure_notification_columns(cur)
             ensure_ads_table(cur)
-            ensure_users_table(cur) # إنشاء جدول المستخدمين الجديد
+            ensure_users_table(cur)
             
             logger.info("Database initialized/updated successfully")
             print("✅ Database tables ensured successfully.")
@@ -176,7 +175,6 @@ def signup():
     
     try:
         with get_db() as cur:
-            # التحقق من عدم تكرار اسم المستخدم
             cur.execute("SELECT id FROM users WHERE username=%s", (username,))
             if cur.fetchone():
                 return jsonify({'success': False, 'message': 'اسم المستخدم موجود مسبقاً'}), 400
@@ -242,7 +240,6 @@ def update_user():
         
     try:
         with get_db() as cur:
-            # التحقق من عدم تكرار اسم المستخدم الجديد
             cur.execute("SELECT id FROM users WHERE username=%s AND id!=%s", (new_username, user_id))
             if cur.fetchone():
                 return jsonify({'success': False, 'message': 'اسم المستخدم مستخدم بالفعل'}), 400
@@ -436,6 +433,27 @@ def delete_ad(ad_id):
     except Exception as e:
         flash(str(e), 'error')
     return redirect(url_for('admin_panel'))
+
+# --- مسار شحن النقاط الجديد في Admin ---
+@app.route('/api/admin/update_credits', methods=['POST'])
+@admin_required
+def update_credits():
+    data = request.json
+    username = data.get('username')
+    amount = data.get('amount', 1)
+    
+    if not username or amount <= 0:
+        return jsonify({'success': False, 'message': 'بيانات غير صحيحة'}), 400
+        
+    try:
+        with get_db() as cur:
+            cur.execute("UPDATE users SET credits = credits + %s WHERE username = %s", (amount, username))
+            if cur.rowcount == 0:
+                return jsonify({'success': False, 'message': 'اسم المستخدم غير موجود'}), 404
+        return jsonify({'success': True, 'message': f'تم شحن {amount} نقطة للمستخدم {username} بنجاح'})
+    except Exception as e:
+        logger.error(f"Update credits error: {e}")
+        return jsonify({'success': False, 'message': str(e)}), 500
 
 @app.route('/api/characters')
 def api_characters():
