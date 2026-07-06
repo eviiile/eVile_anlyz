@@ -10,7 +10,6 @@
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body {
             font-family: 'Tajawal', sans-serif;
-            /* تغيير الخلفية إلى الأزرق الليلي العميق والبنفسجي الملكي الداكن */
             background: linear-gradient(135deg, #080C1A 0%, #1F0B3A 100%);
             color: #ffffff;
             overflow: hidden;
@@ -19,12 +18,11 @@
         }
         .main-container { width: 100%; height: 100vh; height: 100dvh; display: flex; flex-direction: column; padding: 12px; padding-top: 70px; }
         
-        /* تحسين التباين للعناصر الزجاجية + حدود بيضاء شفافة (0.4) */
-        .glass-card, .floating-header, .input-card, .bottom-sheet, .message-content, .ai-bubble, .splash-input-wrapper {
-            background: rgba(255, 255, 255, 0.12); /* تم زيادة الشفافية قليلاً لرفع التباين */
+        .glass-card, .floating-header, .input-card, .bottom-sheet, .message-content, .ai-bubble, .splash-input-wrapper, .ad-modal-box {
+            background: rgba(255, 255, 255, 0.12);
             backdrop-filter: blur(14px);
             -webkit-backdrop-filter: blur(14px);
-            border: 1px solid rgba(255, 255, 255, 0.4); /* حدود بيضاء شفافة عالية التباين */
+            border: 1px solid rgba(255, 255, 255, 0.4);
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
             border-radius: 18px;
         }
@@ -96,24 +94,8 @@
         .send-btn:disabled { opacity: 0.5; }
         .send-btn:active:not(:disabled) { transform: scale(0.94); }
         
-        /* زر الإرسال العادي مع وهج أزرق فاتح خفيف */
-        .send-btn-normal { 
-            background: rgba(255, 255, 255, 0.15); 
-            color: #fff; 
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            box-shadow: 0 0 20px rgba(77, 166, 255, 0.3); /* وهج أزرق فاتح */
-        }
-        .send-btn-max { 
-            background: rgba(255, 0, 0, 0.4); 
-            color: #fff; 
-            border: 1px solid rgba(255, 0, 0, 0.6); 
-            box-shadow: 0 0 20px rgba(255, 0, 0, 0.2); 
-        }
-        .send-btn.stop-btn { 
-            background: rgba(255, 50, 50, 0.8); 
-            color: #fff; 
-            border: none; 
-        }
+        .send-btn-normal { background: rgba(255, 255, 255, 0.15); color: #fff; border: 1px solid rgba(255, 255, 255, 0.4); box-shadow: 0 0 20px rgba(77, 166, 255, 0.3); }
+        .send-btn.stop-btn { background: rgba(255, 50, 50, 0.8); color: #fff; border: none; }
 
         /* شريط الشخصيات */
         .char-scroll-container { position: relative; width: 100%; max-width: 320px; margin: 8px auto 12px; overflow: hidden; }
@@ -140,7 +122,6 @@
         }
         .char-selector-btn i { font-size: 14px; }
         .char-selector-name { font-size: 11px; font-weight: 500; }
-        .char-selector-badge-max { background: #ff4d4d; color: white; font-size: 8px; padding: 1px 5px; border-radius: 8px; margin-right: 3px; }
 
         /* Chat Section */
         .chat-section { flex: 1; display: none; flex-direction: column; overflow: hidden; }
@@ -161,42 +142,36 @@
         .ai-bubble-copy { cursor: pointer; display: flex; align-items: center; gap: 4px; color: rgba(255,255,255,0.6); }
         .ai-bubble-copy:active { opacity: 0.6; }
         
-        /* نافذة MAX المنبثقة */
-        .max-modal-overlay {
+        /* نافذة الإعلانات الجديدة */
+        .ad-modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(6px);
             z-index: 9999; display: none; justify-content: center; align-items: center;
         }
-        .max-modal-overlay.active { display: flex; }
-        .max-modal-box {
-            background: rgba(255, 255, 255, 0.12);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
-            border-radius: 24px;
+        .ad-modal-overlay.active { display: flex; }
+        .ad-modal-box {
             padding: 30px; max-width: 400px; width: 90%;
             text-align: center; position: relative;
             color: #fff;
         }
-        .max-close-x { position: absolute; top: 15px; right: 20px; font-size: 24px; cursor: pointer; color: rgba(255,255,255,0.5); transition: 0.2s; }
-        .max-close-x:hover { color: #fff; }
-        .max-modal-box h2 { color: #8effa0; font-weight: 700; margin-bottom: 12px; font-size: 22px; }
-        .max-modal-box p { color: rgba(255,255,255,0.8); font-size: 14px; line-height: 1.6; margin-bottom: 20px; }
-        .max-modal-box .input-field {
-            width: 100%; padding: 12px; background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.4); border-radius: 12px;
-            color: #fff; margin-bottom: 15px; text-align: center; outline: none;
+        .ad-modal-title { font-size: 24px; font-weight: 700; color: #8effa0; margin-bottom: 12px; }
+        .ad-modal-text { font-size: 15px; color: rgba(255,255,255,0.9); margin-bottom: 20px; line-height: 1.5; }
+        .ad-modal-btn {
+            display: inline-block; padding: 12px 24px; margin-bottom: 15px;
+            background: #0088cc; color: white; border: none;
+            border-radius: 30px; font-weight: bold; font-size: 16px;
+            text-decoration: none; transition: all 0.2s; cursor: pointer;
         }
-        .max-modal-box .input-field:focus { border-color: #8effa0; }
-        .btn-max-action {
-            display: block; width: 100%; padding: 14px; border: none;
-            border-radius: 14px; cursor: pointer; font-weight: bold; font-size: 15px;
-            text-decoration: none; transition: 0.2s; margin-bottom: 10px;
+        .ad-modal-btn:hover { background: #0077b3; transform: scale(1.02); }
+        
+        .ad-skip-btn {
+            display: inline-block; padding: 8px 16px; margin-top: 5px;
+            background: transparent; color: rgba(255,255,255,0.5);
+            border: 1px solid rgba(255,255,255,0.2); border-radius: 20px;
+            font-size: 12px; cursor: pointer; transition: 0.2s;
         }
-        .btn-max-telegram { background: #0088cc; color: white; }
-        .btn-max-telegram:hover { background: #0077b3; }
-        .btn-max-save { background: rgba(255, 255, 255, 0.1); color: #fff; border: 1px solid rgba(255, 255, 255, 0.4); }
-        .btn-max-save:hover { background: rgba(255, 255, 255, 0.2); }
+        .ad-skip-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .ad-skip-btn:not(:disabled):hover { background: rgba(255,255,255,0.1); color: #fff; }
 
         /* Bottom Sheets */
         .bottom-sheet-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); z-index: 1000; display: none; align-items: flex-end; justify-content: center; }
@@ -226,22 +201,16 @@
 </head>
 <body>
 
-    <!-- نافذة منع MAX -->
-    <div class="max-modal-overlay" id="maxModal">
-        <div class="max-modal-box">
-            <div class="max-close-x" onclick="closeMaxModal()">×</div>
-            <h2>✨ وصول حصري</h2>
-            <p>
-                عذراً، هذه الشخصية من فئة <strong>MAX</strong> وهي متاحة حصرياً للداعمين والمستخدمين المخولين.<br><br>
-                يرجى إدخال معرف تيليجرام الخاص بك للتواصل مع الإدارة للحصول على تصريح الوصول.
-            </p>
-            <div style="margin-bottom: 15px;">
-                <input type="text" class="input-field" id="maxTelegramIdInput" placeholder="معرف تيليجرام الخاص بك">
+    <!-- نافذة الإعلانات (تم استبدالها) -->
+    <div class="ad-modal-overlay" id="adModal">
+        <div class="ad-modal-box glass-card">
+            <div id="adContent">
+                <h2 class="ad-modal-title" id="adTitle">عرض خاص</h2>
+                <p class="ad-modal-text" id="adText">تفاصيل العرض هنا...</p>
+                <a href="#" id="adButton" class="ad-modal-btn" target="_blank">اضغط للمزيد</a>
+                <br>
+                <button class="ad-skip-btn" id="adSkipBtn" disabled>تخط بعد 5 ثواني</button>
             </div>
-            <a href="https://t.me/OlIiIl7" target="_blank" class="btn-max-action btn-max-telegram">
-                <i class="bi bi-telegram"></i> تواصل مع @OlIiIl7
-            </a>
-            <button class="btn-max-action btn-max-save" onclick="submitMaxRequest()">إرسال طلب الوصول</button>
         </div>
     </div>
 
@@ -339,6 +308,7 @@
         const characters = {{ characters|tojson }};
         let telegramId = {{ telegram_id|tojson }};
         const latestNotification = {{ latest_notification|tojson }};
+        const latestAd = {{ latest_ad|tojson }};
         
         let currentCharacter = characters.length > 0 ? characters[0].callback_key : 'logo_maker';
         let isFirstMessage = true;
@@ -360,6 +330,19 @@
                 chatSection.classList.remove('active');
                 if (latestNotification && latestNotification.show_in_chat) {
                     showToastNotification(latestNotification.title + ': ' + latestNotification.text, 10000);
+                }
+                // عرض الإعلان إذا كان موجوداً
+                if (latestAd) {
+                    const adCreatedTime = new Date(latestAd.created_at);
+                    const now = new Date();
+                    const hoursDiff = (now - adCreatedTime) / (1000 * 60 * 60);
+                    
+                    // التحقق من مدة صلاحية الإعلان
+                    if (hoursDiff < latestAd.duration_hours) {
+                        setTimeout(() => {
+                            showAdModal(latestAd);
+                        }, 1500); // تأخير ثانية ونصف بعد تحميل الصفحة
+                    }
                 }
             } else {
                 splashSection.classList.add('active');
@@ -400,52 +383,45 @@
             setTimeout(() => { clickCount = 0; }, 1000);
         }
 
-        function openMaxModal() {
-            document.getElementById('maxModal').classList.add('active');
-        }
-        function closeMaxModal() {
-            document.getElementById('maxModal').classList.remove('active');
-        }
-        async function submitMaxRequest() {
-            const idInput = document.getElementById('maxTelegramIdInput').value.trim();
-            if (!idInput) {
-                showToastNotification('⚠️ يرجى إدخال معرف تيليجرام الخاص بك أولاً.');
-                return;
-            }
-            try {
-                const res = await fetch('/api/request_max', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ telegram_id: idInput })
-                });
-                const data = await res.json();
-                showToastNotification(data.message || (data.success ? '📩 تم إرسال طلبك بنجاح' : 'حدث خطأ'));
-            } catch (err) {
-                showToastNotification('خطأ في الاتصال بالخادم.');
-            } finally {
-                closeMaxModal();
-            }
-        }
-
-        function updateSendButtonBasedOnCharacter() {
-            const char = characters.find(c => c.callback_key === currentCharacter);
-            const welcomeBtn = document.getElementById('welcomeSendBtn');
-            const chatBtn = document.getElementById('sendBtn');
-            const isMax = char && char.is_max === true;
-
-            [welcomeBtn, chatBtn].forEach(btn => {
-                if (!btn) return;
-                btn.classList.remove('send-btn-normal', 'send-btn-max');
-                if (isMax) {
-                    btn.classList.add('send-btn-max');
-                    btn.innerHTML = '<i class="bi bi-lock-fill"></i>';
+        // --- دوال الإعلانات ---
+        function showAdModal(ad) {
+            document.getElementById('adTitle').textContent = ad.title;
+            document.getElementById('adText').textContent = ad.text;
+            document.getElementById('adButton').textContent = ad.button_text;
+            document.getElementById('adButton').href = ad.button_link;
+            
+            const skipBtn = document.getElementById('adSkipBtn');
+            skipBtn.disabled = true;
+            let countdown = 5; // عدد الثواني
+            skipBtn.textContent = `تخط بعد ${countdown} ثواني`;
+            
+            // العداد التنازلي
+            const interval = setInterval(() => {
+                countdown--;
+                if (countdown > 0) {
+                    skipBtn.textContent = `تخط بعد ${countdown} ثواني`;
                 } else {
-                    btn.classList.add('send-btn-normal');
-                    btn.innerHTML = '<i class="bi bi-send"></i>';
+                    clearInterval(interval);
+                    skipBtn.disabled = false;
+                    skipBtn.textContent = 'تخط الإعلان';
                 }
-            });
+            }, 1000);
+            
+            // عند الضغط على الزر (بعد انتهاء العداد)
+            skipBtn.onclick = function() {
+                if (!this.disabled) {
+                    closeAdModal();
+                }
+            };
+            
+            document.getElementById('adModal').classList.add('active');
         }
 
+        function closeAdModal() {
+            document.getElementById('adModal').classList.remove('active');
+        }
+
+        // --- شريط الشخصيات ---
         function renderCharSelector() {
             const selector = document.getElementById('charSelector');
             if (!characters || characters.length === 0) {
@@ -453,8 +429,7 @@
                 return;
             }
             selector.innerHTML = characters.map(char => `
-                <div class="char-selector-btn ${char.callback_key === currentCharacter ? 'active' : ''}" data-key="${char.callback_key}" data-is-max="${char.is_max}">
-                    ${char.is_max ? '<span class="char-selector-badge-max">MAX</span>' : ''}
+                <div class="char-selector-btn ${char.callback_key === currentCharacter ? 'active' : ''}" data-key="${char.callback_key}">
                     <i class="bi bi-robot"></i>
                     <span class="char-selector-name">${escapeHtml(char.name)}</span>
                 </div>
@@ -494,7 +469,6 @@
                 title.textContent = "ابنِ أفكارك مع EVILE";
                 subtitle.textContent = "أضف شخصيات من لوحة التحكم";
             }
-            updateSendButtonBasedOnCharacter();
         }
 
         function renderCharactersSheet() {
@@ -507,7 +481,7 @@
                 <div class="char-list-item ${char.callback_key === currentCharacter ? 'active' : ''}" onclick="selectCharacter('${char.callback_key}')">
                     <div class="char-list-icon"><i class="bi bi-robot"></i></div>
                     <div class="char-list-info">
-                        <div class="char-list-name">${escapeHtml(char.name)} ${char.is_max ? '<span style="background:#ff4d4d;color:white;font-size:9px;padding:0 6px;border-radius:8px;margin-right:5px;">MAX</span>' : ''}</div>
+                        <div class="char-list-name">${escapeHtml(char.name)}</div>
                         <div class="char-list-desc">${escapeHtml(char.description)}</div>
                     </div>
                     <div class="char-list-check"><i class="bi bi-check-lg"></i></div>
@@ -546,12 +520,13 @@
                 if (!btn) return;
                 if (isStreamingActive) {
                     btn.disabled = false;
-                    btn.classList.remove('send-btn-normal', 'send-btn-max');
+                    btn.classList.remove('send-btn-normal');
                     btn.classList.add('stop-btn');
                     btn.innerHTML = '<i class="bi bi-stop-circle"></i>';
                 } else {
                     btn.classList.remove('stop-btn');
-                    updateSendButtonBasedOnCharacter();
+                    btn.classList.add('send-btn-normal');
+                    btn.innerHTML = '<i class="bi bi-send"></i>';
                 }
             });
         }
@@ -652,15 +627,6 @@
             });
         }
 
-        function checkIfAllowedToSend() {
-            const char = characters.find(c => c.callback_key === currentCharacter);
-            if (char && char.is_max === true) {
-                openMaxModal();
-                return false;
-            }
-            return true;
-        }
-
         async function actuallySendMessage(message) {
             if (isProcessing) return;
             isProcessing = true; abortController = new AbortController(); isStreaming = true;
@@ -693,7 +659,6 @@
         function handleSendWelcome() {
             if (isStreaming) { stopStreaming(); return; }
             if (isProcessing) return;
-            if (!checkIfAllowedToSend()) return;
             const input = document.getElementById('welcomeInput'); const msg = input.value.trim();
             if (!msg) return;
             if (isFirstMessage) { welcomeSection.classList.remove('active'); chatSection.classList.add('active'); isFirstMessage = false; }
@@ -703,7 +668,6 @@
         function handleSendChat() {
             if (isStreaming) { stopStreaming(); return; }
             if (isProcessing) return;
-            if (!checkIfAllowedToSend()) return;
             const input = document.getElementById('chatInput'); const msg = input.value.trim();
             if (!msg) return;
             actuallySendMessage(msg);
