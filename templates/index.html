@@ -10,283 +10,247 @@
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body {
             font-family: 'Tajawal', sans-serif;
-            /* تم تغيير الخلفية إلى تدرج فاتح جداً (أبيض/سماوي) */
-            background: linear-gradient(135deg, #e2f1f8 0%, #cce4f2 100%);
-            color: #1a1a1a; /* تغيير لون النص إلى الداكن */
+            /* خلفية ناعمة فاتحة مطابقة للصورة */
+            background: linear-gradient(160deg, #f4f6fe 0%, #e6e9fc 100%);
+            color: #1a1a2e;
             overflow: hidden;
             touch-action: manipulation;
             height: 100vh; height: 100dvh;
         }
-        .main-container { width: 100%; height: 100vh; height: 100dvh; display: flex; flex-direction: column; padding: 12px; padding-top: 70px; }
-        
-        /* عناصر زجاجية فاتحة مع حدود داكنة شفافة */
-        .glass-card, .floating-header, .input-card, .bottom-sheet, .message-content, .ai-bubble, .splash-input-wrapper, .ad-modal-box {
-            background: rgba(255, 255, 255, 0.75); /* خلفية زجاجية بيضاء شفافة */
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
-            border: 1px solid rgba(0, 0, 0, 0.08); /* حدود داكنة خفيفة جداً */
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.05);
-            border-radius: 18px;
+        .main-container { 
+            width: 100%; height: 100vh; height: 100dvh; 
+            display: flex; flex-direction: column; 
+            padding: 16px 16px 80px 16px; /* مساحة للشريط السفلي العائم */
+            padding-top: 80px; 
+            overflow-y: auto;
+            position: relative;
         }
         
+        /* شريط العنوان العائم */
         .floating-header {
             position: fixed; top: 12px; left: 12px; right: 12px; z-index: 100;
-            display: flex; align-items: center; justify-content: space-between; padding: 6px;
+            display: flex; align-items: center; justify-content: space-between; padding: 6px 12px;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+            border-radius: 20px; 
         }
-        .header-circle {
-            width: 40px; height: 40px; border-radius: 12px;
-            background: rgba(0, 0, 0, 0.04);
-            border: 1px solid rgba(0, 0, 0, 0.08);
+        .header-icon {
+            width: 36px; height: 36px; border-radius: 12px;
+            background: rgba(255, 255, 255, 0.5);
             display: flex; align-items: center; justify-content: center;
-            cursor: pointer; transition: all 0.3s; flex-shrink: 0; position: relative;
+            cursor: pointer; transition: all 0.2s; position: relative;
         }
-        .header-circle:active { transform: scale(0.9); }
-        .header-circle i { font-size: 20px; color: #333; } /* أيقونات داكنة */
-        .header-circle .notif-badge {
-            position: absolute; top: -3px; right: -3px; width: 16px; height: 16px; background: #ff4d4d;
+        .header-icon:active { transform: scale(0.9); }
+        .header-icon i { font-size: 18px; color: #2c3e8a; }
+        .header-icon .notif-badge {
+            position: absolute; top: -3px; right: -3px; width: 14px; height: 14px; background: #ff4d4d;
             border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            font-size: 9px; font-weight: bold; color: #fff; border: 2px solid #fff;
+            font-size: 8px; font-weight: bold; color: #fff; border: 2px solid #fff;
         }
-        .logo-wrapper { flex: 1; display: flex; align-items: center; gap: 6px; }
-        .logo-center {
-            flex: 1; height: 40px; background: rgba(0, 0, 0, 0.02);
-            border-radius: 12px; display: flex; align-items: center; justify-content: center;
-            cursor: pointer;
+        .header-logo {
+            font-size: 18px; font-weight: 800; color: #1a1a2e; letter-spacing: 2px;
         }
-        .logo-text { font-size: 20px; font-weight: 900; letter-spacing: 3px; color: #222; user-select: none; }
-        .active-users-box {
-            height: 40px; padding: 0 10px; border-radius: 12px;
-            background: rgba(0, 0, 0, 0.03);
-            border: 1px solid rgba(0, 0, 0, 0.08);
-            display: flex; align-items: center; justify-content: center; gap: 4px;
-            font-size: 11px; font-weight: 700; white-space: nowrap;
-        }
-        .active-users-box i { font-size: 14px; color: #444; }
-        .active-users-box span { color: #444; }
 
-        /* Splash Screen */
-        .splash-section { flex: 1; display: none; flex-direction: column; align-items: center; justify-content: center; padding: 20px; text-align: center; }
-        .splash-section.active { display: flex; }
-        .splash-icon { width: 100px; height: 100px; background: rgba(255, 255, 255, 0.6); border: 1px solid rgba(0, 0, 0, 0.08); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 24px; animation: pulse 2s infinite; }
-        @keyframes pulse { 0%,100% { transform: scale(1); opacity: 0.7; } 50% { transform: scale(1.05); opacity: 1; } }
-        .splash-icon i { font-size: 56px; color: #222; }
-        .splash-title { font-size: 28px; font-weight: 800; color: #222; margin-bottom: 16px; }
-        .splash-text { font-size: 16px; max-width: 280px; line-height: 1.6; margin-bottom: 32px; color: #555; }
-        .splash-input-wrapper { width: 100%; max-width: 320px; display: flex; gap: 12px; border-radius: 48px; padding: 6px 6px 6px 16px; align-items: center; }
-        .splash-input { flex: 1; background: transparent; border: none; padding: 14px 0; font-size: 16px; font-family: 'Tajawal', sans-serif; outline: none; color: #222; }
-        .splash-input::placeholder { font-size: 14px; color: #888; }
-        .splash-btn { width: 48px; height: 48px; border-radius: 40px; background: #1a1a1a; border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; color: white; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        .splash-btn:active { transform: scale(0.94); }
-        .splash-btn i { font-size: 24px; color: #fff; }
-        .splash-error { margin-top: 16px; font-size: 12px; color: #dc3545; background: rgba(220,53,69,0.1); border: 1px solid rgba(220,53,69,0.2); border-radius: 40px; padding: 8px 16px; }
+        /* قسم العنوان والوصف */
+        .hero-section {
+            text-align: center; margin-bottom: 24px; padding-top: 10px;
+        }
+        .hero-title { font-size: 28px; font-weight: 800; margin-bottom: 8px; color: #1a1a2e; }
+        .hero-subtitle { font-size: 14px; color: #5a608a; margin-bottom: 16px; line-height: 1.5; }
+        .hero-features {
+            display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;
+            font-size: 12px; color: #6b73a3;
+        }
+        .hero-features span { display: flex; align-items: center; gap: 4px; }
 
-        /* Welcome Section */
-        .welcome-section { flex: 1; display: none; flex-direction: column; align-items: center; justify-content: center; padding: 16px; text-align: center; }
-        .welcome-section.active { display: flex; }
-        .character-logo { width: 100%; max-width: 260px; height: auto; border-radius: 28px; object-fit: contain; margin-bottom: 20px; background: rgba(255, 255, 255, 0.4); padding: 5px; border: 1px solid rgba(0, 0, 0, 0.08); }
-        .sparkle-icon { width: 60px; height: 60px; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; }
-        .sparkle-icon i { font-size: 60px; color: #222; }
-        .welcome-title { font-size: 24px; font-weight: 800; margin-bottom: 6px; color: #222; }
-        .welcome-subtitle { font-size: 12px; max-width: 260px; line-height: 1.4; margin-bottom: 16px; color: #555; }
-        .welcome-input-card { width: 100%; max-width: 320px; margin-bottom: 8px; }
-        .input-card { padding: 6px 6px 6px 12px; transition: all 0.3s; }
-        .input-wrapper { display: flex; align-items: center; gap: 6px; }
-        .message-input { flex: 1; background: transparent; border: none; padding: 8px 0; font-family: 'Tajawal', sans-serif; font-size: 13px; outline: none; color: #222; resize: none; min-height: 40px; max-height: 80px; }
-        .send-btn { width: 34px; height: 34px; border: none; border-radius: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; }
-        .send-btn:disabled { opacity: 0.5; }
-        .send-btn:active:not(:disabled) { transform: scale(0.94); }
+        /* بطاقة الإدخال الرئيسية */
+        .input-card {
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 20px;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.04);
+            margin-bottom: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+        }
+        .input-label { font-size: 14px; font-weight: 700; color: #1a1a2e; margin-bottom: 12px; display: block; }
         
-        /* زر الإرسال العادي: داكن مع وهج داكن */
-        .send-btn-normal { background: #1a1a1a; color: #fff; border: 1px solid rgba(0, 0, 0, 0.1); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15); }
-        .send-btn.stop-btn { background: #dc3545; color: #fff; border: none; }
+        .textarea-wrapper {
+            position: relative;
+            background: #f7f9fd;
+            border: 1px solid #eff1f8;
+            border-radius: 16px;
+            padding: 12px 14px;
+            margin-bottom: 16px;
+        }
+        .message-input {
+            width: 100%; background: transparent; border: none;
+            font-family: 'Tajawal', sans-serif; font-size: 14px; outline: none;
+            color: #1a1a2e; resize: none; min-height: 40px; max-height: 80px;
+        }
+        .message-input::placeholder { color: #9da4c9; }
+        
+        .main-btn {
+            width: 100%; padding: 14px;
+            background: linear-gradient(135deg, #5a7bfb 0%, #9a6ff5 100%);
+            border: none; border-radius: 14px;
+            color: #fff; font-weight: 700; font-size: 15px;
+            cursor: pointer; transition: all 0.2s;
+            box-shadow: 0 4px 15px rgba(90, 123, 251, 0.3);
+            display: flex; align-items: center; justify-content: center; gap: 6px;
+        }
+        .main-btn:active { transform: scale(0.96); }
+        .main-btn.stop-btn { background: #ef4444; box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3); }
+        .main-btn.stop-btn i { color: #fff; }
 
-        /* شريط الشخصيات */
-        .char-scroll-container { position: relative; width: 100%; max-width: 320px; margin: 8px auto 12px; overflow: hidden; }
-        .char-scroll-wrapper {
+        /* حقل البرومبت المولد (جديد) */
+        .prompt-result-wrapper {
+            background: #f7f9fd;
+            border: 1px dashed #c7cee6;
+            border-radius: 16px;
+            padding: 16px;
+            margin-top: 16px;
             display: flex;
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-            scrollbar-width: none;
-            mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
-            -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+            flex-direction: column;
+            gap: 12px;
         }
-        .char-scroll-wrapper::-webkit-scrollbar { display: none; }
-        .char-selector { display: flex; gap: 8px; padding: 6px 0; width: max-content; }
-        .char-selector-btn {
-            display: flex; align-items: center; gap: 4px; padding: 4px 10px;
-            background: rgba(255, 255, 255, 0.4);
-            border: 1px solid rgba(0, 0, 0, 0.06);
-            border-radius: 24px; cursor: pointer; transition: all 0.2s; white-space: nowrap; font-size: 11px; color: #555;
+        .prompt-result-text {
+            font-size: 13px; color: #1a1a2e; line-height: 1.6;
+            min-height: 40px; width: 100%; background: transparent;
+            border: none; resize: none; outline: none;
+            font-family: 'Tajawal', sans-serif;
         }
-        .char-selector-btn.active {
-            background: #1a1a1a;
-            border-color: #1a1a1a;
-            color: #fff;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        .prompt-result-actions {
+            display: flex; justify-content: flex-end; gap: 8px;
         }
-        .char-selector-btn i { font-size: 14px; }
-        .char-selector-name { font-size: 11px; font-weight: 500; }
+        .copy-btn {
+            background: rgba(255,255,255,0.6); border: 1px solid #e0e4f0;
+            border-radius: 30px; padding: 6px 12px;
+            font-size: 12px; color: #5a608a; cursor: pointer;
+            display: flex; align-items: center; gap: 4px; transition: 0.2s;
+        }
+        .copy-btn:active { transform: scale(0.9); }
+        .copy-btn.success { background: #dcfce7; color: #16a34a; border-color: #bbf7d0; }
 
-        /* Chat Section */
-        .chat-section { flex: 1; display: none; flex-direction: column; overflow: hidden; }
-        .chat-section.active { display: flex; }
-        .messages-container { flex: 1; overflow-y: auto; padding: 12px; margin-bottom: 10px; background: rgba(255, 255, 255, 0.3); border-radius: 20px; border: 1px solid rgba(0,0,0,0.04); }
-        .message { margin-bottom: 10px; animation: messageSlide 0.3s ease; }
-        @keyframes messageSlide { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .message-time { font-size: 9px; margin-bottom: 3px; color: #888; }
-        .message-content { background: rgba(255, 255, 255, 0.7); padding: 8px 12px; border-radius: 12px; font-size: 12px; line-height: 1.5; word-wrap: break-word; max-width: 85%; color: #222; border: 1px solid rgba(0,0,0,0.04); }
-        .message.own { text-align: left; }
-        .message.own .message-content { margin-right: auto; margin-left: 0; }
-        
-        .ai-bubble { border-radius: 12px; overflow: hidden; max-width: 85%; background: rgba(255, 255, 255, 0.6); border: 1px solid rgba(0,0,0,0.04); }
-        .ai-bubble-label { display: flex; align-items: center; gap: 4px; padding: 6px 10px 0; font-size: 9px; font-weight: 700; color: #0056b3; }
-        .ai-bubble-label i { font-size: 11px; }
-        .ai-bubble-text { padding: 4px 10px 8px; font-size: 12px; line-height: 1.5; word-wrap: break-word; color: #222; }
-        .ai-bubble-footer { display: flex; align-items: center; justify-content: flex-end; padding: 4px 10px 6px; border-top: 1px solid rgba(0,0,0,0.04); }
-        .ai-bubble-copy { cursor: pointer; display: flex; align-items: center; gap: 4px; color: #666; }
-        .ai-bubble-copy:active { opacity: 0.6; }
-        
-        /* نافذة الإعلانات الجديدة */
-        .ad-modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(6px);
-            z-index: 9999; display: none; justify-content: center; align-items: center;
+        /* أزرار الأنماط (الشخصيات) */
+        .style-header {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 12px;
         }
-        .ad-modal-overlay.active { display: flex; }
-        .ad-modal-box {
-            padding: 30px; max-width: 400px; width: 90%;
-            text-align: center; position: relative;
-            color: #1a1a1a;
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.9);
-            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.08);
+        .style-header span { font-size: 13px; font-weight: 700; color: #1a1a2e; }
+        .style-header i { font-size: 12px; color: #6b73a3; }
+        .styles-container {
+            display: flex; gap: 10px; overflow-x: auto; padding-bottom: 4px;
+            scrollbar-width: none; -webkit-overflow-scrolling: touch;
         }
-        .ad-modal-title { font-size: 24px; font-weight: 700; color: #004085; margin-bottom: 12px; }
-        .ad-modal-text { font-size: 15px; color: #333; margin-bottom: 20px; line-height: 1.5; }
-        .ad-modal-btn {
-            display: inline-block; padding: 12px 24px; margin-bottom: 15px;
-            background: #1a1a1a; color: white; border: none;
-            border-radius: 30px; font-weight: bold; font-size: 16px;
-            text-decoration: none; transition: all 0.2s; cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        .styles-container::-webkit-scrollbar { display: none; }
+        .style-btn {
+            flex-shrink: 0; padding: 8px 16px; border-radius: 30px;
+            background: rgba(255, 255, 255, 0.6);
+            border: 1px solid #e2e6f0;
+            color: #5a608a; font-size: 12px; font-weight: 600;
+            cursor: pointer; transition: all 0.2s;
+            display: flex; align-items: center; gap: 6px;
         }
-        .ad-modal-btn:hover { background: #333; transform: scale(1.02); }
-        
-        .ad-skip-btn {
-            display: inline-block; padding: 8px 16px; margin-top: 5px;
-            background: transparent; color: #666;
-            border: 1px solid rgba(0,0,0,0.1); border-radius: 20px;
-            font-size: 12px; cursor: pointer; transition: 0.2s;
+        .style-btn i { font-size: 14px; }
+        .style-btn.active {
+            background: #ffffff; border-color: #5a7bfb;
+            color: #1a1a2e; box-shadow: 0 4px 10px rgba(90, 123, 251, 0.1);
         }
-        .ad-skip-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-        .ad-skip-btn:not(:disabled):hover { background: #eee; color: #222; }
+        .style-btn:active { transform: scale(0.95); }
 
-        /* Bottom Sheets */
-        .bottom-sheet-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(8px); z-index: 1000; display: none; align-items: flex-end; justify-content: center; }
-        .bottom-sheet-overlay.active { display: flex; }
-        .bottom-sheet { width: 100%; max-width: 600px; max-height: 80vh; border-radius: 25px 25px 0 0; padding: 20px; animation: slideUp 0.4s ease; overflow-y: auto; display: flex; flex-direction: column; }
-        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-        .sheet-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px solid rgba(0,0,0,0.05); }
-        .sheet-title { font-size: 16px; font-weight: 700; display: flex; align-items: center; gap: 8px; color: #222; }
-        .sheet-close { width: 30px; height: 30px; border-radius: 50%; background: rgba(0,0,0,0.05); border: 1px solid rgba(0,0,0,0.08); display: flex; align-items: center; justify-content: center; cursor: pointer; }
-        .sheet-close i { font-size: 16px; color: #444; }
-        .sheet-instruction { font-size: 11px; text-align: center; margin-bottom: 16px; padding: 6px; border-radius: 30px; color: #555; }
-        .characters-list, .notifications-list { display: flex; flex-direction: column; gap: 10px; overflow-y: auto; max-height: 50vh; }
-        .char-list-item, .notif-item { display: flex; align-items: center; gap: 12px; padding: 10px 14px; border-radius: 16px; width: 100%; background: rgba(255,255,255,0.4); border: 1px solid rgba(0,0,0,0.05); }
-        .char-list-icon, .notif-icon { width: 36px; height: 36px; border-radius: 10px; background: rgba(255,255,255,0.6); border: 1px solid rgba(0,0,0,0.05); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-        .char-list-icon i, .notif-icon i { font-size: 20px; color: #333; }
-        .char-list-info, .notif-content { flex: 1; text-align: right; }
-        .char-list-name, .notif-title { font-size: 13px; font-weight: 700; margin-bottom: 2px; color: #222; }
-        .char-list-desc, .notif-text { font-size: 10px; line-height: 1.3; color: #555; }
-        .char-list-check { width: 20px; height: 20px; border-radius: 50%; background: rgba(0,0,0,0.05); border: 1px solid rgba(0,0,0,0.05); display: flex; align-items: center; justify-content: center; opacity: 0; }
-        .char-list-item.active .char-list-check { opacity: 1; background: #1a1a1a; color: #fff; border: none; }
+        /* أزرار التواصل الاجتماعي (أسفل الشاشة) */
+        .social-bar {
+            position: fixed; bottom: 16px; left: 16px; right: 16px; z-index: 99;
+            display: flex; justify-content: center; gap: 12px;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            border-radius: 40px;
+            max-width: 400px; margin: 0 auto;
+        }
+        .social-btn {
+            width: 40px; height: 40px; border-radius: 50%;
+            background: #ffffff; border: 1px solid #eff1f8;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; transition: all 0.2s; color: #5a608a; text-decoration: none;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+        }
+        .social-btn:active { transform: scale(0.9); }
+        .social-btn i { font-size: 18px; }
+        .social-btn.telegram { color: #0088cc; }
+        .social-btn.instagram { color: #e4405f; }
+        .social-btn.chat { background: #f0f2f8; color: #1a1a2e; }
 
         @media (min-width: 768px) {
-            .main-container { max-width: 700px; margin: 0 auto; padding: 20px; padding-top: 80px; }
-            .floating-header { left: 20px; right: 20px; top: 20px; }
+            .main-container { max-width: 500px; margin: 0 auto; padding: 20px 20px 100px 20px; padding-top: 100px; }
+            .floating-header { left: auto; right: auto; width: 100%; max-width: 500px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- نافذة الإعلانات -->
-    <div class="ad-modal-overlay" id="adModal">
-        <div class="ad-modal-box glass-card">
-            <div id="adContent">
-                <h2 class="ad-modal-title" id="adTitle">عرض خاص</h2>
-                <p class="ad-modal-text" id="adText">تفاصيل العرض هنا...</p>
-                <a href="#" id="adButton" class="ad-modal-btn" target="_blank">اضغط للمزيد</a>
-                <br>
-                <button class="ad-skip-btn" id="adSkipBtn" disabled>تخط بعد 5 ثواني</button>
-            </div>
-        </div>
-    </div>
-
+    <!-- شريط التنقل العلوي -->
     <header class="floating-header">
-        <div style="display: flex; gap: 6px;">
-            <div class="header-circle" onclick="openCharactersSheet()"><i class="bi bi-people"></i></div>
-        </div>
-        <div class="logo-wrapper">
-            <div class="logo-center" id="evileLogoBox" onclick="handleTripleClick()" oncontextmenu="return false;">
-                <span class="logo-text" id="evileLogoText">EVILE</span>
-            </div>
-            <div class="active-users-box">
-                <i class="bi bi-person-friends"></i>
-                <span id="activeCount">0</span>
-            </div>
-        </div>
-        <div class="header-circle" onclick="openNotificationsSheet()">
+        <div class="header-icon" onclick="openNotificationsSheet()">
             <i class="bi bi-bell"></i>
             <span class="notif-badge" id="notifBadge" style="display: none;">0</span>
+        </div>
+        <div class="header-logo">EVILE</div>
+        <div class="header-icon" onclick="openCharactersSheet()">
+            <i class="bi bi-person"></i>
         </div>
     </header>
 
     <div class="main-container">
-        <!-- Splash -->
-        <div class="splash-section" id="splashSection">
-            <div class="splash-icon"><i class="bi bi-chat-dots"></i></div>
-            <div class="splash-title">مرحباً بك في EVILE</div>
-            <div class="splash-text">أدخل معرف تيليجرام الخاص بك لبدء المحادثة</div>
-            <div class="splash-input-wrapper">
-                <input type="text" id="splashTelegramId" class="splash-input" placeholder="معرف تيليجرام (أرقام فقط)">
-                <button id="splashRegisterBtn" class="splash-btn"><i class="bi bi-arrow-left"></i></button>
-            </div>
-            <div id="splashError" class="splash-error" style="display: none;"></div>
-        </div>
-
-        <!-- Welcome -->
-        <div class="welcome-section" id="welcomeSection">
-            <div id="welcomeLogo"><div class="sparkle-icon"><i class="bi bi-stars"></i></div></div>
-            <h1 class="welcome-title" id="welcomeTitle">ابنِ أفكارك مع EVILE</h1>
-            <p class="welcome-subtitle" id="welcomeSubtitle">اختر شخصية وابدأ محادثة إبداعية</p>
-            <div class="welcome-input-card">
-                <div class="input-card">
-                    <div class="input-wrapper">
-                        <textarea class="message-input" id="welcomeInput" placeholder="اكتب رسالتك..." rows="1"></textarea>
-                        <button class="send-btn send-btn-normal" id="welcomeSendBtn" onclick="handleSendWelcome()"><i class="bi bi-send"></i></button>
-                    </div>
-                </div>
-            </div>
-            <div class="char-scroll-container">
-                <div class="char-scroll-wrapper" id="charScrollWrapper">
-                    <div class="char-selector" id="charSelector"></div>
-                </div>
+        <!-- منطقة العنوان -->
+        <div class="hero-section">
+            <h1 class="hero-title" id="welcomeTitle">لوجو ميكر</h1>
+            <p class="hero-subtitle" id="welcomeSubtitle">صمم شعارك بسهولة واحترافية<br>بأسلوب يعبر عن هويتك</p>
+            <div class="hero-features">
+                <span><i class="bi bi-lightning-charge-fill"></i> نتائج فورية</span>
+                <span><i class="bi bi-pencil-square"></i> تصاميم احترافية</span>
+                <span><i class="bi bi-emoji-smile"></i> سهل الاستخدام</span>
             </div>
         </div>
 
-        <!-- Chat -->
-        <div class="chat-section" id="chatSection">
-            <div class="messages-container" id="messagesContainer"></div>
-            <div class="input-section">
-                <div class="input-card">
-                    <div class="input-wrapper">
-                        <button class="header-circle" style="width:34px;height:34px;" onclick="goHome()"><i class="bi bi-house-door" style="font-size:16px;"></i></button>
-                        <textarea class="message-input" id="chatInput" placeholder="اكتب رسالتك..." rows="1"></textarea>
-                        <button class="send-btn send-btn-normal" id="sendBtn" onclick="handleSendChat()"><i class="bi bi-send"></i></button>
-                    </div>
+        <!-- بطاقة الإدخال الرئيسية -->
+        <div class="input-card">
+            <label class="input-label"><i class="bi bi-pencil" style="margin-left:6px; color:#5a7bfb;"></i> اكتب وصف الشعار</label>
+            
+            <div class="textarea-wrapper">
+                <textarea class="message-input" id="mainInput" placeholder="مثال: شعار لمتجر ملابس نسائية أنيق وبسيط" rows="1"></textarea>
+            </div>
+
+            <!-- زر الإرسال الرئيسي -->
+            <button class="main-btn" id="mainSendBtn" onclick="handleSendWelcome()">
+                <i class="bi bi-stars"></i> إنشاء الشعار
+            </button>
+
+            <!-- حقل عرض البرومبت المولد (جديد) -->
+            <div class="prompt-result-wrapper" id="promptResultArea" style="display: none;">
+                <textarea class="prompt-result-text" id="promptResultText" readonly placeholder="سينتج هنا البرومبت المخصص للشعار..."></textarea>
+                <div class="prompt-result-actions">
+                    <button class="copy-btn" onclick="copyGeneratedPrompt()"><i class="bi bi-files"></i> نسخ النص</button>
                 </div>
             </div>
+        </div>
+
+        <!-- اختيار الأنماط (أزرار الشخصيات) -->
+        <div class="style-header">
+            <span><i class="bi bi-palette" style="margin-left:6px; color:#9a6ff5;"></i> اختر النمط</span>
+        </div>
+        <div class="styles-container" id="stylesContainer">
+            <!-- سيتم توليد الأزرار هنا بواسطة Javascript -->
+        </div>
+
+        <!-- أزرار التواصل الاجتماعي -->
+        <div class="social-bar">
+            <a href="https://t.me/Evile_Prompts" target="_blank" class="social-btn telegram"><i class="bi bi-telegram"></i></a>
+            <a href="https://www.instagram.com/bla6c7" target="_blank" class="social-btn instagram"><i class="bi bi-instagram"></i></a>
+            <div class="social-btn chat" onclick="openCharactersSheet()"><i class="bi bi-people"></i></div>
         </div>
     </div>
 
@@ -294,10 +258,10 @@
     <div class="bottom-sheet-overlay" id="charactersSheet" onclick="closeSheetOnBackdrop(event, 'charactersSheet')">
         <div class="bottom-sheet" onclick="event.stopPropagation()">
             <div class="sheet-header">
-                <div class="sheet-title"><i class="bi bi-people"></i> الشخصيات</div>
+                <div class="sheet-title"><i class="bi bi-people"></i> الشخصيات المتاحة</div>
                 <button class="sheet-close" onclick="closeSheet('charactersSheet')"><i class="bi bi-x-lg"></i></button>
             </div>
-            <div class="sheet-instruction">اختر الشخصية المناسبة لمحادثتك</div>
+            <div class="sheet-instruction">اختر الشخصية المناسبة لتوليد الشعار</div>
             <div id="charactersList" class="characters-list"></div>
         </div>
     </div>
@@ -313,6 +277,53 @@
         </div>
     </div>
 
+    <!-- نافذة الإعلانات -->
+    <div class="ad-modal-overlay" id="adModal">
+        <div class="ad-modal-box glass-card">
+            <div id="adContent">
+                <h2 class="ad-modal-title" id="adTitle">عرض خاص</h2>
+                <p class="ad-modal-text" id="adText">تفاصيل العرض هنا...</p>
+                <a href="#" id="adButton" class="ad-modal-btn" target="_blank">اضغط للمزيد</a>
+                <br>
+                <button class="ad-skip-btn" id="adSkipBtn" disabled>تخط بعد 5 ثواني</button>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        /* إضافة ستايلات النوافذ الجانبية والإعلانات (مع التصميم الجديد) */
+        .bottom-sheet-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.4); backdrop-filter: blur(8px); z-index: 1000; display: none; align-items: flex-end; justify-content: center; }
+        .bottom-sheet-overlay.active { display: flex; }
+        .bottom-sheet { width: 100%; max-width: 600px; max-height: 80vh; background: #ffffff; border-radius: 25px 25px 0 0; padding: 20px; animation: slideUp 0.4s ease; overflow-y: auto; display: flex; flex-direction: column; box-shadow: 0 -10px 40px rgba(0,0,0,0.05); }
+        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+        .sheet-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px solid #eff1f8; }
+        .sheet-title { font-size: 16px; font-weight: 700; display: flex; align-items: center; gap: 8px; color: #1a1a2e; }
+        .sheet-close { width: 30px; height: 30px; border-radius: 50%; background: #f7f9fd; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #5a608a; }
+        .sheet-instruction { font-size: 12px; text-align: center; margin-bottom: 16px; color: #6b73a3; }
+        .characters-list, .notifications-list { display: flex; flex-direction: column; gap: 12px; overflow-y: auto; max-height: 50vh; }
+        .char-list-item, .notif-item { display: flex; align-items: center; gap: 14px; padding: 12px 16px; border-radius: 16px; width: 100%; background: #f7f9fd; cursor: pointer; transition: all 0.2s; }
+        .char-list-item:active { transform: scale(0.98); }
+        .char-list-item.active { background: #ffffff; border: 1px solid #e2e6f0; box-shadow: 0 4px 10px rgba(0,0,0,0.02); }
+        .char-list-icon { width: 36px; height: 36px; border-radius: 10px; background: #eef1fa; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #2c3e8a; }
+        .char-list-info { flex: 1; text-align: right; }
+        .char-list-name { font-size: 14px; font-weight: 700; color: #1a1a2e; }
+        .char-list-desc { font-size: 11px; color: #6b73a3; }
+        .char-list-check { width: 20px; height: 20px; border-radius: 50%; background: #eef1fa; display: flex; align-items: center; justify-content: center; opacity: 0; }
+        .char-list-item.active .char-list-check { opacity: 1; background: #5a7bfb; color: #fff; }
+
+        /* الإعلانات */
+        .ad-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(6px); z-index: 9999; display: none; justify-content: center; align-items: center; }
+        .ad-modal-overlay.active { display: flex; }
+        .ad-modal-box { padding: 30px; max-width: 400px; width: 90%; text-align: center; position: relative; color: #1a1a2e; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.9); box-shadow: 0 15px 50px rgba(0, 0, 0, 0.1); border-radius: 24px; }
+        .ad-modal-title { font-size: 22px; font-weight: 700; color: #2c3e8a; margin-bottom: 12px; }
+        .ad-modal-text { font-size: 14px; color: #5a608a; margin-bottom: 20px; line-height: 1.5; }
+        .ad-modal-btn { display: inline-block; padding: 12px 24px; margin-bottom: 15px; background: #1a1a2e; color: white; border: none; border-radius: 30px; font-weight: bold; font-size: 15px; text-decoration: none; transition: all 0.2s; cursor: pointer; }
+        .ad-modal-btn:hover { transform: scale(1.02); }
+        .ad-skip-btn { display: inline-block; padding: 8px 16px; margin-top: 5px; background: transparent; color: #6b73a3; border: 1px solid #e2e6f0; border-radius: 20px; font-size: 12px; cursor: pointer; transition: 0.2s; }
+        .ad-skip-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .ad-skip-btn:not(:disabled):hover { background: #f7f9fd; color: #1a1a2e; }
+    </style>
+
     <script>
         const characters = {{ characters|tojson }};
         let telegramId = {{ telegram_id|tojson }};
@@ -320,38 +331,41 @@
         const latestAd = {{ latest_ad|tojson }};
         
         let currentCharacter = characters.length > 0 ? characters[0].callback_key : 'logo_maker';
-        let isFirstMessage = true;
         let isProcessing = false;
         let isStreaming = false;
         let abortController = null;
 
-        let clickCount = 0;
-
-        const splashSection = document.getElementById('splashSection');
-        const welcomeSection = document.getElementById('welcomeSection');
-        const chatSection = document.getElementById('chatSection');
-        const charScrollWrapper = document.getElementById('charScrollWrapper');
-
+        // تحميل الصفحة
         function initScreen() {
-            if (telegramId) {
-                splashSection.classList.remove('active');
-                welcomeSection.classList.add('active');
-                chatSection.classList.remove('active');
+            if (!telegramId) {
+                // حفظ الحالة وجلب المعرف
+                const id = prompt("مرحباً بك في EVILE.\nيرجى إدخال معرف تيليجرام الخاص بك للبدء (أرقام فقط):");
+                if (id && /^\d+$/.test(id)) {
+                    performSplashRegister(id);
+                } else {
+                    alert("الرجاء إدخال معرف صحيح للبدء.");
+                    initScreen();
+                }
+            } else {
+                renderStyleButtons(); // تحميل أزرار الأنماط
+                updateWelcomeDisplay();
+                
                 if (latestNotification && latestNotification.show_in_chat) {
                     showToastNotification(latestNotification.title + ': ' + latestNotification.text, 10000);
                 }
-                // عرض الإعلان عند كل زيارة
                 if (latestAd) {
-                    // إظهار الإعلان فوراً بعد التحميل
-                    setTimeout(() => {
-                        showAdModal(latestAd);
-                    }, 1000);
+                    setTimeout(() => { showAdModal(latestAd); }, 1000);
                 }
-            } else {
-                splashSection.classList.add('active');
-                welcomeSection.classList.remove('active');
-                chatSection.classList.remove('active');
             }
+        }
+
+        // وظيفة التسجيل (البديل)
+        async function performSplashRegister(id) {
+            try {
+                let res = await fetch('/register', { method: 'POST', headers: {'Content-Type': 'application/x-www-form-urlencoded'}, body: `telegram_id=${id}` });
+                let data = await res.json();
+                if (data.success) { location.reload(); } else { alert('فشل التسجيل: ' + data.message); initScreen(); }
+            } catch (err) { alert('خطأ في الاتصال.'); initScreen(); }
         }
 
         function showToastNotification(message, duration = 10000) {
@@ -362,122 +376,67 @@
             setTimeout(() => { toast.remove(); }, duration);
         }
 
-        function updateActiveUsers() {
-            fetch('/api/active_users')
-                .then(res => res.json())
-                .then(data => { document.getElementById('activeCount').textContent = data.count; })
-                .catch(() => {});
-        }
-
-        function handleTripleClick() {
-            clickCount++;
-            if (clickCount === 3) {
-                clickCount = 0;
-                if (telegramId && telegramId !== 'null') {
-                    navigator.clipboard.writeText(telegramId).then(() => {
-                        showToastNotification('✅ تم نسخ معرف تيليجرام الخاص بك: ' + telegramId);
-                    }).catch(() => {
-                        showToastNotification('⚠️ فشل النسخ، حاول يدوياً: ' + telegramId);
-                    });
-                } else {
-                    showToastNotification('⚠️ لم يتم تسجيل حسابك بعد، سجل دخولك أولاً.');
-                }
-            }
-            setTimeout(() => { clickCount = 0; }, 1000);
-        }
-
-        // --- دوال الإعلانات ---
-        function showAdModal(ad) {
-            document.getElementById('adTitle').textContent = ad.title;
-            document.getElementById('adText').textContent = ad.text;
-            document.getElementById('adButton').textContent = ad.button_text;
-            document.getElementById('adButton').href = ad.button_link;
-            
-            const skipBtn = document.getElementById('adSkipBtn');
-            skipBtn.disabled = true;
-            let countdown = ad.duration_seconds || 5; // استخدام المدة من قاعدة البيانات، أو 5 افتراضياً
-            skipBtn.textContent = `تخط بعد ${countdown} ثواني`;
-            
-            // العداد التنازلي
-            const interval = setInterval(() => {
-                countdown--;
-                if (countdown > 0) {
-                    skipBtn.textContent = `تخط بعد ${countdown} ثواني`;
-                } else {
-                    clearInterval(interval);
-                    skipBtn.disabled = false;
-                    skipBtn.textContent = 'تخط الإعلان';
-                }
-            }, 1000);
-            
-            // عند الضغط على الزر (بعد انتهاء العداد)
-            skipBtn.onclick = function() {
-                if (!this.disabled) {
-                    closeAdModal();
-                }
-            };
-            
-            document.getElementById('adModal').classList.add('active');
-        }
-
-        function closeAdModal() {
-            document.getElementById('adModal').classList.remove('active');
-        }
-
-        // --- شريط الشخصيات ---
-        function renderCharSelector() {
-            const selector = document.getElementById('charSelector');
+        // ---- أزرار الأنماط (الشخصيات) ----
+        function renderStyleButtons() {
+            const container = document.getElementById('stylesContainer');
             if (!characters || characters.length === 0) {
-                selector.innerHTML = '<div class="char-selector-btn" style="cursor:default; color:rgba(0,0,0,0.5);">لا توجد شخصيات</div>';
+                container.innerHTML = '<div class="style-btn" style="cursor:default;">لا توجد شخصيات</div>';
                 return;
             }
-            selector.innerHTML = characters.map(char => `
-                <div class="char-selector-btn ${char.callback_key === currentCharacter ? 'active' : ''}" data-key="${char.callback_key}">
-                    <i class="bi bi-robot"></i>
-                    <span class="char-selector-name">${escapeHtml(char.name)}</span>
+            // أيقونات مميزة لكل نمط
+            const styleIcons = {
+                'logo_maker': 'bi-brush',
+                'creative': 'bi-lightbulb',
+                'luxury': 'bi-gem',
+                'minimalist': 'bi-circle',
+                'modern': 'bi-pentagon'
+            };
+            // تكوين أزرار الأنماط (نستخدم أول 5 شخصيات فقط إذا وجدت)
+            const displayChars = characters.slice(0, 5);
+            container.innerHTML = displayChars.map(char => `
+                <div class="style-btn ${char.callback_key === currentCharacter ? 'active' : ''}" data-key="${char.callback_key}">
+                    <i class="bi ${styleIcons[char.callback_key] || 'bi-robot'}"></i>
+                    <span>${escapeHtml(char.name)}</span>
                 </div>
             `).join('');
             
-            document.querySelectorAll('.char-selector-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
+            document.querySelectorAll('.style-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
                     const key = btn.getAttribute('data-key');
                     if (key) selectCharacter(key);
                 });
             });
-            
-            if (charScrollWrapper) {
-                const isOverflowing = selector.scrollWidth > charScrollWrapper.clientWidth;
-                if (!isOverflowing) {
-                    charScrollWrapper.style.display = 'flex';
-                    charScrollWrapper.style.justifyContent = 'center';
-                }
-            }
         }
 
         function updateWelcomeDisplay() {
             const char = characters.find(c => c.callback_key === currentCharacter);
-            const logoContainer = document.getElementById('welcomeLogo');
             const title = document.getElementById('welcomeTitle');
             const subtitle = document.getElementById('welcomeSubtitle');
             if (char) {
-                if (char.logo_url) {
-                    logoContainer.innerHTML = `<img src="${escapeHtml(char.logo_url)}" class="character-logo" alt="${escapeHtml(char.name)}">`;
-                } else {
-                    logoContainer.innerHTML = `<div class="sparkle-icon"><i class="bi bi-stars"></i></div>`;
-                }
                 title.textContent = char.name;
-                subtitle.textContent = char.description;
+                subtitle.innerHTML = char.description.replace(/\n/g, '<br>');
+            } else if (characters.length > 0) {
+                const first = characters[0];
+                title.textContent = first.name;
+                subtitle.innerHTML = first.description.replace(/\n/g, '<br>');
             } else {
-                logoContainer.innerHTML = `<div class="sparkle-icon"><i class="bi bi-stars"></i></div>`;
-                title.textContent = "ابنِ أفكارك مع EVILE";
-                subtitle.textContent = "أضف شخصيات من لوحة التحكم";
+                title.textContent = "لوجو ميكر";
+                subtitle.innerHTML = "صمم شعارك بسهولة واحترافية";
             }
+        }
+
+        function selectCharacter(key) {
+            currentCharacter = key;
+            renderStyleButtons();
+            updateWelcomeDisplay();
+            renderCharactersSheet();
+            closeSheet('charactersSheet');
         }
 
         function renderCharactersSheet() {
             const list = document.getElementById('charactersList');
             if (!characters || characters.length === 0) {
-                list.innerHTML = '<div class="char-list-item" style="justify-content:center;">لا توجد شخصيات بعد</div>';
+                list.innerHTML = '<div class="char-list-item" style="justify-content:center; color:#6b73a3;">لا توجد شخصيات بعد</div>';
                 return;
             }
             list.innerHTML = characters.map(char => `
@@ -499,7 +458,7 @@
                 const list = document.getElementById('notificationsList');
                 const badge = document.getElementById('notifBadge');
                 if (notifications.length === 0) {
-                    list.innerHTML = '<div class="notif-item" style="justify-content: center; text-align: center; color:rgba(0,0,0,0.5);">لا توجد إشعارات</div>';
+                    list.innerHTML = '<div class="notif-item" style="justify-content: center; text-align: center; color:#6b73a3;">لا توجد إشعارات</div>';
                     badge.style.display = 'none'; return;
                 }
                 badge.textContent = notifications.length; badge.style.display = 'flex';
@@ -508,81 +467,139 @@
                         <div class="notif-icon"><i class="bi bi-bell"></i></div>
                         <div class="notif-content">
                             <div class="notif-title">${escapeHtml(notif.title)}</div>
-                            <div class="notif-text">${escapeHtml(notif.text)}</div>
-                            <div class="notif-time" style="font-size:10px; color:rgba(0,0,0,0.4);">${escapeHtml(notif.created_at)}</div>
+                            <div class="notif-text" style="font-size:11px; color:#6b73a3;">${escapeHtml(notif.text)}</div>
                         </div>
                     </div>
                 `).join('');
             } catch (err) { console.error('Failed to load notifications', err); }
         }
 
+        // ---- إدارة الإرسال والبرومبت المولد ----
         function updateSendButton(isStreamingActive) {
-            const welcomeBtn = document.getElementById('welcomeSendBtn');
-            const chatBtn = document.getElementById('sendBtn');
-            [welcomeBtn, chatBtn].forEach(btn => {
-                if (!btn) return;
-                if (isStreamingActive) {
-                    btn.disabled = false;
-                    btn.classList.remove('send-btn-normal');
-                    btn.classList.add('stop-btn');
-                    btn.innerHTML = '<i class="bi bi-stop-circle"></i>';
-                } else {
-                    btn.classList.remove('stop-btn');
-                    btn.classList.add('send-btn-normal');
-                    btn.innerHTML = '<i class="bi bi-send"></i>';
-                }
+            const btn = document.getElementById('mainSendBtn');
+            if (!btn) return;
+            if (isStreamingActive) {
+                btn.classList.add('stop-btn');
+                btn.innerHTML = '<i class="bi bi-stop-circle"></i> إيقاف التوليد';
+            } else {
+                btn.classList.remove('stop-btn');
+                btn.innerHTML = '<i class="bi bi-stars"></i> إنشاء الشعار';
+            }
+        }
+
+        function showLoadingPrompt() {
+            const area = document.getElementById('promptResultArea');
+            area.style.display = 'flex';
+            document.getElementById('promptResultText').value = 'جاري توليد البرومبت...';
+        }
+
+        function updatePromptResult(text) {
+            const area = document.getElementById('promptResultArea');
+            area.style.display = 'flex';
+            const textarea = document.getElementById('promptResultText');
+            textarea.value = text;
+            // إعادة ضبط الحجم ليناسب المحتوى
+            textarea.style.height = 'auto';
+            textarea.style.height = textarea.scrollHeight + 'px';
+        }
+
+        function copyGeneratedPrompt() {
+            const text = document.getElementById('promptResultText').value;
+            if (!text) return;
+            navigator.clipboard.writeText(text).then(() => {
+                const btn = document.querySelector('.copy-btn');
+                const original = btn.innerHTML;
+                btn.classList.add('success');
+                btn.innerHTML = '<i class="bi bi-check-lg"></i> تم النسخ';
+                setTimeout(() => {
+                    btn.classList.remove('success');
+                    btn.innerHTML = original;
+                }, 2000);
+            }).catch(() => {
+                alert('فشل نسخ النص');
             });
         }
 
+        // ---- وظائف الإرسال الأساسية ----
         function stopStreaming() {
             if (abortController) {
                 abortController.abort();
                 abortController = null;
                 isStreaming = false; isProcessing = false;
                 updateSendButton(false);
-                removeLoading();
-                addMessage('تم إيقاف توليد الرد.', false);
             }
         }
 
-        function showSplashError(msg) {
-            const errDiv = document.getElementById('splashError');
-            errDiv.textContent = msg; errDiv.style.display = 'block';
-            setTimeout(() => errDiv.style.display = 'none', 4000);
-        }
-
-        async function performSplashRegister() {
-            const id = document.getElementById('splashTelegramId').value.trim();
-            if (!/^\d+$/.test(id)) { showSplashError('المعرف يجب أن يحتوي على أرقام فقط'); return; }
-            const btn = document.getElementById('splashRegisterBtn');
-            btn.disabled = true; btn.innerHTML = '<div class="spinner" style="width:16px;height:16px;border:2px solid rgba(0,0,0,0.2);border-top-color:#222;border-radius:50%;animation:spin 0.8s linear infinite;"></div>';
+        async function handleSendWelcome() {
+            if (isStreaming) { stopStreaming(); return; }
+            if (isProcessing) return;
+            const input = document.getElementById('mainInput'); 
+            const msg = input.value.trim();
+            if (!msg) return;
+            
+            isProcessing = true; 
+            abortController = new AbortController(); 
+            isStreaming = true;
+            updateSendButton(true);
+            showLoadingPrompt();
+            
             try {
-                let res = await fetch('/register', { method: 'POST', headers: {'Content-Type': 'application/x-www-form-urlencoded'}, body: `telegram_id=${id}` });
-                let data = await res.json();
-                if (data.success) { location.reload(); } else { showSplashError(data.message || 'فشل التسجيل'); }
-            } catch (err) { showSplashError('خطأ في الاتصال'); } finally { btn.disabled = false; btn.innerHTML = '<i class="bi bi-arrow-left"></i>'; }
+                const response = await fetch('/api/chat', { 
+                    method: 'POST', 
+                    headers: { 'Content-Type': 'application/json' }, 
+                    body: JSON.stringify({ character: currentCharacter, message: msg }), 
+                    signal: abortController.signal 
+                });
+                if (!isStreaming) { throw new Error('Stream cancelled'); }
+                
+                const reader = response.body.getReader(); 
+                const decoder = new TextDecoder(); 
+                let fullText = '';
+                while (true) { 
+                    const { done, value } = await reader.read(); 
+                    if (done) break; 
+                    fullText += decoder.decode(value, { stream: true }); 
+                }
+                
+                if (fullText) { 
+                    updatePromptResult(fullText); 
+                } else { 
+                    updatePromptResult('لم يتم استلام رد من الخادم.'); 
+                }
+            } catch (err) {
+                if (err.name !== 'AbortError' && err.message !== 'Stream cancelled') {
+                    updatePromptResult('خطأ في الاتصال بالخادم.');
+                }
+            } finally {
+                isStreaming = false; isProcessing = false; abortController = null; updateSendButton(false);
+            }
         }
 
-        function addMessage(text, isOwn) {
-            const container = document.getElementById('messagesContainer');
-            const time = new Date().toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' });
-            const div = document.createElement('div');
-            div.className = `message ${isOwn ? 'own' : ''}`;
-            div.innerHTML = `<div class="message-time">${time}</div><div class="message-content">${escapeHtml(text)}</div>`;
-            container.appendChild(div);
-            container.scrollTop = container.scrollHeight;
-        }
+        // ---- دوال النوافذ والإعلانات ----
+        function openCharactersSheet() { renderCharactersSheet(); document.getElementById('charactersSheet').classList.add('active'); }
+        async function openNotificationsSheet() { await renderNotificationsSheet(); document.getElementById('notificationsSheet').classList.add('active'); document.getElementById('notifBadge').style.display = 'none'; }
+        function closeSheet(id) { document.getElementById(id).classList.remove('active'); }
+        function closeSheetOnBackdrop(e, id) { if (e.target === e.currentTarget) closeSheet(id); }
 
-        function showLoading() {
-            const container = document.getElementById('messagesContainer');
-            const div = document.createElement('div'); div.id = 'loadingMessage'; div.className = 'message';
-            div.innerHTML = '<div class="loading-container"><div class="spinner"></div></div>';
-            container.appendChild(div); container.scrollTop = container.scrollHeight;
+        function showAdModal(ad) {
+            document.getElementById('adTitle').textContent = ad.title;
+            document.getElementById('adText').textContent = ad.text;
+            document.getElementById('adButton').textContent = ad.button_text;
+            document.getElementById('adButton').href = ad.button_link;
+            
+            const skipBtn = document.getElementById('adSkipBtn');
+            skipBtn.disabled = true;
+            let countdown = ad.duration_seconds || 5;
+            skipBtn.textContent = `تخط بعد ${countdown} ثواني`;
+            const interval = setInterval(() => {
+                countdown--;
+                if (countdown > 0) { skipBtn.textContent = `تخط بعد ${countdown} ثواني`; } 
+                else { clearInterval(interval); skipBtn.disabled = false; skipBtn.textContent = 'تخط الإعلان'; }
+            }, 1000);
+            skipBtn.onclick = function() { if (!this.disabled) { closeAdModal(); } };
+            document.getElementById('adModal').classList.add('active');
         }
-
-        function removeLoading() {
-            const el = document.getElementById('loadingMessage'); if (el) el.remove();
-        }
+        function closeAdModal() { document.getElementById('adModal').classList.remove('active'); }
 
         function escapeHtml(str) {
             if (!str) return '';
@@ -591,128 +608,11 @@
             });
         }
 
-        async function streamResponse(text) {
-            return new Promise((resolve, reject) => {
-                if (!isStreaming) return reject(new Error('Stream cancelled'));
-                const container = document.getElementById('messagesContainer');
-                const time = new Date().toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' });
-                const msgDiv = document.createElement('div'); msgDiv.className = 'message';
-                msgDiv.innerHTML = `<div class="message-time">${time}</div>`;
-                container.appendChild(msgDiv);
-                const bubble = document.createElement('div'); bubble.className = 'ai-bubble';
-                bubble.innerHTML = `<div class="ai-bubble-label"><i class="bi bi-cpu"></i> AI</div><div class="ai-bubble-text"></div><div class="ai-bubble-footer"><div class="ai-bubble-copy"><i class="bi bi-files"></i><span>نسخ</span></div></div>`;
-                msgDiv.appendChild(bubble);
-                const textEl = bubble.querySelector('.ai-bubble-text');
-                const copyBtn = bubble.querySelector('.ai-bubble-copy');
-                copyBtn.onclick = () => copyBubbleContent(copyBtn, textEl.innerText);
-                
-                let idx = 0;
-                const interval = setInterval(() => {
-                    if (!isStreaming) { clearInterval(interval); reject(new Error('Stream cancelled by user')); return; }
-                    if (idx < text.length) {
-                        textEl.textContent += text.charAt(idx);
-                        idx++; container.scrollTop = container.scrollHeight;
-                    } else {
-                        clearInterval(interval); resolve();
-                    }
-                }, 20);
-            });
-        }
-
-        function copyBubbleContent(button, text) {
-            navigator.clipboard.writeText(text).then(() => {
-                const original = button.innerHTML;
-                button.innerHTML = '<i class="bi bi-check-lg"></i><span>تم النسخ</span>';
-                setTimeout(() => { button.innerHTML = original; }, 1500);
-            }).catch(() => {
-                button.innerHTML = '<i class="bi bi-x-lg"></i><span>فشل</span>';
-                setTimeout(() => { button.innerHTML = '<i class="bi bi-files"></i><span>نسخ</span>'; }, 1500);
-            });
-        }
-
-        async function actuallySendMessage(message) {
-            if (isProcessing) return;
-            isProcessing = true; abortController = new AbortController(); isStreaming = true;
-            updateSendButton(true);
-
-            addMessage(message, true);
-            document.getElementById('welcomeInput').value = '';
-            document.getElementById('chatInput').value = '';
-            showLoading();
-            
-            try {
-                const response = await fetch('/api/chat', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ character: currentCharacter, message: message }), signal: abortController.signal });
-                if (!isStreaming) { removeLoading(); throw new Error('Stream cancelled'); }
-                
-                const reader = response.body.getReader(); const decoder = new TextDecoder(); let fullText = '';
-                while (true) { const { done, value } = await reader.read(); if (done) break; fullText += decoder.decode(value, { stream: true }); }
-                
-                removeLoading();
-                if (fullText) { await streamResponse(fullText); } else { addMessage('لم يتم استلام رد من الخادم.', false); }
-            } catch (err) {
-                removeLoading();
-                if (err.name !== 'AbortError' && err.message !== 'Stream cancelled') {
-                    addMessage('خطأ في الاتصال بالخادم.', false); console.error(err);
-                }
-            } finally {
-                isStreaming = false; isProcessing = false; abortController = null; updateSendButton(false);
-            }
-        }
-
-        function handleSendWelcome() {
-            if (isStreaming) { stopStreaming(); return; }
-            if (isProcessing) return;
-            const input = document.getElementById('welcomeInput'); const msg = input.value.trim();
-            if (!msg) return;
-            if (isFirstMessage) { welcomeSection.classList.remove('active'); chatSection.classList.add('active'); isFirstMessage = false; }
-            actuallySendMessage(msg);
-        }
-
-        function handleSendChat() {
-            if (isStreaming) { stopStreaming(); return; }
-            if (isProcessing) return;
-            const input = document.getElementById('chatInput'); const msg = input.value.trim();
-            if (!msg) return;
-            actuallySendMessage(msg);
-        }
-
         document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('welcomeInput').addEventListener('keydown', (e) => {
+            initScreen();
+            // منع زر Enter من الإرسال في الحقول النصية (السماح بالسطر الجديد)
+            document.getElementById('mainInput').addEventListener('keydown', (e) => {
                 if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); } 
-            });
-            document.getElementById('chatInput').addEventListener('keydown', (e) => {
-                if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); } 
-            });
-        });
-
-        function openCharactersSheet() { renderCharactersSheet(); document.getElementById('charactersSheet').classList.add('active'); }
-        async function openNotificationsSheet() { await renderNotificationsSheet(); document.getElementById('notificationsSheet').classList.add('active'); document.getElementById('notifBadge').style.display = 'none'; }
-        function closeSheet(id) { document.getElementById(id).classList.remove('active'); }
-        function closeSheetOnBackdrop(e, id) { if (e.target === e.currentTarget) closeSheet(id); }
-        function selectCharacter(key) {
-            currentCharacter = key;
-            renderCharSelector(); renderCharactersSheet(); updateWelcomeDisplay();
-            closeSheet('charactersSheet');
-            const char = characters.find(c => c.callback_key === key);
-            if (char) {
-                document.getElementById('welcomeInput').placeholder = `اكتب لـ ${char.name}...`;
-                document.getElementById('chatInput').placeholder = `اكتب لـ ${char.name}...`;
-            }
-        }
-        function goHome() {
-            chatSection.classList.remove('active'); welcomeSection.classList.add('active');
-            document.getElementById('messagesContainer').innerHTML = '';
-            isFirstMessage = true;
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            initScreen(); updateActiveUsers(); setInterval(updateActiveUsers, 30000);
-            renderCharSelector(); 
-            renderNotificationsSheet(); updateWelcomeDisplay();
-            
-            document.getElementById('splashRegisterBtn').onclick = performSplashRegister;
-            document.getElementById('splashTelegramId').addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') performSplashRegister();
             });
         });
     </script>
