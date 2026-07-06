@@ -10,7 +10,6 @@
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body {
             font-family: 'Tajawal', sans-serif;
-            /* خلفية زرقاء داكنة */
             background: #0a1020;
             color: #e0e5e5;
             overflow: hidden;
@@ -110,6 +109,7 @@
             border: 1px solid rgba(255, 255, 255, 0.05);
         }
         
+        /* تعديل حقل الكتابة: النص على اليمين، ومتمركز عمودياً */
         .textarea-wrapper {
             position: relative;
             background: rgba(0, 0, 0, 0.2);
@@ -117,15 +117,22 @@
             border-radius: 16px;
             padding: 0 14px;
             margin-bottom: 20px;
+            height: 48px;
+            display: flex;
+            align-items: center;
         }
-        /* توسيط النص في حقل الكتابة */
         .message-input {
             width: 100%; background: transparent; border: none;
             font-family: 'Tajawal', sans-serif; font-size: 14px; outline: none;
             color: #fff; 
             height: 48px; max-height: 48px;
-            resize: none; overflow-y: auto;
-            text-align: center; /* تم توسيط النص */
+            resize: none; 
+            overflow-y: auto;
+            text-align: right; /* المحاذاة الأفقية لليمين */
+            padding: 0; /* إزالة الحواشي الافتراضية */
+            line-height: 1.4; /* ضبط الارتفاع */
+            display: flex; /* ضمان المحاذاة العمودية */
+            align-items: center; /* توسيط عمودي */
         }
         .message-input::placeholder { color: #6a8282; }
         
