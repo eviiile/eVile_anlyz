@@ -65,7 +65,6 @@ def ensure_notification_columns(cur):
         cur.execute("ALTER TABLE notifications ADD COLUMN show_in_chat BOOLEAN DEFAULT FALSE")
         logger.info("Added column show_in_chat to notifications table")
 
-# --- تمت إضافة هذه الدالة لإصلاح العمود المفقود ---
 def ensure_character_columns(cur):
     cur.execute("""
         SELECT column_name 
@@ -75,6 +74,16 @@ def ensure_character_columns(cur):
     if not cur.fetchone():
         cur.execute("ALTER TABLE characters ADD COLUMN is_max BOOLEAN DEFAULT FALSE")
         logger.info("✅ Added missing column 'is_max' to characters table")
+
+# --- إضافة جدول طلبات MAX ---
+def ensure_max_requests_table(cur):
+    cur.execute('''CREATE TABLE IF NOT EXISTS max_requests (
+        id SERIAL PRIMARY KEY,
+        telegram_id TEXT NOT NULL,
+        status TEXT DEFAULT 'pending',
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )''')
+    logger.info("✅ Ensured max_requests table exists")
 
 def init_db():
     try:
@@ -99,9 +108,9 @@ def init_db():
                 last_active TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )''')
             
-            # استدعاء دالة إضافة الأعمدة المفقودة
             ensure_notification_columns(cur)
-            ensure_character_columns(cur) # إصلاح الخطأ الذي ظهر في السجلات
+            ensure_character_columns(cur)
+            ensure_max_requests_table(cur) # إضافة الجدول الجديد
             
             logger.info("Database initialized/updated successfully")
             print("✅ Database tables ensured successfully.")
@@ -323,6 +332,51 @@ def api_notifications():
     except Exception as e:
         logger.error(f"API notifications error: {e}")
         return jsonify([])
+
+# --- API جديد لطلبات MAX ---
+@app.route('/api/request_max', methods=['POST'])
+def request_max():
+    data = request.json
+    telegram_id = data.get('telegram_id', '').strip()
+    if not telegram_id or not telegram_id.isdigit():
+        return jsonify({'success': False, 'message': 'معرف غير صحيح'}), 400
+    try:
+        with get_db() as cur:
+            # التحقق مما إذا كان قد أرسل طلباً معلقاً مسبقاً
+            cur.execute("SELECT * FROM max_requests WHERE telegram_id=%s AND status='pending'", (telegram_id,))
+            if cur.fetchone():
+                return jsonify({'success': False, 'message': 'لديك طلب معلق مسبقاً، يرجى انتظار الرد.'}), 400
+            cur.execute("INSERT INTO max_requests (telegram_id) VALUES (%s)", (telegram_id,))
+        return jsonify({'success': True, 'message': 'تم استلام طلبك بنجاح، سيتم التواصل معك.'})
+    except Exception as e:
+        logger.error(f"Max request error: {e}")
+        return jsonify({'success': False, 'message': str(e)}), 500
+
+@app.route('/api/admin/max_requests', methods=['GET'])
+@admin_required
+def get_max_requests():
+    try:
+        with get_db() as cur:
+            cur.execute("SELECT * FROM max_requests ORDER BY created_at DESC")
+            requests = cur.fetchall()
+        return jsonify(requests)
+    except Exception as e:
+        logger.error(f"Admin max requests error: {e}")
+        return jsonify([])
+
+@app.route('/api/admin/max_requests/<int:req_id>/<action>', methods=['POST'])
+@admin_required
+def handle_max_request(req_id, action):
+    if action not in ['approve', 'reject']:
+        return jsonify({'success': False, 'message': 'إجراء غير صحيح'}), 400
+    try:
+        with get_db() as cur:
+            status = 'approved' if action == 'approve' else 'rejected'
+            cur.execute("UPDATE max_requests SET status=%s WHERE id=%s", (status, req_id))
+        return jsonify({'success': True})
+    except Exception as e:
+        logger.error(f"Handle max request error: {e}")
+        return jsonify({'success': False, 'message': str(e)}), 500
 
 @app.route('/api/chat', methods=['POST'])
 def api_chat():
