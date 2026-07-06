@@ -10,31 +10,13 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Tajawal', sans-serif;
-            background: #0a1020;
-            color: #e0e5e5;
+            background: #FBEFEF;
+            color: #2C1A34;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
-        }
-        /* دوائر خلفية بألوان مختلفة تماماً عن index */
-        .bg-circle {
-            position: fixed; border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0.5;
-            pointer-events: none;
-            z-index: 0;
-        }
-        .bg-circle-1 {
-            width: 600px; height: 600px;
-            background: #8b5cf6; /* بنفسجي */
-            top: -200px; left: -200px;
-        }
-        .bg-circle-2 {
-            width: 450px; height: 450px;
-            background: #06b6d4; /* سماوي */
-            bottom: -100px; right: -150px;
         }
 
         .sign-wrapper {
@@ -47,9 +29,9 @@
             position: relative; z-index: 1;
         }
         
-        /* القسم العلوي المتحرك (يملأ الشاشة) */
+        /* القسم العلوي (يملأ الشاشة بالكامل) */
         .sign-hero {
-            min-height: 100vh; /* يملأ الشاشة بالكامل */
+            min-height: 100vh; 
             display: flex; flex-direction: column;
             justify-content: center; align-items: center;
             text-align: center;
@@ -60,7 +42,7 @@
         }
         .hero-animated-icon i {
             font-size: 60px;
-            background: linear-gradient(135deg, #60a5fa 0%, #8b5cf6 100%);
+            background: linear-gradient(135deg, #2C1A34 0%, #8E6A9A 100%);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
@@ -82,31 +64,31 @@
 
         .hero-title { 
             font-size: 32px; font-weight: 800; 
-            background: linear-gradient(135deg, #ffffff 30%, #60a5fa 100%);
-            -webkit-background-clip: text; background-clip: text; color: transparent;
+            color: #2C1A34;
             margin-bottom: 15px;
         }
-        .hero-subtitle { font-size: 15px; color: #94a8a8; line-height: 1.7; max-width: 320px; margin: 0 auto; }
+        .hero-subtitle { font-size: 15px; color: #6B4C7A; line-height: 1.7; max-width: 320px; margin: 0 auto; }
         
         .hero-features-grid {
             display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 25px;
         }
         .hero-feature {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(197, 179, 211, 0.4);
+            backdrop-filter: blur(8px);
+            border: 1px solid #FFE2E2;
             padding: 15px 10px; border-radius: 16px;
             animation: fadeInUp 0.8s ease-out forwards;
             opacity: 0;
+            box-shadow: none;
         }
         .hero-feature:nth-child(1) { animation-delay: 0.1s; }
         .hero-feature:nth-child(2) { animation-delay: 0.3s; }
         .hero-feature:nth-child(3) { animation-delay: 0.5s; }
         .hero-feature:nth-child(4) { animation-delay: 0.7s; }
 
-        .hero-feature i { display: block; font-size: 30px; margin-bottom: 8px; color: #60a5fa; }
-        .hero-feature h3 { font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 4px; }
-        .hero-feature p { font-size: 11px; color: #94a8a8; line-height: 1.4; }
+        .hero-feature i { display: block; font-size: 30px; margin-bottom: 8px; color: #4A2E5C; }
+        .hero-feature h3 { font-size: 14px; font-weight: 700; color: #2C1A34; margin-bottom: 4px; }
+        .hero-feature p { font-size: 11px; color: #6B4C7A; line-height: 1.4; }
         
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(20px); }
@@ -115,7 +97,7 @@
 
         .scroll-down-indicator {
             margin-top: 20px; display: flex; flex-direction: column; align-items: center;
-            color: #6a8282; font-size: 12px; font-weight: 600;
+            color: #8E6A9A; font-size: 12px; font-weight: 600;
             animation: bounce-down 2s infinite;
         }
         @keyframes bounce-down {
@@ -123,39 +105,44 @@
             50% { transform: translateY(10px); }
         }
 
-        /* القسم السفلي (نموذج التسجيل - يظهر عند التمرير) */
+        /* القسم السفلي (يملأ الشاشة بالكامل عند التمرير) */
         .sign-form-section { 
-            width: 100%; padding-bottom: 20px;
+            min-height: 100vh; /* أخذ ارتفاع الشاشة بالكامل */
+            width: 100%; 
+            display: flex; align-items: center; justify-content: center;
+            padding-top: 30px; padding-bottom: 30px;
             opacity: 0; transform: translateY(30px); transition: all 0.6s ease;
         }
         .sign-form-section.visible { opacity: 1; transform: translateY(0); }
 
         .sign-card {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(24px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(197, 179, 211, 0.4);
+            backdrop-filter: blur(12px);
+            border: 1px solid #FFE2E2;
             border-radius: 24px;
             padding: 30px 25px; width: 100%;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            box-shadow: none;
         }
         .sign-inputs { text-align: right; }
         .input-group { margin-bottom: 16px; }
-        .input-group label { display: block; font-size: 12px; font-weight: 700; color: #94a8a8; margin-bottom: 5px; }
+        .input-group label { display: block; font-size: 12px; font-weight: 700; color: #6B4C7A; margin-bottom: 5px; }
         .input-group input {
-            width: 100%; padding: 12px 16px; background: rgba(0, 0, 0, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 12px; font-family: 'Tajawal', sans-serif;
-            font-size: 14px; color: #fff; outline: none; transition: 0.2s;
+            width: 100%; padding: 12px 16px; background: rgba(255, 255, 255, 0.3);
+            border: 1px solid #FFE2E2; border-radius: 12px; font-family: 'Tajawal', sans-serif;
+            font-size: 14px; color: #2C1A34; outline: none; transition: 0.2s;
+            box-shadow: none;
         }
-        .input-group input:focus { border-color: #60a5fa; background: rgba(0, 0, 0, 0.3); }
+        .input-group input:focus { border-color: #A188B5; background: rgba(255, 255, 255, 0.5); }
         .btn-primary {
             width: 100%; padding: 14px; margin-top: 10px;
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 14px;
-            color: #fff; font-weight: 700; font-size: 16px;
+            background: rgba(197, 179, 211, 0.6);
+            border: 1px solid #FFE2E2; border-radius: 14px;
+            color: #2C1A34; font-weight: 700; font-size: 16px;
             cursor: pointer; transition: all 0.2s;
+            box-shadow: none;
         }
         .btn-primary:active { transform: scale(0.96); }
-        .sign-error { color: #ff6b6b; font-size: 13px; margin-top: 10px; display: none; }
+        .sign-error { color: #ff4d4d; font-size: 13px; margin-top: 10px; display: none; }
 
         @media (max-width: 500px) {
             .sign-card { padding: 20px; }
@@ -165,9 +152,6 @@
     </style>
 </head>
 <body>
-    <!-- دوائر خلفية مخصصة لصفحة sign -->
-    <div class="bg-circle bg-circle-1"></div>
-    <div class="bg-circle bg-circle-2"></div>
 
     <div class="sign-wrapper">
         <!-- القسم العلوي المتحرك -->
@@ -177,28 +161,28 @@
                 <i class="bi bi-star-fill sparkle"></i>
             </div>
             <h1 class="hero-title">حوّل أفكارك إلى واقع</h1>
-            <p class="hero-subtitle">منصة EVILE للذكاء الاصطناعي تمنحك أدوات إبداعية لتوليد النصوص والشعارات بأسلوب احترافي وسهل.</p>
+            <p class="hero-subtitle">منصة EVILE للذكاء الاصطناعي تمنحك أدوات إبداعية لتوليد النصوص والشعارات بسهولة.</p>
             
             <div class="hero-features-grid">
                 <div class="hero-feature">
                     <i class="bi bi-lightning-charge-fill"></i>
-                    <h3>نتائج فورية</h3>
-                    <p>احصل على إجابات ونصوص إبداعية في ثوانٍ.</p>
-                </div>
-                <div class="hero-feature">
-                    <i class="bi bi-pencil-square"></i>
-                    <h3>تصاميم احترافية</h3>
-                    <p>قوالب وأنماط متعددة تناسب جميع احتياجاتك.</p>
+                    <h3>توليد نصوص إبداعية</h3>
+                    <p>احصل على أفكار ونصوص مميزة في ثوانٍ باستخدام تقنيات الذكاء الاصطناعي.</p>
                 </div>
                 <div class="hero-feature">
                     <i class="bi bi-robot"></i>
-                    <h3>شخصيات ذكية</h3>
-                    <p>اختر النمط الذي يعبر عن رؤيتك بدقة.</p>
+                    <h3>شخصيات ذكية متعددة</h3>
+                    <p>اختر من بين أنماط وأدوار مختلفة (لوجو ميكر، إبداعي، فاخر) لتناسب احتياجاتك.</p>
+                </div>
+                <div class="hero-feature">
+                    <i class="bi bi-pencil-square"></i>
+                    <h3>تصميم شعارات احترافية</h3>
+                    <p>قم بوصف فكرتك ودع الذكاء الاصطناعي يصمم لك برومبت شعار فريد ومخصص.</p>
                 </div>
                 <div class="hero-feature">
                     <i class="bi bi-gem"></i>
-                    <h3>10 نقاط مجانية</h3>
-                    <p>ابدأ رحلتك الإبداعية فوراً بدون أي تكاليف.</p>
+                    <h3>10 نقاط مجانية للبدء</h3>
+                    <p>ابدأ رحلتك الإبداعية فوراً مع 10 نقاط توليد مجانية بالكامل.</p>
                 </div>
             </div>
 
@@ -208,7 +192,7 @@
             </div>
         </div>
 
-        <!-- القسم السفلي (يختفي حتى التمرير) -->
+        <!-- القسم السفلي (نموذج التسجيل / الدخول) -->
         <div class="sign-form-section" id="signFormSection">
             <div class="sign-card">
                 <form id="signForm" onsubmit="handleSignup(event)">
@@ -222,8 +206,8 @@
                     </div>
                     <button type="submit" class="btn-primary">ابدأ مجاناً <i class="bi bi-arrow-left"></i></button>
                     <div id="signError" class="sign-error"></div>
-                    <div style="text-align:center; margin-top:15px; font-size:13px; color:#94a8a8;">
-                        لديك حساب بالفعل؟ <a href="#" onclick="switchToLogin()" style="color:#60a5fa; text-decoration:none; font-weight:700;">تسجيل الدخول</a>
+                    <div style="text-align:center; margin-top:15px; font-size:13px; color:#6B4C7A;">
+                        لديك حساب بالفعل؟ <a href="#" onclick="switchToLogin()" style="color:#2C1A34; text-decoration:none; font-weight:700;">تسجيل الدخول</a>
                     </div>
                 </form>
                 
@@ -239,8 +223,8 @@
                     </div>
                     <button type="submit" class="btn-primary">دخول <i class="bi bi-box-arrow-in-left"></i></button>
                     <div id="loginError" class="sign-error"></div>
-                    <div style="text-align:center; margin-top:15px; font-size:13px; color:#94a8a8;">
-                        جديد هنا؟ <a href="#" onclick="switchToSignup()" style="color:#60a5fa; text-decoration:none; font-weight:700;">إنشاء حساب</a>
+                    <div style="text-align:center; margin-top:15px; font-size:13px; color:#6B4C7A;">
+                        جديد هنا؟ <a href="#" onclick="switchToSignup()" style="color:#2C1A34; text-decoration:none; font-weight:700;">إنشاء حساب</a>
                     </div>
                 </form>
             </div>
