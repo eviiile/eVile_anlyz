@@ -10,14 +10,33 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Tajawal', sans-serif;
-            /* ثيم زجاجي داكن مطابق */
-            background: linear-gradient(160deg, #0a1010 0%, #16211f 100%);
+            background: #0a1020;
             color: #e0e5e5;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
+            position: relative;
         }
+        /* دوائر خلفية بألوان مختلفة تماماً عن index */
+        .bg-circle {
+            position: fixed; border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.5;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .bg-circle-1 {
+            width: 600px; height: 600px;
+            background: #8b5cf6; /* بنفسجي */
+            top: -200px; left: -200px;
+        }
+        .bg-circle-2 {
+            width: 450px; height: 450px;
+            background: #06b6d4; /* سماوي */
+            bottom: -100px; right: -150px;
+        }
+
         .sign-wrapper {
             width: 100%; max-width: 480px; 
             height: 100vh; height: 100dvh;
@@ -25,23 +44,23 @@
             display: flex; flex-direction: column;
             padding: 20px 20px 30px 20px;
             scroll-behavior: smooth;
+            position: relative; z-index: 1;
         }
         
-        /* القسم العلوي المتحرك */
+        /* القسم العلوي المتحرك (يملأ الشاشة) */
         .sign-hero {
-            flex: 1;
-            min-height: 65vh;
+            min-height: 100vh; /* يملأ الشاشة بالكامل */
             display: flex; flex-direction: column;
             justify-content: center; align-items: center;
             text-align: center;
-            padding-bottom: 40px;
+            padding-bottom: 20px;
         }
         .hero-animated-icon {
             position: relative; margin-bottom: 20px;
         }
         .hero-animated-icon i {
             font-size: 60px;
-            background: linear-gradient(135deg, #62c5b9 0%, #297a6e 100%);
+            background: linear-gradient(135deg, #60a5fa 0%, #8b5cf6 100%);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
@@ -63,7 +82,7 @@
 
         .hero-title { 
             font-size: 32px; font-weight: 800; 
-            background: linear-gradient(135deg, #ffffff 30%, #62c5b9 100%);
+            background: linear-gradient(135deg, #ffffff 30%, #60a5fa 100%);
             -webkit-background-clip: text; background-clip: text; color: transparent;
             margin-bottom: 15px;
         }
@@ -73,12 +92,10 @@
             display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 25px;
         }
         .hero-feature {
-            background: rgba(45, 90, 80, 0.15);
-            backdrop-filter: blur(8px);
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(16px);
             border: 1px solid rgba(255, 255, 255, 0.08);
             padding: 15px 10px; border-radius: 16px;
-            box-shadow: inset 0 0 30px rgba(45, 90, 80, 0.05);
-            transition: transform 0.3s;
             animation: fadeInUp 0.8s ease-out forwards;
             opacity: 0;
         }
@@ -87,7 +104,7 @@
         .hero-feature:nth-child(3) { animation-delay: 0.5s; }
         .hero-feature:nth-child(4) { animation-delay: 0.7s; }
 
-        .hero-feature i { display: block; font-size: 30px; margin-bottom: 8px; color: #62c5b9; }
+        .hero-feature i { display: block; font-size: 30px; margin-bottom: 8px; color: #60a5fa; }
         .hero-feature h3 { font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 4px; }
         .hero-feature p { font-size: 11px; color: #94a8a8; line-height: 1.4; }
         
@@ -106,15 +123,20 @@
             50% { transform: translateY(10px); }
         }
 
-        /* القسم السفلي (نموذج التسجيل) */
-        .sign-form-section { width: 100%; padding-bottom: 20px; }
+        /* القسم السفلي (نموذج التسجيل - يظهر عند التمرير) */
+        .sign-form-section { 
+            width: 100%; padding-bottom: 20px;
+            opacity: 0; transform: translateY(30px); transition: all 0.6s ease;
+        }
+        .sign-form-section.visible { opacity: 1; transform: translateY(0); }
+
         .sign-card {
-            background: rgba(45, 90, 80, 0.15);
-            backdrop-filter: blur(12px);
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(24px);
             border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 24px;
             padding: 30px 25px; width: 100%;
-            box-shadow: inset 0 0 30px rgba(45, 90, 80, 0.05), 0 8px 32px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
         }
         .sign-inputs { text-align: right; }
         .input-group { margin-bottom: 16px; }
@@ -124,13 +146,13 @@
             border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 12px; font-family: 'Tajawal', sans-serif;
             font-size: 14px; color: #fff; outline: none; transition: 0.2s;
         }
-        .input-group input:focus { border-color: #62c5b9; background: rgba(0, 0, 0, 0.3); }
+        .input-group input:focus { border-color: #60a5fa; background: rgba(0, 0, 0, 0.3); }
         .btn-primary {
             width: 100%; padding: 14px; margin-top: 10px;
-            background: linear-gradient(135deg, #297a6e 0%, #164c44 100%);
+            background: rgba(255, 255, 255, 0.06);
             border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 14px;
             color: #fff; font-weight: 700; font-size: 16px;
-            cursor: pointer; transition: all 0.2s; box-shadow: inset 0 0 20px rgba(41, 122, 110, 0.2);
+            cursor: pointer; transition: all 0.2s;
         }
         .btn-primary:active { transform: scale(0.96); }
         .sign-error { color: #ff6b6b; font-size: 13px; margin-top: 10px; display: none; }
@@ -143,9 +165,13 @@
     </style>
 </head>
 <body>
+    <!-- دوائر خلفية مخصصة لصفحة sign -->
+    <div class="bg-circle bg-circle-1"></div>
+    <div class="bg-circle bg-circle-2"></div>
+
     <div class="sign-wrapper">
         <!-- القسم العلوي المتحرك -->
-        <div class="sign-hero">
+        <div class="sign-hero" id="signHero">
             <div class="hero-animated-icon">
                 <i class="bi bi-magic"></i>
                 <i class="bi bi-star-fill sparkle"></i>
@@ -182,8 +208,8 @@
             </div>
         </div>
 
-        <!-- القسم السفلي (نموذج تسجيل الدخول / الاشتراك) -->
-        <div class="sign-form-section">
+        <!-- القسم السفلي (يختفي حتى التمرير) -->
+        <div class="sign-form-section" id="signFormSection">
             <div class="sign-card">
                 <form id="signForm" onsubmit="handleSignup(event)">
                     <div class="input-group">
@@ -197,7 +223,7 @@
                     <button type="submit" class="btn-primary">ابدأ مجاناً <i class="bi bi-arrow-left"></i></button>
                     <div id="signError" class="sign-error"></div>
                     <div style="text-align:center; margin-top:15px; font-size:13px; color:#94a8a8;">
-                        لديك حساب بالفعل؟ <a href="#" onclick="switchToLogin()" style="color:#62c5b9; text-decoration:none; font-weight:700;">تسجيل الدخول</a>
+                        لديك حساب بالفعل؟ <a href="#" onclick="switchToLogin()" style="color:#60a5fa; text-decoration:none; font-weight:700;">تسجيل الدخول</a>
                     </div>
                 </form>
                 
@@ -214,7 +240,7 @@
                     <button type="submit" class="btn-primary">دخول <i class="bi bi-box-arrow-in-left"></i></button>
                     <div id="loginError" class="sign-error"></div>
                     <div style="text-align:center; margin-top:15px; font-size:13px; color:#94a8a8;">
-                        جديد هنا؟ <a href="#" onclick="switchToSignup()" style="color:#62c5b9; text-decoration:none; font-weight:700;">إنشاء حساب</a>
+                        جديد هنا؟ <a href="#" onclick="switchToSignup()" style="color:#60a5fa; text-decoration:none; font-weight:700;">إنشاء حساب</a>
                     </div>
                 </form>
             </div>
@@ -222,6 +248,20 @@
     </div>
 
     <script>
+        // إظهار النموذج عند التمرير للأسفل
+        const signFormSection = document.getElementById('signFormSection');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    signFormSection.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            observer.observe(signFormSection);
+        });
+
         function handleSignup(e) {
             e.preventDefault();
             const username = document.getElementById('username').value.trim();
