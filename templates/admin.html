@@ -18,7 +18,7 @@
             align-items: center;
             justify-content: center;
         }
-        .glass-card, .modal-content, .character-card, .notification-item, .login-card, .bottom-nav {
+        .glass-card, .modal-content, .character-card, .notification-item, .login-card, .bottom-nav, .ad-item {
             background: rgba(255, 255, 255, 0.06);
             backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.08);
@@ -60,7 +60,6 @@
             align-items: center;
             gap: 6px;
         }
-        .btn-success { background: rgba(50, 255, 50, 0.15); border-color: rgba(50, 255, 50, 0.3); color: #8effa0; }
         .btn-danger { background: rgba(255,50,50,0.2); border-color: rgba(255,50,50,0.2); color: #ff6b6b; }
         .btn:active { transform: scale(0.96); }
         .btn-login { width: 100%; padding: 14px; font-size: 16px; }
@@ -116,26 +115,25 @@
         .tab-content.active { display: block; }
         .section-title { font-size: 18px; font-weight: 700; margin-bottom: 16px; padding-right: 12px; border-right: 3px solid rgba(255,255,255,0.2); display: flex; align-items: center; gap: 8px; color: #fff; }
         .form-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; margin-bottom: 20px; }
-        .checkbox-group { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
-        .checkbox-group input { width: auto; margin: 0; accent-color: #8effa0; }
         .character-card { padding: 12px; }
         .character-avatar { width: 40px; height: 40px; border-radius: 12px; background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; font-size: 20px; }
         .character-name { font-size: 15px; font-weight: 700; color: #fff; }
         .character-desc { font-size: 11px; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
         .character-prompt { background: rgba(0,0,0,0.3); padding: 6px; border-radius: 10px; font-size: 10px; color: rgba(255,255,255,0.6); max-height: 60px; overflow-y: auto; margin-bottom: 12px; }
-        .badge-max { display: inline-block; background: #ff4d4d; color: white; font-size: 9px; padding: 2px 8px; border-radius: 10px; font-weight: bold; margin-right: 8px; }
         .card-actions { display: flex; gap: 8px; }
         .notification-item { padding: 12px; margin-bottom: 10px; }
         .notification-title { font-weight: 700; font-size: 13px; margin-bottom: 4px; color: #fff; }
         .notification-text { font-size: 11px; color: rgba(255,255,255,0.6); }
+        
+        .ad-item { padding: 15px; margin-bottom: 12px; }
+        .ad-header { font-weight: 700; font-size: 15px; margin-bottom: 6px; color: #fff; }
+        .ad-body { font-size: 12px; color: rgba(255,255,255,0.8); margin-bottom: 8px; }
+        .ad-meta { font-size: 10px; color: rgba(255,255,255,0.5); display: flex; gap: 15px; flex-wrap: wrap; margin-top: 5px; }
+        .ad-link { color: #8effa0; text-decoration: none; word-break: break-all; }
+        
         .modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); z-index: 1000; align-items: center; justify-content: center; padding: 20px; }
         .modal.active { display: flex; }
         .modal-content { padding: 20px; max-width: 500px; width: 100%; }
-        
-        /* أزرار طلبات MAX */
-        .max-actions { display: flex; gap: 10px; margin-top: 5px; }
-        .max-actions .btn { padding: 6px 16px; font-size: 11px; }
-
         @media (max-width: 600px) {
             .bottom-nav { padding: 8px; gap: 8px; border-radius: 40px; }
             .bottom-nav-btn { width: 40px; height: 40px; font-size: 16px; }
@@ -157,10 +155,6 @@
                         <div class="form-group"><label>البرومبت</label><textarea name="prompt" required></textarea></div>
                         <div class="form-group"><label>مفتاح الاستدعاء</label><input type="text" name="callback_key" placeholder="مثال: logo_maker"></div>
                     </div>
-                    <div class="checkbox-group" style="margin-bottom: 15px;">
-                        <input type="checkbox" name="is_max" id="is_max_add">
-                        <label for="is_max_add" style="color: #ff4d4d; font-weight: bold;">شخصية MAX (مقيدة - تتطلب تصريح خاص)</label>
-                    </div>
                     <button type="submit" class="btn"><i class="bi bi-save"></i> إضافة شخصية</button>
                 </form>
 
@@ -172,15 +166,12 @@
                             <div class="character-avatar">
                                 {% if char.logo_url %}<img src="{{ char.logo_url }}" width="40" height="40" style="border-radius:12px; object-fit:cover;">{% else %}<i class="bi bi-robot"></i>{% endif %}
                             </div>
-                            <div class="character-name">
-                                {{ char.name }}
-                                {% if char.is_max %}<span class="badge-max">MAX</span>{% endif %}
-                            </div>
+                            <div class="character-name">{{ char.name }}</div>
                         </div>
                         <div class="character-desc">{{ char.description }}</div>
                         <div class="character-prompt">{{ char.prompt[:80] }}{% if char.prompt|length > 80 %}...{% endif %}</div>
                         <div class="card-actions">
-                            <button class="btn" onclick="openEditModal({{ char.id }}, '{{ char.name }}', '{{ char.description }}', `{{ char.prompt|replace('`', '\\`') }}`, '{{ char.logo_url }}', {{ 'true' if char.is_max else 'false' }})"><i class="bi bi-pencil-square"></i> تعديل</button>
+                            <button class="btn" onclick="openEditModal({{ char.id }}, '{{ char.name }}', '{{ char.description }}', `{{ char.prompt|replace('`', '\\`') }}`, '{{ char.logo_url }}')"><i class="bi bi-pencil-square"></i> تعديل</button>
                             <button class="btn btn-danger" onclick="if(confirm('حذف الشخصية؟')) location.href='/admin/character/{{ char.id }}/delete'"><i class="bi bi-trash3"></i> حذف</button>
                         </div>
                     </div>
@@ -212,12 +203,37 @@
                 {% endfor %}
             </div>
 
-            <!-- تبويب طلبات MAX الجديد -->
-            <div id="tab-max-requests" class="tab-content">
-                <div class="section-title"><i class="bi bi-person-check"></i> طلبات اشتراك MAX</div>
-                <div id="maxRequestsList">
-                    <p style="text-align:center; color:rgba(255,255,255,0.5);">جاري تحميل الطلبات...</p>
+            <!-- تبويب الإعلانات الجديد -->
+            <div id="tab-ads" class="tab-content">
+                <div class="section-title"><i class="bi bi-megaphone"></i> نشر إعلان جديد</div>
+                <form method="POST" action="/admin/ad/add">
+                    <div class="form-grid">
+                        <div class="form-group"><label>عنوان الإعلان</label><input type="text" name="title" required></div>
+                        <div class="form-group"><label>نص الإعلان</label><textarea name="text" required></textarea></div>
+                        <div class="form-group"><label>نص الزر</label><input type="text" name="button_text" required placeholder="مثال: اضغط هنا"></div>
+                        <div class="form-group"><label>رابط الزر</label><input type="url" name="button_link" required placeholder="https://..."></div>
+                        <div class="form-group"><label>مدة الظهور (ساعات)</label><input type="number" name="duration_hours" value="1" min="1" step="1"></div>
+                    </div>
+                    <button type="submit" class="btn"><i class="bi bi-megaphone"></i> نشر الإعلان</button>
+                </form>
+
+                <div class="section-title" style="margin-top: 30px;"><i class="bi bi-clock-history"></i> الإعلانات المنشورة</div>
+                {% for ad in ads %}
+                <div class="ad-item">
+                    <div class="ad-header">{{ ad.title }}</div>
+                    <div class="ad-body">{{ ad.text }}</div>
+                    <div class="ad-body">الزر: <strong>{{ ad.button_text }}</strong> - الرابط: <a href="{{ ad.button_link }}" target="_blank" class="ad-link">{{ ad.button_link }}</a></div>
+                    <div class="ad-meta">
+                        <span>تاريخ النشر: {{ ad.created_at }}</span>
+                        <span>مدة الظهور: {{ ad.duration_hours }} ساعة</span>
+                    </div>
+                    <div style="margin-top: 10px;">
+                        <button class="btn btn-danger" onclick="if(confirm('حذف الإعلان؟')) location.href='/admin/ad/{{ ad.id }}/delete'"><i class="bi bi-trash3"></i> حذف</button>
+                    </div>
                 </div>
+                {% else %}
+                <p style="text-align:center; color:rgba(255,255,255,0.5);">لا توجد إعلانات منشورة حالياً</p>
+                {% endfor %}
             </div>
 
             <!-- نافذة التعديل -->
@@ -232,20 +248,16 @@
                         <div class="form-group"><label>رابط الصورة</label><input type="url" name="logo_url" id="editImage"></div>
                         <div class="form-group"><label>وصف مختصر</label><input type="text" name="description" id="editDesc" required></div>
                         <div class="form-group"><label>البرومبت</label><textarea name="prompt" id="editPrompt" required></textarea></div>
-                        <div class="checkbox-group" style="margin-bottom: 15px; margin-top: 10px;">
-                            <input type="checkbox" name="is_max" id="is_max_edit">
-                            <label for="is_max_edit" style="color: #ff4d4d; font-weight: bold;">شخصية MAX (مقيدة - تتطلب تصريح خاص)</label>
-                        </div>
                         <button type="submit" class="btn"><i class="bi bi-save"></i> حفظ التعديلات</button>
                     </form>
                 </div>
             </div>
 
-            <!-- الشريط السفلي العائم الثابت (تمت إضافة زر طلبات MAX) -->
+            <!-- الشريط السفلي العائم (تم إضافة زر الإعلانات) -->
             <div class="bottom-nav" id="bottomNav">
                 <button class="bottom-nav-btn active" data-tab="characters"><i class="bi bi-people"></i></button>
                 <button class="bottom-nav-btn" data-tab="notifications"><i class="bi bi-bell"></i></button>
-                <button class="bottom-nav-btn" data-tab="max-requests"><i class="bi bi-person-check"></i></button>
+                <button class="bottom-nav-btn" data-tab="ads"><i class="bi bi-megaphone"></i></button>
             </div>
 
         {% else %}
@@ -282,21 +294,15 @@
                 document.getElementById(`tab-${tabId}`).classList.add('active');
                 document.querySelectorAll('.bottom-nav-btn').forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
-
-                // جلب طلبات MAX عند الضغط على التبويب الخاص بها
-                if (tabId === 'max-requests') {
-                    loadMaxRequests();
-                }
             });
         });
 
-        function openEditModal(id, name, desc, prompt, image, is_max) {
+        function openEditModal(id, name, desc, prompt, image) {
             document.getElementById('editForm').action = `/admin/character/${id}/edit`;
             document.getElementById('editName').value = name;
             document.getElementById('editDesc').value = desc;
             document.getElementById('editPrompt').value = prompt;
             document.getElementById('editImage').value = image;
-            document.getElementById('is_max_edit').checked = is_max;
             document.getElementById('editModal').classList.add('active');
         }
         function closeEditModal() {
@@ -305,69 +311,6 @@
         window.onclick = function(e) {
             const modal = document.getElementById('editModal');
             if (e.target === modal) closeEditModal();
-        }
-
-        // --- دوال طلبات MAX ---
-        async function loadMaxRequests() {
-            const list = document.getElementById('maxRequestsList');
-            list.innerHTML = '<p style="text-align:center; color:rgba(255,255,255,0.5);">جاري التحميل...</p>';
-            try {
-                const res = await fetch('/api/admin/max_requests');
-                const requests = await res.json();
-                
-                if (requests.length === 0) {
-                    list.innerHTML = '<p style="text-align:center; color:rgba(255,255,255,0.5);">لا توجد طلبات حالياً.</p>';
-                    return;
-                }
-
-                let html = '';
-                requests.forEach(req => {
-                    const statusBadge = req.status === 'pending' ? '🟡 معلق' : req.status === 'approved' ? '✅ مقبول' : '❌ مرفوض';
-                    html += `
-                        <div class="notification-item" style="margin-bottom: 12px;">
-                            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
-                                <div>
-                                    <div class="notification-title"><i class="bi bi-person"></i> معرف تيليجرام: ${escapeHtml(req.telegram_id)}</div>
-                                    <div class="notification-text" style="margin-top:4px;">الحالة: ${statusBadge}</div>
-                                    <div class="notification-meta" style="font-size:10px; color:rgba(255,255,255,0.5);">تاريخ الطلب: ${new Date(req.created_at).toLocaleString()}</div>
-                                </div>
-                                ${req.status === 'pending' ? `
-                                    <div class="max-actions">
-                                        <button class="btn btn-success" onclick="handleMaxRequest(${req.id}, 'approve')"><i class="bi bi-check-lg"></i> قبول</button>
-                                        <button class="btn btn-danger" onclick="handleMaxRequest(${req.id}, 'reject')"><i class="bi bi-x-lg"></i> رفض</button>
-                                    </div>
-                                ` : ''}
-                            </div>
-                        </div>
-                    `;
-                });
-                list.innerHTML = html;
-            } catch (err) {
-                list.innerHTML = '<p style="text-align:center; color:#ff6b6b;">خطأ في تحميل الطلبات.</p>';
-                console.error(err);
-            }
-        }
-
-        async function handleMaxRequest(id, action) {
-            if (!confirm(`هل أنت متأكد من ${action === 'approve' ? 'قبول' : 'رفض'} هذا الطلب؟`)) return;
-            try {
-                const res = await fetch(`/api/admin/max_requests/${id}/${action}`, { method: 'POST' });
-                const data = await res.json();
-                if (data.success) {
-                    loadMaxRequests(); // تحديث القائمة
-                } else {
-                    alert('حدث خطأ أثناء معالجة الطلب: ' + data.message);
-                }
-            } catch (err) {
-                alert('خطأ في الاتصال بالخادم.');
-            }
-        }
-
-        function escapeHtml(str) {
-            if (!str) return '';
-            return str.replace(/[&<>]/g, function(m) {
-                if (m === '&') return '&amp;'; if (m === '<') return '&lt;'; if (m === '>') return '&gt;'; return m;
-            });
         }
     </script>
 </body>
