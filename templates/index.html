@@ -10,31 +10,16 @@
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body {
             font-family: 'Tajawal', sans-serif;
-            background: #0a1020;
-            color: #e0e5e5;
+            /* خلفية جديدة فاتحة جداً */
+            background: #FBEFEF;
+            color: #2C1A34; /* لون نص داكن متناسق */
             overflow: hidden;
             touch-action: manipulation;
             height: 100vh; height: 100dvh;
             position: relative;
         }
-        /* الدوائر الزجاجية الخلفية */
-        .bg-circle {
-            position: fixed; border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0.6;
-            pointer-events: none;
-            z-index: 0;
-        }
-        .bg-circle-1 {
-            width: 500px; height: 500px;
-            background: #2563eb; /* أزرق سماوي */
-            top: -150px; left: -150px;
-        }
-        .bg-circle-2 {
-            width: 400px; height: 400px;
-            background: #1e3a8a; /* أزرق ملكي */
-            bottom: -100px; right: -100px;
-        }
+        /* إزالة الدوائر الخلفية لأن التصميم الآن يعتمد على الألوان الفاتحة والمسطحة */
+        .bg-circle { display: none; }
 
         .main-container { 
             width: 100%; height: 100vh; height: 100dvh; 
@@ -43,17 +28,17 @@
             padding: 16px 16px 90px 16px;
             overflow-y: auto;
             position: relative;
-            padding-top: 40px; 
+            padding-top: 80px; /* تم إزاحة العناصر للأسفل قليلاً */
             z-index: 1;
         }
         
-        /* الزجاج السائل جداً - خلفية شفافة مع تمويه عالي */
+        /* الزجاج الجديد بألوان فاتحة وبدون ظلال */
         .glass-card, .floating-header, .input-card, .style-card, .bottom-sheet, .ad-modal-box, .prompt-result-wrapper, .social-bar {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            background: rgba(197, 179, 211, 0.4);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid #FFE2E2;
+            box-shadow: none; /* تم حذف جميع الظلال */
             border-radius: 24px;
         }
         
@@ -64,91 +49,91 @@
         .header-icon {
             position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
             width: 36px; height: 36px; border-radius: 12px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.3);
+            border: 1px solid #FFE2E2;
             display: flex; align-items: center; justify-content: center;
             cursor: pointer; transition: all 0.2s; 
         }
         .header-icon:active { transform: translateY(-50%) scale(0.9); }
-        .header-icon i { font-size: 18px; color: #b0c4c4; }
+        .header-icon i { font-size: 18px; color: #4A2E5C; }
         .header-icon .notif-badge {
             position: absolute; top: -3px; right: -3px; width: 14px; height: 14px; background: #ff4d4d;
             border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            font-size: 8px; font-weight: bold; color: #fff; border: 2px solid #0a1020;
+            font-size: 8px; font-weight: bold; color: #fff; border: 2px solid #FBEFEF;
         }
-        .header-logo { font-size: 18px; font-weight: 800; color: #ffffff; letter-spacing: 2px; }
+        .header-logo { font-size: 18px; font-weight: 800; color: #2C1A34; letter-spacing: 2px; }
 
         /* قسم العنوان والوصف */
         .hero-section {
             text-align: center; margin-bottom: 25px; margin-top: 30px;
             width: 100%; max-width: 500px;
         }
-        .hero-title { font-size: 28px; font-weight: 800; margin-bottom: 8px; color: #fff; }
-        .hero-subtitle { font-size: 14px; color: #94a8a8; margin-bottom: 20px; line-height: 1.5; }
+        .hero-title { font-size: 28px; font-weight: 800; margin-bottom: 8px; color: #2C1A34; }
+        .hero-subtitle { font-size: 14px; color: #6B4C7A; margin-bottom: 20px; line-height: 1.5; }
         
         .hero-features-bar {
             display: flex; justify-content: center; align-items: center; gap: 15px;
-            flex-wrap: wrap; font-size: 12px; color: #b0c4c4;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            flex-wrap: wrap; font-size: 12px; color: #6B4C7A;
+            background: rgba(255, 255, 255, 0.3);
+            border: 1px solid #FFE2E2;
             border-radius: 40px; padding: 8px 20px;
             width: fit-content; margin: 0 auto;
+            box-shadow: none;
         }
         .hero-features-bar span { display: flex; align-items: center; gap: 6px; }
-        .hero-features-bar i { color: #60a5fa; }
 
         /* بطاقة الإدخال الرئيسية */
         .input-card {
             padding: 20px; margin-bottom: 16px;
             width: 100%; max-width: 500px;
         }
-        .input-label { font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 12px; display: block; text-align: center; }
+        .input-label { font-size: 14px; font-weight: 700; color: #2C1A34; margin-bottom: 12px; display: block; text-align: center; }
         .input-label .credits-badge { 
-            float: left; background: rgba(255, 255, 255, 0.05); padding: 4px 12px; 
-            border-radius: 20px; font-size: 12px; color: #b0c4c4; font-weight: 600;
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            float: left; background: rgba(255, 255, 255, 0.3); padding: 4px 12px; 
+            border-radius: 20px; font-size: 12px; color: #6B4C7A; font-weight: 600;
+            border: 1px solid #FFE2E2;
         }
         
-        /* تعديل حقل الكتابة: النص على اليمين، ومتمركز عمودياً */
         .textarea-wrapper {
             position: relative;
-            background: rgba(0, 0, 0, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.3);
+            border: 1px solid #FFE2E2;
             border-radius: 16px;
             padding: 0 14px;
             margin-bottom: 20px;
             height: 48px;
             display: flex;
             align-items: center;
+            box-shadow: none;
         }
         .message-input {
             width: 100%; background: transparent; border: none;
             font-family: 'Tajawal', sans-serif; font-size: 14px; outline: none;
-            color: #fff; 
+            color: #2C1A34; 
             height: 48px; max-height: 48px;
             resize: none; 
             overflow-y: auto;
-            text-align: right; /* المحاذاة الأفقية لليمين */
-            padding: 0; /* إزالة الحواشي الافتراضية */
-            line-height: 1.4; /* ضبط الارتفاع */
-            display: flex; /* ضمان المحاذاة العمودية */
-            align-items: center; /* توسيط عمودي */
+            text-align: right; 
+            padding: 0; 
+            line-height: 1.4; 
+            display: flex; 
+            align-items: center; 
         }
-        .message-input::placeholder { color: #6a8282; }
+        .message-input::placeholder { color: #8E6A9A; }
         
         .main-btn {
             width: 80%; max-width: 350px; padding: 8px;
             height: 40px; margin: 0 auto; display: block;
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(197, 179, 211, 0.6);
+            border: 1px solid #FFE2E2;
             border-radius: 30px;
-            color: #fff; font-weight: 700; font-size: 14px;
+            color: #2C1A34; font-weight: 700; font-size: 14px;
             cursor: pointer; transition: all 0.2s;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            box-shadow: none;
             display: flex; align-items: center; justify-content: center; gap: 6px;
         }
         .main-btn:active { transform: scale(0.96); }
-        .main-btn.stop-btn { background: rgba(255, 50, 50, 0.2); border-color: rgba(255, 50, 50, 0.3); }
+        .main-btn.stop-btn { background: rgba(255, 80, 80, 0.2); border-color: rgba(255, 80, 80, 0.4); }
 
         .prompt-result-wrapper {
             margin-top: 16px; padding: 16px;
@@ -156,7 +141,7 @@
             min-height: 100px;
         }
         .prompt-result-text {
-            font-size: 13px; color: #e0e5e5; line-height: 1.6;
+            font-size: 13px; color: #2C1A34; line-height: 1.6;
             width: 100%; background: transparent;
             border: none; resize: none; outline: none;
             font-family: 'Tajawal', sans-serif;
@@ -164,25 +149,26 @@
             overflow-y: auto;
             text-align: center;
         }
+        .prompt-result-text::placeholder { color: #8E6A9A; }
         .prompt-result-actions {
             display: flex; justify-content: flex-end; gap: 8px;
         }
         .copy-btn {
-            background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.3); border: 1px solid #FFE2E2;
             border-radius: 30px; padding: 6px 14px;
-            font-size: 12px; color: #b0c4c4; cursor: pointer;
+            font-size: 12px; color: #6B4C7A; cursor: pointer;
             display: flex; align-items: center; gap: 4px; transition: 0.2s;
+            box-shadow: none;
         }
         .copy-btn:active { transform: scale(0.9); }
-        .copy-btn.success { background: rgba(46, 204, 113, 0.1); color: #2ecc71; border-color: rgba(46, 204, 113, 0.2); }
+        .copy-btn.success { background: rgba(46, 204, 113, 0.15); color: #2ecc71; border-color: rgba(46, 204, 113, 0.3); }
 
         /* بطاقة الأنماط */
         .style-card {
             width: 100%; max-width: 500px;
             padding: 16px 20px; margin-bottom: 15px;
         }
-        .style-title { font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 12px; display: block; text-align: center; }
-        .style-title i { color: #60a5fa; margin-left: 6px; }
+        .style-title { font-size: 15px; font-weight: 700; color: #2C1A34; margin-bottom: 12px; display: block; text-align: center; }
 
         .styles-container {
             display: flex; gap: 10px; overflow-x: auto;
@@ -192,19 +178,19 @@
         .styles-container::-webkit-scrollbar { display: none; }
         .style-btn {
             flex-shrink: 0; padding: 6px 16px; border-radius: 30px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            color: #94a8a8; font-size: 12px; font-weight: 600;
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid #FFE2E2;
+            color: #6B4C7A; font-size: 12px; font-weight: 600;
             cursor: pointer; transition: all 0.2s;
             display: flex; align-items: center; gap: 6px;
             white-space: nowrap;
+            box-shadow: none;
         }
         .style-btn i { font-size: 14px; }
         .style-btn.active {
-            background: rgba(255, 255, 255, 0.08);
-            border-color: #60a5fa;
-            color: #fff;
-            box-shadow: 0 0 15px rgba(96, 165, 250, 0.1);
+            background: rgba(197, 179, 211, 0.8);
+            border-color: #A188B5;
+            color: #2C1A34;
         }
         .style-btn:active { transform: scale(0.95); }
 
@@ -213,45 +199,43 @@
             position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%); z-index: 99;
             display: flex; gap: 8px;
             padding: 8px 16px;
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(24px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(197, 179, 211, 0.4);
+            backdrop-filter: blur(12px);
+            border: 1px solid #FFE2E2;
             border-radius: 40px;
             width: fit-content;
             margin: 0 auto;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            box-shadow: none;
         }
         .social-btn {
             width: 34px; height: 34px; border-radius: 50%;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.3);
+            border: 1px solid #FFE2E2;
             display: flex; align-items: center; justify-content: center;
-            cursor: pointer; transition: all 0.2s; color: #b0c4c4; text-decoration: none;
+            cursor: pointer; transition: all 0.2s; color: #4A2E5C; text-decoration: none;
             position: relative;
+            box-shadow: none;
         }
         .social-btn:active { transform: scale(0.9); }
         .social-btn i { font-size: 16px; }
-        .social-btn.telegram { color: #59a9d4; }
-        .social-btn.instagram { color: #e07292; }
-        .social-btn.bell { color: #b0c4c4; }
-        .social-btn.gear { color: #b0c4c4; }
+        .social-btn.telegram { color: #4A2E5C; }
+        .social-btn.instagram { color: #4A2E5C; }
+        .social-btn.bell { color: #4A2E5C; }
+        .social-btn.gear { color: #4A2E5C; }
         
         .social-btn .notif-badge {
             position: absolute; top: -4px; right: -4px; width: 14px; height: 14px; background: #ff4d4d;
             border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            font-size: 8px; font-weight: bold; color: #fff; border: 2px solid #0a1020;
+            font-size: 8px; font-weight: bold; color: #fff; border: 2px solid #FBEFEF;
         }
 
         @media (min-width: 768px) {
-            .main-container { max-width: 600px; margin: 0 auto; padding: 30px 20px 100px 20px; padding-top: 60px; }
+            .main-container { max-width: 600px; margin: 0 auto; padding: 30px 20px 100px 20px; padding-top: 100px; }
             .social-bar { left: 50%; }
         }
     </style>
 </head>
 <body>
-    <!-- الدوائر الخلفية -->
-    <div class="bg-circle bg-circle-1"></div>
-    <div class="bg-circle bg-circle-2"></div>
 
     <!-- نافذة الإعلانات -->
     <div class="ad-modal-overlay" id="adModal">
@@ -297,7 +281,7 @@
         <!-- بطاقة الإدخال الرئيسية -->
         <div class="input-card glass-card">
             <label class="input-label">
-                <i class="bi bi-pencil" style="margin-left:6px; color:#60a5fa;"></i> اصنع محتواك الان
+                <i class="bi bi-pencil" style="margin-left:6px;"></i> اصنع محتواك الان
                 <span class="credits-badge" id="creditsBadge"><i class="bi bi-stars"></i> 10 نقاط</span>
             </label>
             
@@ -310,7 +294,8 @@
             </button>
 
             <div class="prompt-result-wrapper">
-                <textarea class="prompt-result-text" id="promptResultText" readonly placeholder="سيظهر هنا البرومبت المخصص لشعارك بمجرد الإنشاء..."></textarea>
+                <!-- تم تحديث النص هنا -->
+                <textarea class="prompt-result-text" id="promptResultText" readonly placeholder="سيظهر هنا البرومبت المولد بعد الضغط على انشاء"></textarea>
                 <div class="prompt-result-actions">
                     <button class="copy-btn" onclick="copyGeneratedPrompt()"><i class="bi bi-files"></i> نسخ النص</button>
                 </div>
@@ -388,59 +373,58 @@
     </div>
 
     <style>
-        .bottom-sheet-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); z-index: 1000; display: none; align-items: flex-end; justify-content: center; }
+        .bottom-sheet-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.3); backdrop-filter: blur(4px); z-index: 1000; display: none; align-items: flex-end; justify-content: center; }
         .bottom-sheet-overlay.active { display: flex; }
-        .bottom-sheet { width: 100%; max-width: 600px; max-height: 80vh; background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(24px); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 25px 25px 0 0; padding: 20px; animation: slideUp 0.4s ease; overflow-y: auto; display: flex; flex-direction: column; box-shadow: 0 -10px 40px rgba(0,0,0,0.2); }
+        .bottom-sheet { background: rgba(197, 179, 211, 0.4); backdrop-filter: blur(12px); border: 1px solid #FFE2E2; border-radius: 25px 25px 0 0; padding: 20px; animation: slideUp 0.4s ease; overflow-y: auto; display: flex; flex-direction: column; box-shadow: none; }
         @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-        .sheet-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .sheet-title { font-size: 16px; font-weight: 700; display: flex; align-items: center; gap: 8px; color: #fff; }
-        .sheet-close { width: 30px; height: 30px; border-radius: 50%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: center; cursor: pointer; color: #b0c4c4; }
-        .sheet-instruction { font-size: 12px; text-align: center; margin-bottom: 16px; color: #94a8a8; }
+        .sheet-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px solid #FFE2E2; }
+        .sheet-title { font-size: 16px; font-weight: 700; display: flex; align-items: center; gap: 8px; color: #2C1A34; }
+        .sheet-close { width: 30px; height: 30px; border-radius: 50%; background: rgba(255,255,255,0.3); border: 1px solid #FFE2E2; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #6B4C7A; }
+        .sheet-instruction { font-size: 12px; text-align: center; margin-bottom: 16px; color: #6B4C7A; }
         .characters-list, .notifications-list { display: flex; flex-direction: column; gap: 12px; overflow-y: auto; max-height: 50vh; }
-        .char-list-item, .notif-item { display: flex; align-items: center; gap: 14px; padding: 12px 16px; border-radius: 16px; width: 100%; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); cursor: pointer; transition: all 0.2s; }
+        .char-list-item, .notif-item { display: flex; align-items: center; gap: 14px; padding: 12px 16px; border-radius: 16px; width: 100%; background: rgba(255,255,255,0.2); border: 1px solid #FFE2E2; cursor: pointer; transition: all 0.2s; }
         .char-list-item:active { transform: scale(0.98); }
-        .char-list-item.active { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.15); }
-        .char-list-icon { width: 36px; height: 36px; border-radius: 10px; background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #60a5fa; }
+        .char-list-item.active { background: rgba(197, 179, 211, 0.6); border-color: #A188B5; }
+        .char-list-icon { width: 36px; height: 36px; border-radius: 10px; background: rgba(255,255,255,0.3); display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #4A2E5C; }
         .char-list-info { flex: 1; text-align: right; }
-        .char-list-name { font-size: 14px; font-weight: 700; color: #fff; }
-        .char-list-desc { font-size: 11px; color: #94a8a8; }
-        .char-list-check { width: 20px; height: 20px; border-radius: 50%; background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; opacity: 0; }
-        .char-list-item.active .char-list-check { opacity: 1; background: #60a5fa; color: #0a1020; }
+        .char-list-name { font-size: 14px; font-weight: 700; color: #2C1A34; }
+        .char-list-desc { font-size: 11px; color: #6B4C7A; }
+        .char-list-check { width: 20px; height: 20px; border-radius: 50%; background: rgba(255,255,255,0.3); display: flex; align-items: center; justify-content: center; opacity: 0; }
+        .char-list-item.active .char-list-check { opacity: 1; background: #2C1A34; color: #FBEFEF; }
         
         .settings-group { margin-bottom: 16px; }
-        .settings-group label { font-size: 13px; font-weight: 700; color: #94a8a8; display: block; margin-bottom: 6px; }
+        .settings-group label { font-size: 13px; font-weight: 700; color: #6B4C7A; display: block; margin-bottom: 6px; }
         .settings-row { display: flex; gap: 10px; }
-        .settings-row input { flex: 1; padding: 10px 12px; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; font-family: 'Tajawal', sans-serif; color: #fff; outline: none; }
-        .settings-row input:focus { border-color: #60a5fa; }
-        .btn-copy { width: 40px; height: 40px; border-radius: 12px; background: rgba(255,255,255,0.05); border: none; color: #b0c4c4; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .settings-row input { flex: 1; padding: 10px 12px; background: rgba(255,255,255,0.2); border: 1px solid #FFE2E2; border-radius: 12px; font-family: 'Tajawal', sans-serif; color: #2C1A34; outline: none; }
+        .settings-row input:focus { border-color: #A188B5; }
+        .btn-copy { width: 40px; height: 40px; border-radius: 12px; background: rgba(255,255,255,0.2); border: none; color: #6B4C7A; cursor: pointer; display: flex; align-items: center; justify-content: center; }
         .btn-copy:active { transform: scale(0.9); }
-        .btn-save-settings { width: 100%; padding: 12px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; color: #fff; font-weight: 700; cursor: pointer; margin-top: 10px; }
-        .btn-save-settings:active { transform: scale(0.96); }
+        .btn-save-settings { width: 100%; padding: 12px; background: rgba(197,179,211,0.6); border: 1px solid #FFE2E2; border-radius: 14px; color: #2C1A34; font-weight: 700; cursor: pointer; margin-top: 10px; }
 
-        .ad-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(8px); z-index: 9999; display: none; justify-content: center; align-items: center; }
+        .ad-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.3); backdrop-filter: blur(4px); z-index: 9999; display: none; justify-content: center; align-items: center; }
         .ad-modal-overlay.active { display: flex; }
-        .ad-modal-box { padding: 30px; max-width: 400px; width: 90%; text-align: center; position: relative; color: #fff; box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2); }
-        .ad-modal-title { font-size: 22px; font-weight: 700; color: #60a5fa; margin-bottom: 12px; }
-        .ad-modal-text { font-size: 14px; color: #94a8a8; margin-bottom: 20px; line-height: 1.5; }
-        .ad-modal-btn { display: inline-block; padding: 12px 24px; margin-bottom: 15px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 30px; font-weight: bold; font-size: 15px; text-decoration: none; transition: all 0.2s; cursor: pointer; }
-        .ad-modal-btn:hover { transform: scale(1.02); background: rgba(255,255,255,0.15); }
-        .ad-skip-btn { display: inline-block; padding: 8px 16px; margin-top: 5px; background: transparent; color: #94a8a8; border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; font-size: 12px; cursor: pointer; transition: 0.2s; }
+        .ad-modal-box { padding: 30px; max-width: 400px; width: 90%; text-align: center; position: relative; color: #2C1A34; box-shadow: none; }
+        .ad-modal-title { font-size: 22px; font-weight: 700; color: #2C1A34; margin-bottom: 12px; }
+        .ad-modal-text { font-size: 14px; color: #6B4C7A; margin-bottom: 20px; line-height: 1.5; }
+        .ad-modal-btn { display: inline-block; padding: 12px 24px; margin-bottom: 15px; background: rgba(197,179,211,0.6); border: 1px solid #FFE2E2; color: #2C1A34; border-radius: 30px; font-weight: bold; font-size: 15px; text-decoration: none; transition: all 0.2s; cursor: pointer; }
+        .ad-modal-btn:hover { background: rgba(197,179,211,0.8); }
+        .ad-skip-btn { display: inline-block; padding: 8px 16px; margin-top: 5px; background: transparent; color: #6B4C7A; border: 1px solid #FFE2E2; border-radius: 20px; font-size: 12px; cursor: pointer; transition: 0.2s; }
         .ad-skip-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-        .ad-skip-btn:not(:disabled):hover { background: rgba(255,255,255,0.05); color: #fff; }
+        .ad-skip-btn:not(:disabled):hover { background: rgba(255,255,255,0.2); }
 
-        .credits-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(6px); z-index: 10000; display: none; justify-content: center; align-items: center; }
+        .credits-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(4px); z-index: 10000; display: none; justify-content: center; align-items: center; }
         .credits-modal-overlay.active { display: flex; }
-        .credits-modal-box { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(24px); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 24px; padding: 30px; max-width: 380px; width: 90%; text-align: center; box-shadow: 0 15px 50px rgba(0, 0, 0, 0.4); }
+        .credits-modal-box { background: rgba(197, 179, 211, 0.4); backdrop-filter: blur(12px); border: 1px solid #FFE2E2; border-radius: 24px; padding: 30px; max-width: 380px; width: 90%; text-align: center; box-shadow: none; }
         .credits-icon { font-size: 50px; color: #ff4d4d; margin-bottom: 15px; }
-        .credits-title { font-size: 22px; font-weight: 800; color: #fff; margin-bottom: 10px; }
-        .credits-text { font-size: 14px; color: #94a8a8; line-height: 1.6; margin-bottom: 25px; }
+        .credits-title { font-size: 22px; font-weight: 800; color: #2C1A34; margin-bottom: 10px; }
+        .credits-text { font-size: 14px; color: #6B4C7A; line-height: 1.6; margin-bottom: 25px; }
         .credits-btns { display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px; }
-        .btn-whatsapp, .btn-telegram-credits { display: block; width: 100%; padding: 12px; border-radius: 14px; color: #fff; font-weight: 700; text-decoration: none; transition: all 0.2s; }
+        .btn-whatsapp, .btn-telegram-credits { display: block; width: 100%; padding: 12px; border-radius: 14px; color: #fff; font-weight: 700; text-decoration: none; transition: all 0.2s; box-shadow: none; }
         .btn-whatsapp { background: #25d366; }
         .btn-whatsapp:active { transform: scale(0.96); }
         .btn-telegram-credits { background: #0088cc; }
         .btn-telegram-credits:active { transform: scale(0.96); }
-        .credits-close { background: transparent; border: 1px solid rgba(255,255,255,0.08); color: #94a8a8; padding: 8px 16px; border-radius: 30px; font-weight: 600; cursor: pointer; }
+        .credits-close { background: transparent; border: 1px solid #FFE2E2; color: #6B4C7A; padding: 8px 16px; border-radius: 30px; font-weight: 600; cursor: pointer; }
     </style>
 
     <script>
@@ -521,7 +505,6 @@
             if (char) {
                 title.textContent = char.name;
                 subtitle.innerHTML = char.description.replace(/\n/g, '<br>');
-                /* تحديث النص المركزي بناءً على الشخصية */
                 input.placeholder = `اكتب ماتريد لـ ${char.name}...`;
             } else if (characters.length > 0) {
                 const first = characters[0];
@@ -546,7 +529,7 @@
         function renderCharactersSheet() {
             const list = document.getElementById('charactersList');
             if (!characters || characters.length === 0) {
-                list.innerHTML = '<div class="char-list-item" style="justify-content:center; color:#94a8a8;">لا توجد شخصيات بعد</div>';
+                list.innerHTML = '<div class="char-list-item" style="justify-content:center; color:#6B4C7A;">لا توجد شخصيات بعد</div>';
                 return;
             }
             list.innerHTML = characters.map(char => `
@@ -568,7 +551,7 @@
                 const list = document.getElementById('notificationsList');
                 const badge = document.getElementById('notifBadge');
                 if (notifications.length === 0) {
-                    list.innerHTML = '<div class="notif-item" style="justify-content: center; text-align: center; color:#94a8a8;">لا توجد إشعارات</div>';
+                    list.innerHTML = '<div class="notif-item" style="justify-content: center; text-align: center; color:#6B4C7A;">لا توجد إشعارات</div>';
                     badge.style.display = 'none'; return;
                 }
                 badge.textContent = notifications.length; badge.style.display = 'flex';
@@ -577,7 +560,7 @@
                         <div class="notif-icon"><i class="bi bi-bell"></i></div>
                         <div class="notif-content">
                             <div class="notif-title">${escapeHtml(notif.title)}</div>
-                            <div class="notif-text" style="font-size:11px; color:#94a8a8;">${escapeHtml(notif.text)}</div>
+                            <div class="notif-text" style="font-size:11px; color:#6B4C7A;">${escapeHtml(notif.text)}</div>
                         </div>
                     </div>
                 `).join('');
