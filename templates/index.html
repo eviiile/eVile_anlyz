@@ -92,13 +92,12 @@
         .send-btn:disabled { opacity: 0.5; }
         .send-btn:active:not(:disabled) { transform: scale(0.94); }
         
-        /* حالات زر الإرسال */
         .send-btn-normal { background: rgba(255, 255, 255, 0.1); color: #fff; }
         .send-btn-max { background: rgba(255, 0, 0, 0.4); color: #fff; border: 1px solid rgba(255, 0, 0, 0.5); box-shadow: 0 0 15px rgba(255, 0, 0, 0.2); }
         .send-btn-max i { color: #fff; }
         .send-btn.stop-btn { background: rgba(255, 50, 50, 0.8); color: #fff; border: none; }
 
-        /* شريط الشخصيات العادي */
+        /* شريط الشخصيات */
         .char-scroll-container { position: relative; width: 100%; max-width: 320px; margin: 8px auto 12px; overflow: hidden; }
         .char-scroll-wrapper {
             display: flex;
@@ -142,38 +141,42 @@
         .ai-bubble-copy { cursor: pointer; display: flex; align-items: center; gap: 4px; color: rgba(255,255,255,0.6); }
         .ai-bubble-copy:active { opacity: 0.6; }
         
-        /* MAX Block Modal (النافذة السياسية الصارمة) */
+        /* نافذة MAX المنبثقة (تصميم جديد ودود وملون) */
         .max-modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(5px);
+            background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(6px);
             z-index: 9999; display: none; justify-content: center; align-items: center;
         }
         .max-modal-overlay.active { display: flex; }
         .max-modal-box {
-            background: #1c1c1c;
-            border: 2px solid #cc0000;
-            padding: 25px; border-radius: 12px; max-width: 420px; width: 90%;
-            text-align: center; position: relative; box-shadow: 0 0 30px rgba(255, 0, 0, 0.2);
+            background: rgba(255, 255, 255, 0.08); /* زجاجي */
+            backdrop-filter: blur(16px); /* تمويه زجاجي قوي */
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            border-radius: 24px; /* زوايا ناعمة */
+            padding: 30px; max-width: 400px; width: 90%;
+            text-align: center; position: relative;
+            color: #fff;
         }
-        .max-close-x { position: absolute; top: 12px; right: 18px; font-size: 24px; cursor: pointer; color: #888; transition: 0.2s; }
+        .max-close-x { position: absolute; top: 15px; right: 20px; font-size: 24px; cursor: pointer; color: rgba(255,255,255,0.5); transition: 0.2s; }
         .max-close-x:hover { color: #fff; }
-        .max-modal-box h2 { color: #ff3333; font-weight: 900; margin-bottom: 15px; font-size: 22px; letter-spacing: 1px; }
-        .max-modal-box p { color: #ccc; font-size: 14px; line-height: 1.6; margin-bottom: 20px; text-align: right; font-weight: 300; }
-        .max-modal-box p strong { color: #fff; }
+        .max-modal-box h2 { color: #8effa0; font-weight: 700; margin-bottom: 12px; font-size: 22px; }
+        .max-modal-box p { color: rgba(255,255,255,0.8); font-size: 14px; line-height: 1.6; margin-bottom: 20px; }
         .max-modal-box .input-field {
-            width: 100%; padding: 12px; background: #2a2a2a; border: 1px solid #444;
-            border-radius: 6px; color: #fff; margin-bottom: 15px; text-align: center; outline: none;
+            width: 100%; padding: 12px; background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 12px;
+            color: #fff; margin-bottom: 15px; text-align: center; outline: none;
         }
-        .max-modal-box .input-field:focus { border-color: #666; }
+        .max-modal-box .input-field:focus { border-color: #8effa0; }
         .btn-max-action {
-            display: block; width: 100%; padding: 12px; border: none;
-            border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 15px;
+            display: block; width: 100%; padding: 14px; border: none;
+            border-radius: 14px; cursor: pointer; font-weight: bold; font-size: 15px;
             text-decoration: none; transition: 0.2s; margin-bottom: 10px;
         }
         .btn-max-telegram { background: #0088cc; color: white; }
         .btn-max-telegram:hover { background: #0077b3; }
-        .btn-max-save { background: #333; color: #ccc; border: 1px solid #555; }
-        .btn-max-save:hover { background: #444; color: #fff; }
+        .btn-max-save { background: rgba(255, 255, 255, 0.1); color: #fff; border: 1px solid rgba(255, 255, 255, 0.1); }
+        .btn-max-save:hover { background: rgba(255, 255, 255, 0.2); }
 
         /* Bottom Sheets */
         .bottom-sheet-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(8px); z-index: 1000; display: none; align-items: flex-end; justify-content: center; }
@@ -203,23 +206,22 @@
 </head>
 <body>
 
-    <!-- نافذة منع MAX السياسية -->
+    <!-- نافذة منع MAX (نمط جديد ودود وزجاجي) -->
     <div class="max-modal-overlay" id="maxModal">
         <div class="max-modal-box">
             <div class="max-close-x" onclick="closeMaxModal()">×</div>
-            <h2>⚠️ تحذير أمني</h2>
+            <h2>✨ وصول حصري</h2>
             <p>
-                لقد حاولت الوصول إلى محتوى مقيد من الفئة <strong>"MAX"</strong>.<br>
-                هذا الإجراء يتطلب تصريحاً خاصاً من الإدارة.<br><br>
-                للتواصل المباشر مع المسؤول والحصول على التصريح، يرجى التواصل عبر القناة الرسمية:
+                عذراً، هذه الشخصية من فئة <strong>MAX</strong> وهي متاحة حصرياً للداعمين والمستخدمين المخولين.<br><br>
+                يرجى إدخال معرف تيليجرام الخاص بك للتواصل مع الإدارة للحصول على تصريح الوصول.
             </p>
             <div style="margin-bottom: 15px;">
-                <input type="text" class="input-field" id="maxTelegramIdInput" placeholder="أدخل معرف تيليجرام الخاص بك">
+                <input type="text" class="input-field" id="maxTelegramIdInput" placeholder="معرف تيليجرام الخاص بك">
             </div>
             <a href="https://t.me/OlIiIl7" target="_blank" class="btn-max-action btn-max-telegram">
-                <i class="bi bi-telegram"></i> تواصل مع الإدارة @OlIiIl7
+                <i class="bi bi-telegram"></i> تواصل مع @OlIiIl7
             </a>
-            <button class="btn-max-action btn-max-save" onclick="submitMaxRequest()">تأكيد إرسال الطلب</button>
+            <button class="btn-max-action btn-max-save" onclick="submitMaxRequest()">إرسال طلب الوصول</button>
         </div>
     </div>
 
@@ -380,21 +382,32 @@
             setTimeout(() => { clickCount = 0; }, 1000);
         }
 
-        // ---- دوال النافذة المنبثقة MAX ----
+        // ---- دوال النافذة المنبثقة MAX (محدثة) ----
         function openMaxModal() {
             document.getElementById('maxModal').classList.add('active');
         }
         function closeMaxModal() {
             document.getElementById('maxModal').classList.remove('active');
         }
-        function submitMaxRequest() {
+        async function submitMaxRequest() {
             const idInput = document.getElementById('maxTelegramIdInput').value.trim();
-            if (idInput) {
-                showToastNotification('📩 تم استلام طلبك. سيتم التواصل معك عبر تيليجرام.');
-            } else {
+            if (!idInput) {
                 showToastNotification('⚠️ يرجى إدخال معرف تيليجرام الخاص بك أولاً.');
+                return;
             }
-            closeMaxModal();
+            try {
+                const res = await fetch('/api/request_max', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ telegram_id: idInput })
+                });
+                const data = await res.json();
+                showToastNotification(data.message || (data.success ? '📩 تم إرسال طلبك بنجاح' : 'حدث خطأ'));
+            } catch (err) {
+                showToastNotification('خطأ في الاتصال بالخادم.');
+            } finally {
+                closeMaxModal();
+            }
         }
 
         // ---- تحديث مظهر زر الإرسال بناءً على الشخصية ----
@@ -406,11 +419,10 @@
 
             [welcomeBtn, chatBtn].forEach(btn => {
                 if (!btn) return;
-                // إزالة الكلاسات السابقة
                 btn.classList.remove('send-btn-normal', 'send-btn-max');
                 if (isMax) {
                     btn.classList.add('send-btn-max');
-                    btn.innerHTML = '<i class="bi bi-lock-fill"></i>'; // إضافة قفل كدليل بصري
+                    btn.innerHTML = '<i class="bi bi-lock-fill"></i>';
                 } else {
                     btn.classList.add('send-btn-normal');
                     btn.innerHTML = '<i class="bi bi-send"></i>';
@@ -467,7 +479,6 @@
                 title.textContent = "ابنِ أفكارك مع EVILE";
                 subtitle.textContent = "أضف شخصيات من لوحة التحكم";
             }
-            // تحديث الزر بعد تغيير الشخصية
             updateSendButtonBasedOnCharacter();
         }
 
@@ -525,7 +536,6 @@
                     btn.innerHTML = '<i class="bi bi-stop-circle"></i>';
                 } else {
                     btn.classList.remove('stop-btn');
-                    // استعادة الحالة بناءً على الشخصية
                     updateSendButtonBasedOnCharacter();
                 }
             });
@@ -631,7 +641,6 @@
         function checkIfAllowedToSend() {
             const char = characters.find(c => c.callback_key === currentCharacter);
             if (char && char.is_max === true) {
-                // إذا كانت الشخصية MAX، تظهر النافذة وتمنع الإرسال
                 openMaxModal();
                 return false;
             }
@@ -670,7 +679,7 @@
         function handleSendWelcome() {
             if (isStreaming) { stopStreaming(); return; }
             if (isProcessing) return;
-            if (!checkIfAllowedToSend()) return; // فحص الحظر
+            if (!checkIfAllowedToSend()) return;
             const input = document.getElementById('welcomeInput'); const msg = input.value.trim();
             if (!msg) return;
             if (isFirstMessage) { welcomeSection.classList.remove('active'); chatSection.classList.add('active'); isFirstMessage = false; }
@@ -680,7 +689,7 @@
         function handleSendChat() {
             if (isStreaming) { stopStreaming(); return; }
             if (isProcessing) return;
-            if (!checkIfAllowedToSend()) return; // فحص الحظر
+            if (!checkIfAllowedToSend()) return;
             const input = document.getElementById('chatInput'); const msg = input.value.trim();
             if (!msg) return;
             actuallySendMessage(msg);
