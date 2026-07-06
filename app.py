@@ -65,25 +65,17 @@ def ensure_notification_columns(cur):
         cur.execute("ALTER TABLE notifications ADD COLUMN show_in_chat BOOLEAN DEFAULT FALSE")
         logger.info("Added column show_in_chat to notifications table")
 
-def ensure_character_columns(cur):
-    cur.execute("""
-        SELECT column_name 
-        FROM information_schema.columns 
-        WHERE table_name='characters' AND column_name='is_max'
-    """)
-    if not cur.fetchone():
-        cur.execute("ALTER TABLE characters ADD COLUMN is_max BOOLEAN DEFAULT FALSE")
-        logger.info("✅ Added missing column 'is_max' to characters table")
-
-# --- إضافة جدول طلبات MAX ---
-def ensure_max_requests_table(cur):
-    cur.execute('''CREATE TABLE IF NOT EXISTS max_requests (
+def ensure_ads_table(cur):
+    cur.execute('''CREATE TABLE IF NOT EXISTS ads (
         id SERIAL PRIMARY KEY,
-        telegram_id TEXT NOT NULL,
-        status TEXT DEFAULT 'pending',
+        title TEXT NOT NULL,
+        text TEXT NOT NULL,
+        button_text TEXT NOT NULL,
+        button_link TEXT NOT NULL,
+        duration_hours INTEGER DEFAULT 1,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )''')
-    logger.info("✅ Ensured max_requests table exists")
+    logger.info("✅ Ensured ads table exists")
 
 def init_db():
     try:
@@ -109,8 +101,7 @@ def init_db():
             )''')
             
             ensure_notification_columns(cur)
-            ensure_character_columns(cur)
-            ensure_max_requests_table(cur) # إضافة الجدول الجديد
+            ensure_ads_table(cur) # إنشاء جدول الإعلانات
             
             logger.info("Database initialized/updated successfully")
             print("✅ Database tables ensured successfully.")
@@ -145,14 +136,20 @@ def index():
             characters = cur.fetchall()
             cur.execute('SELECT * FROM notifications WHERE show_in_chat = true ORDER BY created_at DESC LIMIT 1')
             latest_notification = cur.fetchone()
+            
+            # جلب أحدث إعلان فعال
+            cur.execute('SELECT * FROM ads ORDER BY created_at DESC LIMIT 1')
+            latest_ad = cur.fetchone()
     except Exception as e:
         logger.error(f"Index error: {e}")
         characters = []
         latest_notification = None
+        latest_ad = None
     return render_template('index.html',
                          characters=characters,
                          telegram_id=telegram_id,
-                         latest_notification=latest_notification)
+                         latest_notification=latest_notification,
+                         latest_ad=latest_ad)
 
 @app.route('/register', methods=['POST'])
 def register():
@@ -214,13 +211,15 @@ def admin_panel():
                 characters = cur.fetchall()
                 cur.execute('SELECT * FROM notifications ORDER BY id DESC')
                 notifications = cur.fetchall()
+                cur.execute('SELECT * FROM ads ORDER BY id DESC')
+                ads = cur.fetchall()
                 cur.execute('SELECT COUNT(*) FROM users')
                 row = cur.fetchone()
                 users_count = row['count'] if row else 0
         except Exception as e:
             logger.error(f"Admin panel data error: {e}")
-            characters, notifications, users_count = [], [], 0
-        return render_template('admin.html', characters=characters, notifications=notifications, users_count=users_count)
+            characters, notifications, ads, users_count = [], [], [], 0
+        return render_template('admin.html', characters=characters, notifications=notifications, ads=ads, users_count=users_count)
     
     return render_template('admin.html')
 
@@ -237,12 +236,11 @@ def add_character():
     prompt = request.form.get('prompt')
     callback_key = request.form.get('callback_key', name.lower().replace(' ', '_'))
     logo_url = request.form.get('logo_url', '')
-    is_max = request.form.get('is_max') == 'on'
     if name and description and prompt:
         try:
             with get_db() as cur:
-                cur.execute("INSERT INTO characters (name, description, prompt, callback_key, logo_url, is_max) VALUES (%s, %s, %s, %s, %s, %s)",
-                    (name, description, prompt, callback_key, logo_url, is_max))
+                cur.execute("INSERT INTO characters (name, description, prompt, callback_key, logo_url) VALUES (%s, %s, %s, %s, %s)",
+                    (name, description, prompt, callback_key, logo_url))
             flash('تمت إضافة الشخصية بنجاح', 'success')
         except Exception as e:
             flash('مفتاح الشخصية موجود مسبقاً' if 'unique' in str(e).lower() else str(e), 'error')
@@ -255,12 +253,11 @@ def edit_character(char_id):
     description = request.form.get('description')
     prompt = request.form.get('prompt')
     logo_url = request.form.get('logo_url', '')
-    is_max = request.form.get('is_max') == 'on'
     if name and description and prompt:
         try:
             with get_db() as cur:
-                cur.execute("UPDATE characters SET name=%s, description=%s, prompt=%s, logo_url=%s, is_max=%s WHERE id=%s",
-                    (name, description, prompt, logo_url, is_max, char_id))
+                cur.execute("UPDATE characters SET name=%s, description=%s, prompt=%s, logo_url=%s WHERE id=%s",
+                    (name, description, prompt, logo_url, char_id))
             flash('تم تعديل الشخصية بنجاح', 'success')
         except Exception as e:
             flash(str(e), 'error')
@@ -307,6 +304,53 @@ def delete_notification(notif_id):
         flash(str(e), 'error')
     return redirect(url_for('admin_panel'))
 
+# --- مسارات الإعلانات ---
+@app.route('/admin/ad/add', methods=['POST'])
+@admin_required
+def add_ad():
+    title = request.form.get('title')
+    text = request.form.get('text')
+    button_text = request.form.get('button_text')
+    button_link = request.form.get('button_link')
+    duration_hours = request.form.get('duration_hours', 1, type=int)
+    
+    if title and text and button_text and button_link:
+        try:
+            with get_db() as cur:
+                cur.execute(
+                    "INSERT INTO ads (title, text, button_text, button_link, duration_hours) VALUES (%s, %s, %s, %s, %s)",
+                    (title, text, button_text, button_link, duration_hours)
+                )
+            flash('تم نشر الإعلان بنجاح', 'success')
+        except Exception as e:
+            flash(str(e), 'error')
+    return redirect(url_for('admin_panel'))
+
+@app.route('/admin/ad/<int:ad_id>/delete')
+@admin_required
+def delete_ad(ad_id):
+    try:
+        with get_db() as cur:
+            cur.execute("DELETE FROM ads WHERE id=%s", (ad_id,))
+        flash('تم حذف الإعلان', 'success')
+    except Exception as e:
+        flash(str(e), 'error')
+    return redirect(url_for('admin_panel'))
+
+@app.route('/api/latest_ad')
+def api_latest_ad():
+    try:
+        with get_db() as cur:
+            cur.execute('SELECT * FROM ads ORDER BY created_at DESC LIMIT 1')
+            ad = cur.fetchone()
+        if ad:
+            return jsonify(ad)
+        return jsonify(None)
+    except Exception as e:
+        logger.error(f"API latest ad error: {e}")
+        return jsonify(None)
+
+# --- مسارات الدردشة ---
 @app.route('/api/characters')
 def api_characters():
     now = time.time()
@@ -332,51 +376,6 @@ def api_notifications():
     except Exception as e:
         logger.error(f"API notifications error: {e}")
         return jsonify([])
-
-# --- API جديد لطلبات MAX ---
-@app.route('/api/request_max', methods=['POST'])
-def request_max():
-    data = request.json
-    telegram_id = data.get('telegram_id', '').strip()
-    if not telegram_id or not telegram_id.isdigit():
-        return jsonify({'success': False, 'message': 'معرف غير صحيح'}), 400
-    try:
-        with get_db() as cur:
-            # التحقق مما إذا كان قد أرسل طلباً معلقاً مسبقاً
-            cur.execute("SELECT * FROM max_requests WHERE telegram_id=%s AND status='pending'", (telegram_id,))
-            if cur.fetchone():
-                return jsonify({'success': False, 'message': 'لديك طلب معلق مسبقاً، يرجى انتظار الرد.'}), 400
-            cur.execute("INSERT INTO max_requests (telegram_id) VALUES (%s)", (telegram_id,))
-        return jsonify({'success': True, 'message': 'تم استلام طلبك بنجاح، سيتم التواصل معك.'})
-    except Exception as e:
-        logger.error(f"Max request error: {e}")
-        return jsonify({'success': False, 'message': str(e)}), 500
-
-@app.route('/api/admin/max_requests', methods=['GET'])
-@admin_required
-def get_max_requests():
-    try:
-        with get_db() as cur:
-            cur.execute("SELECT * FROM max_requests ORDER BY created_at DESC")
-            requests = cur.fetchall()
-        return jsonify(requests)
-    except Exception as e:
-        logger.error(f"Admin max requests error: {e}")
-        return jsonify([])
-
-@app.route('/api/admin/max_requests/<int:req_id>/<action>', methods=['POST'])
-@admin_required
-def handle_max_request(req_id, action):
-    if action not in ['approve', 'reject']:
-        return jsonify({'success': False, 'message': 'إجراء غير صحيح'}), 400
-    try:
-        with get_db() as cur:
-            status = 'approved' if action == 'approve' else 'rejected'
-            cur.execute("UPDATE max_requests SET status=%s WHERE id=%s", (status, req_id))
-        return jsonify({'success': True})
-    except Exception as e:
-        logger.error(f"Handle max request error: {e}")
-        return jsonify({'success': False, 'message': str(e)}), 500
 
 @app.route('/api/chat', methods=['POST'])
 def api_chat():
