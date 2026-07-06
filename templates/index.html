@@ -19,16 +19,19 @@
         .main-container { 
             width: 100%; height: 100vh; height: 100dvh; 
             display: flex; flex-direction: column; 
-            align-items: center; /* توسيط العناصر أفقياً */
-            padding: 20px 16px 90px 16px;
+            align-items: center; 
+            padding: 16px 16px 90px 16px;
             overflow-y: auto;
             position: relative;
+            /* تم إزاحة العناصر للأسفل من خلال ضبط قيمة الـ padding-top */
+            padding-top: 40px; 
         }
         
         /* قسم العنوان والوصف */
         .hero-section {
-            text-align: center; margin-bottom: 20px; padding-top: 5px;
+            text-align: center; margin-bottom: 20px; 
             width: 100%; max-width: 500px;
+            margin-top: 30px; /* تمت إزاحة إضافية للأسفل */
         }
         .hero-title { font-size: 28px; font-weight: 800; margin-bottom: 6px; color: #1a1a2e; }
         .hero-subtitle { font-size: 14px; color: #5a608a; margin-bottom: 20px; line-height: 1.5; }
@@ -125,10 +128,10 @@
         .style-bar-wrapper {
             display: flex; align-items: center; justify-content: center;
             gap: 12px; margin-bottom: 15px;
-            overflow-x: auto; padding: 8px 12px; /* تم إضافة حشوة */
+            overflow-x: auto; padding: 8px 12px;
             scrollbar-width: none; -webkit-overflow-scrolling: touch;
             width: 100%; max-width: 500px;
-            background: rgba(255, 255, 255, 0.5); /* خلفية لونية */
+            background: rgba(255, 255, 255, 0.5);
             border: 1px solid rgba(255, 255, 255, 0.8);
             border-radius: 40px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.02);
@@ -184,7 +187,7 @@
         .social-btn.telegram { color: #0088cc; }
         .social-btn.instagram { color: #e4405f; }
         .social-btn.bell { color: #2c3e8a; }
-        .social-btn.gear { color: #1a1a2e; } /* زر الإعدادات */
+        .social-btn.gear { color: #1a1a2e; }
         
         .social-btn .notif-badge {
             position: absolute; top: -4px; right: -4px; width: 14px; height: 14px; background: #ff4d4d;
@@ -193,7 +196,7 @@
         }
 
         @media (min-width: 768px) {
-            .main-container { max-width: 600px; margin: 0 auto; padding: 30px 20px 100px 20px; }
+            .main-container { max-width: 600px; margin: 0 auto; padding: 30px 20px 100px 20px; padding-top: 60px; }
             .social-bar { left: 50%; }
         }
     </style>
@@ -271,7 +274,7 @@
         </div>
     </div>
 
-    <!-- الشريط السفلي (مع زر الإعدادات الجديد) -->
+    <!-- الشريط السفلي (مع زر الإعدادات) -->
     <div class="social-bar">
         <a href="https://t.me/Evile_Prompts" target="_blank" class="social-btn telegram"><i class="bi bi-telegram"></i></a>
         <a href="https://www.instagram.com/bla6c7" target="_blank" class="social-btn instagram"><i class="bi bi-instagram"></i></a>
@@ -410,7 +413,7 @@
 
     <script>
         const characters = {{ characters|tojson }};
-        let telegramId = {{ telegram_id|tojson }};
+        let userId = {{ user_id|tojson }};
         const latestNotification = {{ latest_notification|tojson }};
         const latestAd = {{ latest_ad|tojson }};
         let userData = {{ user_data|tojson }};
@@ -421,13 +424,12 @@
         let abortController = null;
 
         function initScreen() {
-            // التحقق من وجود المستخدم والبيانات
-            if (!telegramId) {
+            // التحقق من وجود المستخدم
+            if (!userId) {
                 window.location.href = '/sign';
                 return;
             }
             
-            // إذا كان المستخدم مسجل ولكن ليس لديه بيانات اسم مستخدم في قاعدة البيانات (مستخدم قديم)
             if (!userData || !userData.username) {
                 window.location.href = '/sign';
                 return;
@@ -638,7 +640,6 @@
                     signal: abortController.signal 
                 });
                 
-                // التعامل مع رصيد النقاط المنتهي
                 if (response.status === 402) {
                     openCreditsModal();
                     throw new Error('no_credits');
@@ -658,14 +659,12 @@
                 if (fullText) { 
                     updatePromptResult(fullText); 
                     document.getElementById('mainInput').value = ''; 
-                    // خصم النقطة من الواجهة
                     const creditsBadge = document.getElementById('creditsBadge');
                     let currentCredits = parseInt(creditsBadge.textContent.match(/\d+/)?.[0] || 0);
                     if (currentCredits > 0) {
                         currentCredits--;
                         updateCreditsBadge(currentCredits);
                     }
-                    // إبلاغ الخادم بخصم النقطة
                     await fetch('/api/deduct_credit', { method: 'POST' });
                 } else { 
                     updatePromptResult('لم يتم استلام رد من الخادم.'); 
