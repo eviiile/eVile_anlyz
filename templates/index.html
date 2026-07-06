@@ -10,7 +10,6 @@
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body {
             font-family: 'Tajawal', sans-serif;
-            /* خلفية ناعمة فاتحة مطابقة للصورة */
             background: linear-gradient(160deg, #f4f6fe 0%, #e6e9fc 100%);
             color: #1a1a2e;
             overflow: hidden;
@@ -20,7 +19,7 @@
         .main-container { 
             width: 100%; height: 100vh; height: 100dvh; 
             display: flex; flex-direction: column; 
-            padding: 16px 16px 80px 16px; /* مساحة للشريط السفلي العائم */
+            padding: 16px 16px 80px 16px; 
             padding-top: 80px; 
             overflow-y: auto;
             position: relative;
@@ -29,7 +28,7 @@
         /* شريط العنوان العائم */
         .floating-header {
             position: fixed; top: 12px; left: 12px; right: 12px; z-index: 100;
-            display: flex; align-items: center; justify-content: space-between; padding: 6px 12px;
+            display: flex; align-items: center; justify-content: center; padding: 6px 12px;
             background: rgba(255, 255, 255, 0.6);
             backdrop-filter: blur(8px);
             border: 1px solid rgba(255, 255, 255, 0.8);
@@ -37,12 +36,13 @@
             border-radius: 20px; 
         }
         .header-icon {
+            position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
             width: 36px; height: 36px; border-radius: 12px;
             background: rgba(255, 255, 255, 0.5);
             display: flex; align-items: center; justify-content: center;
-            cursor: pointer; transition: all 0.2s; position: relative;
+            cursor: pointer; transition: all 0.2s; 
         }
-        .header-icon:active { transform: scale(0.9); }
+        .header-icon:active { transform: translateY(-50%) scale(0.9); }
         .header-icon i { font-size: 18px; color: #2c3e8a; }
         .header-icon .notif-badge {
             position: absolute; top: -3px; right: -3px; width: 14px; height: 14px; background: #ff4d4d;
@@ -81,21 +81,23 @@
             background: #f7f9fd;
             border: 1px solid #eff1f8;
             border-radius: 16px;
-            padding: 12px 14px;
+            padding: 0 14px;
             margin-bottom: 16px;
         }
         .message-input {
             width: 100%; background: transparent; border: none;
             font-family: 'Tajawal', sans-serif; font-size: 14px; outline: none;
-            color: #1a1a2e; resize: none; min-height: 40px; max-height: 80px;
+            color: #1a1a2e; 
+            height: 48px; max-height: 48px; /* حجم ثابت */
+            resize: none; overflow-y: auto; /* شريط تمرير */
         }
         .message-input::placeholder { color: #9da4c9; }
         
         .main-btn {
-            width: 100%; padding: 14px;
+            width: auto; min-width: 140px; padding: 10px 20px; margin: 0 auto; display: block;
             background: linear-gradient(135deg, #5a7bfb 0%, #9a6ff5 100%);
             border: none; border-radius: 14px;
-            color: #fff; font-weight: 700; font-size: 15px;
+            color: #fff; font-weight: 700; font-size: 14px;
             cursor: pointer; transition: all 0.2s;
             box-shadow: 0 4px 15px rgba(90, 123, 251, 0.3);
             display: flex; align-items: center; justify-content: center; gap: 6px;
@@ -104,22 +106,24 @@
         .main-btn.stop-btn { background: #ef4444; box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3); }
         .main-btn.stop-btn i { color: #fff; }
 
-        /* حقل البرومبت المولد (جديد) */
+        /* حقل البرومبت المولد (حجم ثابت وتكبير طفيف) */
         .prompt-result-wrapper {
             background: #f7f9fd;
             border: 1px dashed #c7cee6;
             border-radius: 16px;
-            padding: 16px;
+            padding: 12px 16px;
             margin-top: 16px;
-            display: flex;
+            display: none;
             flex-direction: column;
-            gap: 12px;
+            gap: 8px;
         }
         .prompt-result-text {
             font-size: 13px; color: #1a1a2e; line-height: 1.6;
-            min-height: 40px; width: 100%; background: transparent;
+            width: 100%; background: transparent;
             border: none; resize: none; outline: none;
             font-family: 'Tajawal', sans-serif;
+            height: 90px; max-height: 90px; /* حجم ثابت مع تكبير قليل */
+            overflow-y: auto;
         }
         .prompt-result-actions {
             display: flex; justify-content: flex-end; gap: 8px;
@@ -160,29 +164,30 @@
         }
         .style-btn:active { transform: scale(0.95); }
 
-        /* أزرار التواصل الاجتماعي (أسفل الشاشة) */
+        /* أزرار التواصل الاجتماعي (شريط سفلي صغير بدون مسافات) */
         .social-bar {
-            position: fixed; bottom: 16px; left: 16px; right: 16px; z-index: 99;
-            display: flex; justify-content: center; gap: 12px;
-            padding: 10px 20px;
-            background: rgba(255, 255, 255, 0.7);
+            position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%); z-index: 99;
+            display: flex; gap: 6px;
+            padding: 6px 10px;
+            background: rgba(255, 255, 255, 0.8);
             backdrop-filter: blur(8px);
             border: 1px solid rgba(255, 255, 255, 0.8);
             border-radius: 40px;
-            max-width: 400px; margin: 0 auto;
+            width: fit-content; /* بحجم العناصر فقط */
+            margin: 0 auto;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
         }
         .social-btn {
-            width: 40px; height: 40px; border-radius: 50%;
+            width: 32px; height: 32px; border-radius: 50%;
             background: #ffffff; border: 1px solid #eff1f8;
             display: flex; align-items: center; justify-content: center;
             cursor: pointer; transition: all 0.2s; color: #5a608a; text-decoration: none;
             box-shadow: 0 2px 8px rgba(0,0,0,0.02);
         }
         .social-btn:active { transform: scale(0.9); }
-        .social-btn i { font-size: 18px; }
+        .social-btn i { font-size: 16px; }
         .social-btn.telegram { color: #0088cc; }
         .social-btn.instagram { color: #e4405f; }
-        .social-btn.chat { background: #f0f2f8; color: #1a1a2e; }
 
         @media (min-width: 768px) {
             .main-container { max-width: 500px; margin: 0 auto; padding: 20px 20px 100px 20px; padding-top: 100px; }
@@ -192,16 +197,14 @@
 </head>
 <body>
 
-    <!-- شريط التنقل العلوي -->
+    <!-- شريط التنقل العلوي (تم حذف زر الشخصيات) -->
     <header class="floating-header">
         <div class="header-icon" onclick="openNotificationsSheet()">
             <i class="bi bi-bell"></i>
             <span class="notif-badge" id="notifBadge" style="display: none;">0</span>
         </div>
         <div class="header-logo">EVILE</div>
-        <div class="header-icon" onclick="openCharactersSheet()">
-            <i class="bi bi-person"></i>
-        </div>
+        <!-- تم حذف زر person من هنا -->
     </header>
 
     <div class="main-container">
@@ -221,15 +224,15 @@
             <label class="input-label"><i class="bi bi-pencil" style="margin-left:6px; color:#5a7bfb;"></i> اكتب وصف الشعار</label>
             
             <div class="textarea-wrapper">
-                <textarea class="message-input" id="mainInput" placeholder="مثال: شعار لمتجر ملابس نسائية أنيق وبسيط" rows="1"></textarea>
+                <textarea class="message-input" id="mainInput" placeholder="أدخل وصف شعارك..." rows="1"></textarea>
             </div>
 
-            <!-- زر الإرسال الرئيسي -->
+            <!-- زر الإرسال الرئيسي (صغير أفقيًا) -->
             <button class="main-btn" id="mainSendBtn" onclick="handleSendWelcome()">
-                <i class="bi bi-stars"></i> إنشاء الشعار
+                <i class="bi bi-stars"></i> إنشاء
             </button>
 
-            <!-- حقل عرض البرومبت المولد (جديد) -->
+            <!-- حقل عرض البرومبت المولد (حجم ثابت) -->
             <div class="prompt-result-wrapper" id="promptResultArea" style="display: none;">
                 <textarea class="prompt-result-text" id="promptResultText" readonly placeholder="سينتج هنا البرومبت المخصص للشعار..."></textarea>
                 <div class="prompt-result-actions">
@@ -246,11 +249,11 @@
             <!-- سيتم توليد الأزرار هنا بواسطة Javascript -->
         </div>
 
-        <!-- أزرار التواصل الاجتماعي -->
+        <!-- أزرار التواصل الاجتماعي (شريط سفلي صغير بلا مسافات) -->
         <div class="social-bar">
             <a href="https://t.me/Evile_Prompts" target="_blank" class="social-btn telegram"><i class="bi bi-telegram"></i></a>
             <a href="https://www.instagram.com/bla6c7" target="_blank" class="social-btn instagram"><i class="bi bi-instagram"></i></a>
-            <div class="social-btn chat" onclick="openCharactersSheet()"><i class="bi bi-people"></i></div>
+            <!-- تم حذف زر chat من هنا -->
         </div>
     </div>
 
@@ -412,16 +415,22 @@
             const char = characters.find(c => c.callback_key === currentCharacter);
             const title = document.getElementById('welcomeTitle');
             const subtitle = document.getElementById('welcomeSubtitle');
+            const input = document.getElementById('mainInput');
+            
             if (char) {
                 title.textContent = char.name;
                 subtitle.innerHTML = char.description.replace(/\n/g, '<br>');
+                // تحديث النص التعريفي بناءً على الشخصية
+                input.placeholder = `أدخل وصف الشعار الخاص بـ ${char.name}...`;
             } else if (characters.length > 0) {
                 const first = characters[0];
                 title.textContent = first.name;
                 subtitle.innerHTML = first.description.replace(/\n/g, '<br>');
+                input.placeholder = `أدخل وصف الشعار الخاص بـ ${first.name}...`;
             } else {
                 title.textContent = "لوجو ميكر";
                 subtitle.innerHTML = "صمم شعارك بسهولة واحترافية";
+                input.placeholder = "أدخل وصف شعارك...";
             }
         }
 
@@ -480,17 +489,17 @@
             if (!btn) return;
             if (isStreamingActive) {
                 btn.classList.add('stop-btn');
-                btn.innerHTML = '<i class="bi bi-stop-circle"></i> إيقاف التوليد';
+                btn.innerHTML = '<i class="bi bi-stop-circle"></i> إيقاف';
             } else {
                 btn.classList.remove('stop-btn');
-                btn.innerHTML = '<i class="bi bi-stars"></i> إنشاء الشعار';
+                btn.innerHTML = '<i class="bi bi-stars"></i> إنشاء';
             }
         }
 
         function showLoadingPrompt() {
             const area = document.getElementById('promptResultArea');
             area.style.display = 'flex';
-            document.getElementById('promptResultText').value = 'جاري توليد البرومبت...';
+            document.getElementById('promptResultText').value = 'جاري التوليد...';
         }
 
         function updatePromptResult(text) {
@@ -498,9 +507,6 @@
             area.style.display = 'flex';
             const textarea = document.getElementById('promptResultText');
             textarea.value = text;
-            // إعادة ضبط الحجم ليناسب المحتوى
-            textarea.style.height = 'auto';
-            textarea.style.height = textarea.scrollHeight + 'px';
         }
 
         function copyGeneratedPrompt() {
