@@ -27,7 +27,6 @@
         }
         .admin-container { max-width: 1200px; width: 100%; margin: 0 auto; padding: 20px; }
         
-        /* نموذج الدخول */
         .login-wrapper { max-width: 420px; margin: 0 auto; width: 100%; }
         .login-card { padding: 40px 32px; text-align: center; }
         .login-icon { width: 64px; height: 64px; background: rgba(255,255,255,0.08); border-radius: 20px; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; }
@@ -61,6 +60,7 @@
             align-items: center;
             gap: 6px;
         }
+        .btn-success { background: rgba(50, 255, 50, 0.15); border-color: rgba(50, 255, 50, 0.3); color: #8effa0; }
         .btn-danger { background: rgba(255,50,50,0.2); border-color: rgba(255,50,50,0.2); color: #ff6b6b; }
         .btn:active { transform: scale(0.96); }
         .btn-login { width: 100%; padding: 14px; font-size: 16px; }
@@ -131,6 +131,11 @@
         .modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); z-index: 1000; align-items: center; justify-content: center; padding: 20px; }
         .modal.active { display: flex; }
         .modal-content { padding: 20px; max-width: 500px; width: 100%; }
+        
+        /* أزرار طلبات MAX */
+        .max-actions { display: flex; gap: 10px; margin-top: 5px; }
+        .max-actions .btn { padding: 6px 16px; font-size: 11px; }
+
         @media (max-width: 600px) {
             .bottom-nav { padding: 8px; gap: 8px; border-radius: 40px; }
             .bottom-nav-btn { width: 40px; height: 40px; font-size: 16px; }
@@ -207,14 +212,12 @@
                 {% endfor %}
             </div>
 
-            <div id="tab-banned" class="tab-content">
-                <div class="section-title"><i class="bi bi-person-x"></i> حظر مستخدم</div>
-                <form method="POST" action="/admin/ban_user">
-                    <div class="form-group"><label>معرف تيليجرام</label><input type="text" name="telegram_id" placeholder="أدخل المعرف المراد حظره" required></div>
-                    <button type="submit" class="btn btn-danger"><i class="bi bi-ban"></i> حظر المستخدم</button>
-                </form>
-                <div class="section-title" style="margin-top: 30px;"><i class="bi bi-list-ul"></i> قائمة المحظورين</div>
-                <div id="bannedList"><p style="color:rgba(255,255,255,0.5); text-align:center;">لا يوجد مستخدمون محظورون حالياً</p></div>
+            <!-- تبويب طلبات MAX الجديد -->
+            <div id="tab-max-requests" class="tab-content">
+                <div class="section-title"><i class="bi bi-person-check"></i> طلبات اشتراك MAX</div>
+                <div id="maxRequestsList">
+                    <p style="text-align:center; color:rgba(255,255,255,0.5);">جاري تحميل الطلبات...</p>
+                </div>
             </div>
 
             <!-- نافذة التعديل -->
@@ -238,11 +241,11 @@
                 </div>
             </div>
 
-            <!-- الشريط السفلي العائم الثابت -->
+            <!-- الشريط السفلي العائم الثابت (تمت إضافة زر طلبات MAX) -->
             <div class="bottom-nav" id="bottomNav">
                 <button class="bottom-nav-btn active" data-tab="characters"><i class="bi bi-people"></i></button>
                 <button class="bottom-nav-btn" data-tab="notifications"><i class="bi bi-bell"></i></button>
-                <button class="bottom-nav-btn" data-tab="banned"><i class="bi bi-ban"></i></button>
+                <button class="bottom-nav-btn" data-tab="max-requests"><i class="bi bi-person-check"></i></button>
             </div>
 
         {% else %}
@@ -271,6 +274,7 @@
     </div>
 
     <script>
+        // التبويبات
         document.querySelectorAll('.bottom-nav-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 const tabId = btn.getAttribute('data-tab');
@@ -278,6 +282,11 @@
                 document.getElementById(`tab-${tabId}`).classList.add('active');
                 document.querySelectorAll('.bottom-nav-btn').forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
+
+                // جلب طلبات MAX عند الضغط على التبويب الخاص بها
+                if (tabId === 'max-requests') {
+                    loadMaxRequests();
+                }
             });
         });
 
@@ -296,6 +305,69 @@
         window.onclick = function(e) {
             const modal = document.getElementById('editModal');
             if (e.target === modal) closeEditModal();
+        }
+
+        // --- دوال طلبات MAX ---
+        async function loadMaxRequests() {
+            const list = document.getElementById('maxRequestsList');
+            list.innerHTML = '<p style="text-align:center; color:rgba(255,255,255,0.5);">جاري التحميل...</p>';
+            try {
+                const res = await fetch('/api/admin/max_requests');
+                const requests = await res.json();
+                
+                if (requests.length === 0) {
+                    list.innerHTML = '<p style="text-align:center; color:rgba(255,255,255,0.5);">لا توجد طلبات حالياً.</p>';
+                    return;
+                }
+
+                let html = '';
+                requests.forEach(req => {
+                    const statusBadge = req.status === 'pending' ? '🟡 معلق' : req.status === 'approved' ? '✅ مقبول' : '❌ مرفوض';
+                    html += `
+                        <div class="notification-item" style="margin-bottom: 12px;">
+                            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+                                <div>
+                                    <div class="notification-title"><i class="bi bi-person"></i> معرف تيليجرام: ${escapeHtml(req.telegram_id)}</div>
+                                    <div class="notification-text" style="margin-top:4px;">الحالة: ${statusBadge}</div>
+                                    <div class="notification-meta" style="font-size:10px; color:rgba(255,255,255,0.5);">تاريخ الطلب: ${new Date(req.created_at).toLocaleString()}</div>
+                                </div>
+                                ${req.status === 'pending' ? `
+                                    <div class="max-actions">
+                                        <button class="btn btn-success" onclick="handleMaxRequest(${req.id}, 'approve')"><i class="bi bi-check-lg"></i> قبول</button>
+                                        <button class="btn btn-danger" onclick="handleMaxRequest(${req.id}, 'reject')"><i class="bi bi-x-lg"></i> رفض</button>
+                                    </div>
+                                ` : ''}
+                            </div>
+                        </div>
+                    `;
+                });
+                list.innerHTML = html;
+            } catch (err) {
+                list.innerHTML = '<p style="text-align:center; color:#ff6b6b;">خطأ في تحميل الطلبات.</p>';
+                console.error(err);
+            }
+        }
+
+        async function handleMaxRequest(id, action) {
+            if (!confirm(`هل أنت متأكد من ${action === 'approve' ? 'قبول' : 'رفض'} هذا الطلب؟`)) return;
+            try {
+                const res = await fetch(`/api/admin/max_requests/${id}/${action}`, { method: 'POST' });
+                const data = await res.json();
+                if (data.success) {
+                    loadMaxRequests(); // تحديث القائمة
+                } else {
+                    alert('حدث خطأ أثناء معالجة الطلب: ' + data.message);
+                }
+            } catch (err) {
+                alert('خطأ في الاتصال بالخادم.');
+            }
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/[&<>]/g, function(m) {
+                if (m === '&') return '&amp;'; if (m === '<') return '&lt;'; if (m === '>') return '&gt;'; return m;
+            });
         }
     </script>
 </body>
