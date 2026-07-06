@@ -74,34 +74,16 @@ def ensure_ads_table(cur):
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )''')
 
-def ensure_users_columns(cur):
-    # إضافة أعمدة اسم المستخدم، كلمة المرور، والنقاط لجدول users
-    cur.execute("""
-        SELECT column_name 
-        FROM information_schema.columns 
-        WHERE table_name='users' AND column_name='username'
-    """)
-    if not cur.fetchone():
-        cur.execute("ALTER TABLE users ADD COLUMN username TEXT UNIQUE")
-        logger.info("Added column username to users table")
-
-    cur.execute("""
-        SELECT column_name 
-        FROM information_schema.columns 
-        WHERE table_name='users' AND column_name='password'
-    """)
-    if not cur.fetchone():
-        cur.execute("ALTER TABLE users ADD COLUMN password TEXT")
-        logger.info("Added column password to users table")
-
-    cur.execute("""
-        SELECT column_name 
-        FROM information_schema.columns 
-        WHERE table_name='users' AND column_name='credits'
-    """)
-    if not cur.fetchone():
-        cur.execute("ALTER TABLE users ADD COLUMN credits INTEGER DEFAULT 10")
-        logger.info("Added column credits to users table (Default 10)")
+def ensure_users_table(cur):
+    # إنشاء جدول المستخدمين بدون telegram_id
+    cur.execute('''CREATE TABLE IF NOT EXISTS users (
+        id SERIAL PRIMARY KEY,
+        username TEXT UNIQUE NOT NULL,
+        password TEXT NOT NULL,
+        credits INTEGER DEFAULT 10,
+        last_active TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )''')
+    logger.info("✅ Ensured users table (without telegram_id)")
 
 def init_db():
     try:
@@ -120,15 +102,10 @@ def init_db():
                 text TEXT NOT NULL,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )''')
-            cur.execute('''CREATE TABLE IF NOT EXISTS users (
-                id SERIAL PRIMARY KEY,
-                telegram_id TEXT UNIQUE NOT NULL,
-                last_active TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-            )''')
             
             ensure_notification_columns(cur)
             ensure_ads_table(cur)
-            ensure_users_columns(cur) # تحديث جدول المستخدمين
+            ensure_users_table(cur) # إنشاء جدول المستخدمين الجديد
             
             logger.info("Database initialized/updated successfully")
             print("✅ Database tables ensured successfully.")
@@ -137,11 +114,11 @@ def init_db():
         print(f"❌ Critical DB Init Error: {e}")
         raise
 
-def update_user_activity(telegram_id):
-    if not telegram_id: return
+def update_user_activity(user_id):
+    if not user_id: return
     try:
         with get_db() as cur:
-            cur.execute("UPDATE users SET last_active = CURRENT_TIMESTAMP WHERE telegram_id = %s", (telegram_id,))
+            cur.execute("UPDATE users SET last_active = CURRENT_TIMESTAMP WHERE id = %s", (user_id,))
     except Exception as e:
         logger.error(f"Update activity error: {e}")
 
@@ -155,8 +132,8 @@ def admin_required(f):
 
 @app.route('/')
 def index():
-    telegram_id = session.get('telegram_id')
-    if telegram_id: update_user_activity(telegram_id)
+    user_id = session.get('user_id')
+    if user_id: update_user_activity(user_id)
     user_data = None
     try:
         with get_db() as cur:
@@ -167,8 +144,8 @@ def index():
             cur.execute('SELECT * FROM ads ORDER BY created_at DESC LIMIT 1')
             latest_ad = cur.fetchone()
             
-            if telegram_id:
-                cur.execute('SELECT username, credits FROM users WHERE telegram_id=%s', (telegram_id,))
+            if user_id:
+                cur.execute('SELECT username, credits FROM users WHERE id=%s', (user_id,))
                 user_data = cur.fetchone()
     except Exception as e:
         logger.error(f"Index error: {e}")
@@ -179,7 +156,7 @@ def index():
         
     return render_template('index.html',
                          characters=characters,
-                         telegram_id=telegram_id,
+                         user_id=user_id,
                          latest_notification=latest_notification,
                          latest_ad=latest_ad,
                          user_data=user_data)
@@ -193,9 +170,8 @@ def signup():
     data = request.json
     username = data.get('username')
     password = data.get('password')
-    telegram_id = data.get('telegram_id')
     
-    if not username or not password or not telegram_id:
+    if not username or not password:
         return jsonify({'success': False, 'message': 'بيانات غير كاملة'}), 400
     
     try:
@@ -204,15 +180,11 @@ def signup():
             cur.execute("SELECT id FROM users WHERE username=%s", (username,))
             if cur.fetchone():
                 return jsonify({'success': False, 'message': 'اسم المستخدم موجود مسبقاً'}), 400
-            
-            # التحقق من عدم تكرار المعرف
-            cur.execute("SELECT id FROM users WHERE telegram_id=%s", (telegram_id,))
-            if cur.fetchone():
-                return jsonify({'success': False, 'message': 'معرف تيليجرام مستخدم بالفعل'}), 400
                 
-            cur.execute("INSERT INTO users (telegram_id, username, password, credits) VALUES (%s, %s, %s, %s)",
-                        (telegram_id, username, password, 10))
-            session['telegram_id'] = telegram_id
+            cur.execute("INSERT INTO users (username, password, credits) VALUES (%s, %s, %s) RETURNING id",
+                        (username, password, 10))
+            row = cur.fetchone()
+            session['user_id'] = row['id']
         return jsonify({'success': True, 'message': 'تم التسجيل بنجاح! مرحباً بك.', 'credits': 10})
     except Exception as e:
         logger.error(f"Signup error: {e}")
@@ -223,38 +195,32 @@ def login():
     data = request.json
     username = data.get('username')
     password = data.get('password')
-    telegram_id = data.get('telegram_id')
     
     if not username or not password:
         return jsonify({'success': False, 'message': 'بيانات ناقصة'}), 400
     
     try:
         with get_db() as cur:
-            if telegram_id:
-                cur.execute("SELECT id, credits FROM users WHERE username=%s AND password=%s AND telegram_id=%s", (username, password, telegram_id))
-            else:
-                cur.execute("SELECT id, telegram_id, credits FROM users WHERE username=%s AND password=%s", (username, password))
+            cur.execute("SELECT id, credits FROM users WHERE username=%s AND password=%s", (username, password))
             user = cur.fetchone()
             
             if user:
-                if not telegram_id:
-                    telegram_id = user['telegram_id']
-                session['telegram_id'] = telegram_id
+                session['user_id'] = user['id']
                 return jsonify({'success': True, 'message': 'تم تسجيل الدخول بنجاح', 'credits': user['credits']})
             else:
-                return jsonify({'success': False, 'message': 'بيانات الدخول غير صحيحة أو لا يوجد معرف'}), 401
+                return jsonify({'success': False, 'message': 'بيانات الدخول غير صحيحة'}), 401
     except Exception as e:
         logger.error(f"Login error: {e}")
         return jsonify({'success': False, 'message': str(e)}), 500
 
 @app.route('/api/user_info')
 def user_info():
-    telegram_id = session.get('telegram_id')
-    if not telegram_id:
+    user_id = session.get('user_id')
+    if not user_id:
         return jsonify(None)
     try:
         with get_db() as cur:
-            cur.execute("SELECT username, credits FROM users WHERE telegram_id=%s", (telegram_id,))
+            cur.execute("SELECT username, credits FROM users WHERE id=%s", (user_id,))
             user = cur.fetchone()
         return jsonify(user)
     except Exception as e:
@@ -263,7 +229,8 @@ def user_info():
 
 @app.route('/api/update_user', methods=['POST'])
 def update_user():
-    if not session.get('telegram_id'):
+    user_id = session.get('user_id')
+    if not user_id:
         return jsonify({'success': False, 'message': 'غير مسجل'}), 401
     
     data = request.json
@@ -276,12 +243,12 @@ def update_user():
     try:
         with get_db() as cur:
             # التحقق من عدم تكرار اسم المستخدم الجديد
-            cur.execute("SELECT id FROM users WHERE username=%s AND telegram_id!=%s", (new_username, session['telegram_id']))
+            cur.execute("SELECT id FROM users WHERE username=%s AND id!=%s", (new_username, user_id))
             if cur.fetchone():
                 return jsonify({'success': False, 'message': 'اسم المستخدم مستخدم بالفعل'}), 400
                 
-            cur.execute("UPDATE users SET username=%s, password=%s WHERE telegram_id=%s", 
-                        (new_username, new_password, session['telegram_id']))
+            cur.execute("UPDATE users SET username=%s, password=%s WHERE id=%s", 
+                        (new_username, new_password, user_id))
         return jsonify({'success': True, 'message': 'تم تحديث البيانات'})
     except Exception as e:
         logger.error(f"Update user error: {e}")
@@ -289,35 +256,18 @@ def update_user():
 
 @app.route('/api/deduct_credit', methods=['POST'])
 def deduct_credit():
-    if not session.get('telegram_id'):
+    user_id = session.get('user_id')
+    if not user_id:
         return jsonify({'success': False, 'message': 'غير مسجل'}), 401
         
     try:
         with get_db() as cur:
-            cur.execute("UPDATE users SET credits = credits - 1 WHERE telegram_id=%s AND credits > 0", (session['telegram_id'],))
-            cur.execute("SELECT credits FROM users WHERE telegram_id=%s", (session['telegram_id'],))
+            cur.execute("UPDATE users SET credits = credits - 1 WHERE id=%s AND credits > 0", (user_id,))
+            cur.execute("SELECT credits FROM users WHERE id=%s", (user_id,))
             updated = cur.fetchone()
             return jsonify({'success': True, 'credits': updated['credits'] if updated else 0})
     except Exception as e:
         logger.error(f"Deduct credit error: {e}")
-        return jsonify({'success': False, 'message': str(e)}), 500
-
-@app.route('/api/register', methods=['POST'])
-def register():
-    try:
-        telegram_id = request.form.get('telegram_id', '').strip()
-        if not telegram_id or not telegram_id.isdigit():
-            return jsonify({'success': False, 'message': 'معرّف غير صحيح'}), 400
-        with get_db() as cur:
-            cur.execute(
-                "INSERT INTO users (telegram_id) VALUES (%s) ON CONFLICT (telegram_id) DO UPDATE SET last_active = CURRENT_TIMESTAMP",
-                (telegram_id,)
-            )
-        session['telegram_id'] = telegram_id
-        session.permanent = True
-        return jsonify({'success': True})
-    except Exception as e:
-        logger.error(f"Register error: {e}")
         return jsonify({'success': False, 'message': str(e)}), 500
 
 @app.route('/api/active_users')
@@ -518,15 +468,14 @@ def api_chat():
     data = request.json
     character_key = data.get('character', 'logo_maker')
     message = data.get('message', '')
-    telegram_id = session.get('telegram_id')
+    user_id = session.get('user_id')
     
-    if not telegram_id:
+    if not user_id:
         return jsonify({'error': 'غير مسجل'}), 401
         
-    # التحقق من وجود نقاط قبل البدء
     try:
         with get_db() as cur:
-            cur.execute("SELECT credits FROM users WHERE telegram_id=%s", (telegram_id,))
+            cur.execute("SELECT credits FROM users WHERE id=%s", (user_id,))
             user = cur.fetchone()
             if not user or user['credits'] <= 0:
                 return jsonify({'error': 'no_credits'}), 402
