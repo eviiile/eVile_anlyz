@@ -15,28 +15,94 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 20px;
         }
         .sign-wrapper {
-            width: 100%; max-width: 480px; text-align: center;
-            display: flex; flex-direction: column; align-items: center;
+            width: 100%; max-width: 480px; 
+            height: 100vh; height: 100dvh;
+            overflow-y: auto;
+            display: flex; flex-direction: column;
+            padding: 20px 20px 30px 20px;
+            scroll-behavior: smooth;
         }
-        .sign-header { margin-bottom: 30px; }
-        .sign-icon {
-            width: 80px; height: 80px; border-radius: 30px;
+        
+        /* القسم العلوي المتحرك */
+        .sign-hero {
+            flex: 1;
+            min-height: 65vh; /* يشغل معظم الشاشة */
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            text-align: center;
+            padding-bottom: 40px;
+        }
+        .hero-animated-icon {
+            position: relative; margin-bottom: 20px;
+        }
+        .hero-animated-icon i {
+            font-size: 60px;
             background: linear-gradient(135deg, #5a7bfb 0%, #9a6ff5 100%);
-            display: flex; align-items: center; justify-content: center;
-            margin: 0 auto 20px; box-shadow: 0 10px 25px rgba(90, 123, 251, 0.3);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: float 3s ease-in-out infinite;
         }
-        .sign-icon i { font-size: 40px; color: #fff; }
-        .sign-title { font-size: 30px; font-weight: 800; color: #1a1a2e; margin-bottom: 10px; }
-        .sign-subtitle { font-size: 14px; color: #5a608a; line-height: 1.6; margin-bottom: 5px; }
-        .sign-features {
-            display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;
-            margin: 20px 0 30px; font-size: 13px; color: #5a608a;
+        .hero-animated-icon .sparkle {
+            position: absolute; top: -10px; right: -15px;
+            font-size: 20px; color: #ffc107;
+            animation: spin 4s linear infinite;
         }
-        .sign-features span { background: #fff; padding: 6px 16px; border-radius: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.03); }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-12px); }
+        }
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
 
+        .hero-title { 
+            font-size: 32px; font-weight: 800; 
+            background: linear-gradient(135deg, #1a1a2e 30%, #5a7bfb 100%);
+            -webkit-background-clip: text; background-clip: text; color: transparent;
+            margin-bottom: 15px;
+        }
+        .hero-subtitle { font-size: 15px; color: #5a608a; line-height: 1.7; max-width: 320px; margin: 0 auto; }
+        
+        .hero-features-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 25px;
+        }
+        .hero-feature {
+            background: #ffffff; padding: 15px 10px; border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03); border: 1px solid rgba(255,255,255,0.6);
+            transition: transform 0.3s;
+            animation: fadeInUp 0.8s ease-out forwards;
+            opacity: 0;
+        }
+        .hero-feature:nth-child(1) { animation-delay: 0.1s; }
+        .hero-feature:nth-child(2) { animation-delay: 0.3s; }
+        .hero-feature:nth-child(3) { animation-delay: 0.5s; }
+        .hero-feature:nth-child(4) { animation-delay: 0.7s; }
+
+        .hero-feature i { display: block; font-size: 30px; margin-bottom: 8px; color: #5a7bfb; }
+        .hero-feature h3 { font-size: 14px; font-weight: 700; color: #1a1a2e; margin-bottom: 4px; }
+        .hero-feature p { font-size: 11px; color: #6b73a3; line-height: 1.4; }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .scroll-down-indicator {
+            margin-top: 20px; display: flex; flex-direction: column; align-items: center;
+            color: #9da4c9; font-size: 12px; font-weight: 600;
+            animation: bounce-down 2s infinite;
+        }
+        @keyframes bounce-down {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(10px); }
+        }
+
+        /* القسم السفلي (نموذج التسجيل) */
+        .sign-form-section { width: 100%; padding-bottom: 20px; }
         .sign-card {
             background: #ffffff; border-radius: 24px;
             padding: 30px 25px; width: 100%;
@@ -63,63 +129,87 @@
 
         @media (max-width: 500px) {
             .sign-card { padding: 20px; }
+            .hero-title { font-size: 26px; }
+            .hero-features-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
         }
     </style>
 </head>
 <body>
     <div class="sign-wrapper">
-        <div class="sign-header">
-            <div class="sign-icon"><i class="bi bi-pencil-square"></i></div>
-            <h1 class="sign-title">ابدأ رحلة الإبداع</h1>
-            <p class="sign-subtitle">انضم إلى EVILE الآن وحوّل أفكارك إلى نصوص إبداعية<br>باستخدام تقنيات الذكاء الاصطناعي المتقدمة.</p>
-            <div class="sign-features">
-                <span><i class="bi bi-lightning-charge-fill" style="color:#5a7bfb;"></i> 10 نقاط مجانية</span>
-                <span><i class="bi bi-robot" style="color:#9a6ff5;"></i> شخصيات متعددة</span>
-                <span><i class="bi bi-shield-check" style="color:#28a745;"></i> سهولة الاستخدام</span>
+        <!-- القسم العلوي المتحرك -->
+        <div class="sign-hero">
+            <div class="hero-animated-icon">
+                <i class="bi bi-magic"></i>
+                <i class="bi bi-star-fill sparkle"></i>
+            </div>
+            <h1 class="hero-title">حوّل أفكارك إلى واقع</h1>
+            <p class="hero-subtitle">منصة EVILE للذكاء الاصطناعي تمنحك أدوات إبداعية لتوليد النصوص والشعارات بأسلوب احترافي وسهل.</p>
+            
+            <div class="hero-features-grid">
+                <div class="hero-feature">
+                    <i class="bi bi-lightning-charge-fill"></i>
+                    <h3>نتائج فورية</h3>
+                    <p>احصل على إجابات ونصوص إبداعية في ثوانٍ.</p>
+                </div>
+                <div class="hero-feature">
+                    <i class="bi bi-pencil-square"></i>
+                    <h3>تصاميم احترافية</h3>
+                    <p>قوالب وأنماط متعددة تناسب جميع احتياجاتك.</p>
+                </div>
+                <div class="hero-feature">
+                    <i class="bi bi-robot"></i>
+                    <h3>شخصيات ذكية</h3>
+                    <p>اختر النمط الذي يعبر عن رؤيتك بدقة.</p>
+                </div>
+                <div class="hero-feature">
+                    <i class="bi bi-gem"></i>
+                    <h3>10 نقاط مجانية</h3>
+                    <p>ابدأ رحلتك الإبداعية فوراً بدون أي تكاليف.</p>
+                </div>
+            </div>
+
+            <div class="scroll-down-indicator">
+                <span>اسحب للأسفل للبدء</span>
+                <i class="bi bi-chevron-double-down"></i>
             </div>
         </div>
 
-        <div class="sign-card">
-            <form id="signForm" onsubmit="handleSignup(event)">
-                <div class="input-group">
-                    <label><i class="bi bi-person"></i> اسم المستخدم (فريد)</label>
-                    <input type="text" id="username" placeholder="مثال: EVILE_Creator" required>
-                </div>
-                <div class="input-group">
-                    <label><i class="bi bi-lock"></i> كلمة المرور</label>
-                    <input type="password" id="password" placeholder="******" required>
-                </div>
-                <div class="input-group">
-                    <label><i class="bi bi-telegram"></i> معرف تيليجرام</label>
-                    <input type="text" id="telegramId" placeholder="أرقام فقط" required>
-                </div>
-                <button type="submit" class="btn-primary">ابدأ مجاناً <i class="bi bi-arrow-left"></i></button>
-                <div id="signError" class="sign-error"></div>
-                <div style="text-align:center; margin-top:15px; font-size:13px; color:#6b73a3;">
-                    لديك حساب بالفعل؟ <a href="#" onclick="switchToLogin()" style="color:#5a7bfb; text-decoration:none; font-weight:700;">تسجيل الدخول</a>
-                </div>
-            </form>
-            
-            <!-- نموذج الدخول (مخفي) -->
-            <form id="loginForm" onsubmit="handleLogin(event)" style="display:none;">
-                <div class="input-group">
-                    <label><i class="bi bi-person"></i> اسم المستخدم</label>
-                    <input type="text" id="loginUsername" placeholder="اسم المستخدم" required>
-                </div>
-                <div class="input-group">
-                    <label><i class="bi bi-lock"></i> كلمة المرور</label>
-                    <input type="password" id="loginPassword" placeholder="******" required>
-                </div>
-                <div class="input-group">
-                    <label><i class="bi bi-telegram"></i> معرف تيليجرام (لتأكيد الهوية)</label>
-                    <input type="text" id="loginTelegramId" placeholder="أرقام فقط" required>
-                </div>
-                <button type="submit" class="btn-primary">دخول <i class="bi bi-box-arrow-in-left"></i></button>
-                <div id="loginError" class="sign-error"></div>
-                <div style="text-align:center; margin-top:15px; font-size:13px; color:#6b73a3;">
-                    جديد هنا؟ <a href="#" onclick="switchToSignup()" style="color:#5a7bfb; text-decoration:none; font-weight:700;">إنشاء حساب</a>
-                </div>
-            </form>
+        <!-- القسم السفلي (نموذج تسجيل الدخول / الاشتراك) -->
+        <div class="sign-form-section">
+            <div class="sign-card">
+                <form id="signForm" onsubmit="handleSignup(event)">
+                    <div class="input-group">
+                        <label><i class="bi bi-person"></i> اسم المستخدم (فريد)</label>
+                        <input type="text" id="username" placeholder="أدخل اسم المستخدم" required>
+                    </div>
+                    <div class="input-group">
+                        <label><i class="bi bi-lock"></i> كلمة المرور</label>
+                        <input type="password" id="password" placeholder="******" required>
+                    </div>
+                    <button type="submit" class="btn-primary">ابدأ مجاناً <i class="bi bi-arrow-left"></i></button>
+                    <div id="signError" class="sign-error"></div>
+                    <div style="text-align:center; margin-top:15px; font-size:13px; color:#6b73a3;">
+                        لديك حساب بالفعل؟ <a href="#" onclick="switchToLogin()" style="color:#5a7bfb; text-decoration:none; font-weight:700;">تسجيل الدخول</a>
+                    </div>
+                </form>
+                
+                <!-- نموذج الدخول (مخفي) -->
+                <form id="loginForm" onsubmit="handleLogin(event)" style="display:none;">
+                    <div class="input-group">
+                        <label><i class="bi bi-person"></i> اسم المستخدم</label>
+                        <input type="text" id="loginUsername" placeholder="اسم المستخدم" required>
+                    </div>
+                    <div class="input-group">
+                        <label><i class="bi bi-lock"></i> كلمة المرور</label>
+                        <input type="password" id="loginPassword" placeholder="******" required>
+                    </div>
+                    <button type="submit" class="btn-primary">دخول <i class="bi bi-box-arrow-in-left"></i></button>
+                    <div id="loginError" class="sign-error"></div>
+                    <div style="text-align:center; margin-top:15px; font-size:13px; color:#6b73a3;">
+                        جديد هنا؟ <a href="#" onclick="switchToSignup()" style="color:#5a7bfb; text-decoration:none; font-weight:700;">إنشاء حساب</a>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 
@@ -128,21 +218,15 @@
             e.preventDefault();
             const username = document.getElementById('username').value.trim();
             const password = document.getElementById('password').value.trim();
-            const telegram_id = document.getElementById('telegramId').value.trim();
             const errorDiv = document.getElementById('signError');
             errorDiv.style.display = 'none';
-            
-            if (!/^\d+$/.test(telegram_id)) {
-                errorDiv.textContent = 'معرف تيليجرام يجب أن يكون أرقاماً فقط.';
-                errorDiv.style.display = 'block'; return;
-            }
 
             const btn = e.target.querySelector('button[type="submit"]');
-            btn.disabled = true; btn.textContent = 'جاري التسجيل...';
+            btn.disabled = true; btn.innerHTML = 'جاري التسجيل...';
 
             fetch('/api/signup', {
                 method: 'POST', headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({username, password, telegram_id})
+                body: JSON.stringify({username, password})
             }).then(res => res.json()).then(data => {
                 btn.disabled = false; btn.innerHTML = 'ابدأ مجاناً <i class="bi bi-arrow-left"></i>';
                 if(data.success) {
@@ -162,21 +246,15 @@
             e.preventDefault();
             const username = document.getElementById('loginUsername').value.trim();
             const password = document.getElementById('loginPassword').value.trim();
-            const telegram_id = document.getElementById('loginTelegramId').value.trim();
             const errorDiv = document.getElementById('loginError');
             errorDiv.style.display = 'none';
-            
-            if (!/^\d+$/.test(telegram_id)) {
-                errorDiv.textContent = 'معرف تيليجرام يجب أن يكون أرقاماً فقط.';
-                errorDiv.style.display = 'block'; return;
-            }
 
             const btn = e.target.querySelector('button[type="submit"]');
             btn.disabled = true; btn.innerHTML = 'جاري الدخول...';
 
             fetch('/api/login', {
                 method: 'POST', headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({username, password, telegram_id})
+                body: JSON.stringify({username, password})
             }).then(res => res.json()).then(data => {
                 btn.disabled = false; btn.innerHTML = 'دخول <i class="bi bi-box-arrow-in-left"></i>';
                 if(data.success) {
