@@ -10,9 +10,8 @@
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body {
             font-family: 'Tajawal', sans-serif;
-            /* خلفية بيضاء إلى بنفسجي فاتح مثل الصورة */
             background: linear-gradient(160deg, #ffffff 0%, #e4d8ff 100%);
-            color: #1f153f; /* لون نص داكن */
+            color: #1f153f;
             overflow: hidden;
             touch-action: manipulation;
             height: 100vh; height: 100dvh;
@@ -30,7 +29,6 @@
             z-index: 1;
         }
         
-        /* الزجاج الجديد بشفافية عالية وحدود بنفسجية */
         .glass-card, .floating-header, .input-card, .style-card, .bottom-sheet, .ad-modal-box, .prompt-result-wrapper, .social-bar {
             background: rgba(255, 255, 255, 0.45);
             backdrop-filter: blur(16px);
@@ -116,7 +114,6 @@
         }
         .message-input::placeholder { color: #7b5b9e; }
         
-        /* زر التوليد الرئيسي (بنفسجي زاهي) */
         .main-btn {
             width: 80%; max-width: 350px; padding: 8px;
             height: 40px; margin: 0 auto; display: block;
@@ -157,6 +154,18 @@
         }
         .copy-btn:active { transform: scale(0.9); }
         .copy-btn.success { background: rgba(46, 204, 113, 0.15); color: #27ae60; border-color: rgba(46, 204, 113, 0.3); }
+
+        /* إضافة ملاحظة أسفل المخرجات */
+        .result-note {
+            font-size: 11px;
+            color: #7b5b9e;
+            text-align: center;
+            margin-top: 8px;
+            line-height: 1.4;
+        }
+        .result-note i {
+            margin-left: 4px;
+        }
 
         /* بطاقة الأنماط */
         .style-card {
@@ -291,6 +300,10 @@
                 <textarea class="prompt-result-text" id="promptResultText" readonly placeholder="سيظهر هنا البرومبت المولد بعد الضغط على انشاء"></textarea>
                 <div class="prompt-result-actions">
                     <button class="copy-btn" onclick="copyGeneratedPrompt()"><i class="bi bi-files"></i> نسخ النص</button>
+                </div>
+                <!-- الملاحظة الجديدة أسفل المخرجات -->
+                <div class="result-note">
+                    <i class="bi bi-info-circle"></i> يرجى مراجعة المخرجات قبل استخدامها للتأكد من دقتها.
                 </div>
             </div>
         </div>
@@ -427,7 +440,8 @@
         const latestAd = {{ latest_ad|tojson }};
         let userData = {{ user_data|tojson }};
         
-        let currentCharacter = characters.length > 0 ? characters[0].callback_key : 'logo_maker';
+        // إزالة التحديد التلقائي، جعل القيمة فارغة في البداية
+        let currentCharacter = null; 
         let isProcessing = false;
         let isStreaming = false;
         let abortController = null;
@@ -473,7 +487,8 @@
                 'minimalist': 'bi-circle',
                 'modern': 'bi-pentagon'
             };
-            const displayChars = characters.slice(0, 5);
+            // عرض جميع الشخصيات (تم إزالة القيد slice)
+            const displayChars = characters;
             container.innerHTML = displayChars.map(char => `
                 <div class="style-btn ${char.callback_key === currentCharacter ? 'active' : ''}" data-key="${char.callback_key}">
                     <i class="bi ${styleIcons[char.callback_key] || 'bi-robot'}"></i>
@@ -499,15 +514,11 @@
                 title.textContent = char.name;
                 subtitle.innerHTML = char.description.replace(/\n/g, '<br>');
                 input.placeholder = `اكتب ماتريد لـ ${char.name}...`;
-            } else if (characters.length > 0) {
-                const first = characters[0];
-                title.textContent = first.name;
-                subtitle.innerHTML = first.description.replace(/\n/g, '<br>');
-                input.placeholder = `اكتب ماتريد لـ ${first.name}...`;
             } else {
-                title.textContent = "لوجو ميكر";
-                subtitle.innerHTML = "صمم شعارك بسهولة واحترافية";
-                input.placeholder = "اكتب ماتريد لـ لوجو ميكر...";
+                // إذا لم يتم اختيار شخصية، نعرض رسالة عامة
+                title.textContent = "اختر نمطاً";
+                subtitle.innerHTML = "يرجى اختيار شخصية من الأزرار أدناه للبدء.";
+                input.placeholder = "اختر نمطاً أولاً...";
             }
         }
 
@@ -612,6 +623,13 @@
         async function handleSendWelcome() {
             if (isStreaming) { stopStreaming(); return; }
             if (isProcessing) return;
+            
+            // التحقق من اختيار الشخصية قبل الإرسال
+            if (!currentCharacter) {
+                showToastNotification('يرجى اختيار نمط (شخصية) أولاً قبل الضغط على إنشاء.');
+                return;
+            }
+
             const input = document.getElementById('mainInput'); 
             const msg = input.value.trim();
             if (!msg) return;
