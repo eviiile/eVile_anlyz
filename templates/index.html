@@ -155,20 +155,21 @@
         .copy-btn:active { transform: scale(0.9); }
         .copy-btn.success { background: rgba(46, 204, 113, 0.15); color: #27ae60; border-color: rgba(46, 204, 113, 0.3); }
 
-        /* تحسين الملاحظة: إضافة خلفية وحدود لتمييزها عن النص المولد */
+        /* تحسين الملاحظة: لون خلفية مختلف لجعلها بارزة */
         .result-note {
             font-size: 11px;
-            color: #4f367a;
+            color: #2d1b4e;
             text-align: center;
             margin-top: 4px;
             line-height: 1.4;
-            background: rgba(255, 255, 255, 0.4);
+            background: rgba(101, 53, 224, 0.08); /* لون بنفسجي فاتح جداً لتمييزها */
             padding: 6px 12px;
             border-radius: 12px;
-            border: 1px solid rgba(101, 53, 224, 0.1);
+            border: 1px solid rgba(101, 53, 224, 0.15);
         }
         .result-note i {
             margin-left: 4px;
+            color: #6535e0;
         }
 
         /* بطاقة الأنماط */
@@ -178,10 +179,15 @@
         }
         .style-title { font-size: 15px; font-weight: 700; color: #1f153f; margin-bottom: 12px; display: block; text-align: center; }
 
+        /* تحسين مرونة الشريط لأي عدد من الأزرار */
         .styles-container {
-            display: flex; gap: 10px; overflow-x: auto;
-            scrollbar-width: none; -webkit-overflow-scrolling: touch;
-            padding: 4px 0; justify-content: center;
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
+            padding: 4px 0;
+            width: 100%;
         }
         .styles-container::-webkit-scrollbar { display: none; }
         .style-btn {
@@ -311,7 +317,7 @@
             </div>
         </div>
 
-        <!-- بطاقة الأنماط -->
+        <!-- بطاقة الأنماط (الشريط يتسع لأي عدد من الأزرار) -->
         <div class="style-card glass-card">
             <span class="style-title"><i class="bi bi-palette"></i> اختر نمط يناسبك</span>
             <div class="styles-container" id="stylesContainer"></div>
@@ -354,7 +360,7 @@
         </div>
     </div>
 
-    <!-- نافذة الإعدادات (لعرض/نسخ بيانات المستخدم) -->
+    <!-- نافذة الإعدادات -->
     <div class="bottom-sheet-overlay" id="settingsSheet" onclick="closeSheetOnBackdrop(event, 'settingsSheet')">
         <div class="bottom-sheet" onclick="event.stopPropagation()">
             <div class="sheet-header">
@@ -452,14 +458,11 @@
         let abortController = null;
 
         function initScreen() {
-            /* 1. التحقق من تسجيل الدخول. إذا لم يكن مسجل، يتم إعادة توجيهه فوراً */
             if (!userId) { 
-                console.warn("المستخدم غير مسجل الدخول. جاري التوجيه إلى صفحة التسجيل.");
                 window.location.href = '/sign'; 
                 return; 
             }
             if (!userData || !userData.username) { 
-                console.warn("بيانات المستخدم غير مكتملة.");
                 window.location.href = '/sign'; 
                 return; 
             }
@@ -501,7 +504,8 @@
                 'minimalist': 'bi-circle',
                 'modern': 'bi-pentagon'
             };
-            // 2. عرض جميع الشخصيات من قاعدة البيانات. (تم حذف slice(0, 5))
+            
+            // عرض جميع الشخصيات دون تقطيع
             const displayChars = characters;
             container.innerHTML = displayChars.map(char => `
                 <div class="style-btn ${char.callback_key === currentCharacter ? 'active' : ''}" data-key="${char.callback_key}">
@@ -699,10 +703,9 @@
             }
         }
 
-        // ---- إعدادات الحساب (عرض وتحديث بيانات المستخدم) ----
         function openSettingsSheet() {
             document.getElementById('settingsUsername').value = userData.username || '';
-            document.getElementById('settingsPassword').value = ''; // لا نعرض كلمة المرور لأسباب أمنية
+            document.getElementById('settingsPassword').value = '';
             document.getElementById('settingsSheet').classList.add('active');
         }
 
@@ -732,7 +735,7 @@
                     showToastNotification('تم تحديث البيانات بنجاح');
                     userData.username = username;
                     closeSheet('settingsSheet');
-                    updateWelcomeDisplay(); // تحديث الواجهة إذا تغير الاسم
+                    updateWelcomeDisplay();
                 } else {
                     showToastNotification(data.message);
                 }
