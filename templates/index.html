@@ -130,7 +130,7 @@
 
         .prompt-result-wrapper {
             margin-top: 16px; padding: 16px;
-            display: flex; flex-direction: column; gap: 8px;
+            display: flex; flex-direction: column; gap: 12px;
             min-height: 100px;
         }
         .prompt-result-text {
@@ -155,13 +155,17 @@
         .copy-btn:active { transform: scale(0.9); }
         .copy-btn.success { background: rgba(46, 204, 113, 0.15); color: #27ae60; border-color: rgba(46, 204, 113, 0.3); }
 
-        /* إضافة ملاحظة أسفل المخرجات */
+        /* تحسين الملاحظة: إضافة خلفية وحدود لتمييزها عن النص المولد */
         .result-note {
             font-size: 11px;
-            color: #7b5b9e;
+            color: #4f367a;
             text-align: center;
-            margin-top: 8px;
+            margin-top: 4px;
             line-height: 1.4;
+            background: rgba(255, 255, 255, 0.4);
+            padding: 6px 12px;
+            border-radius: 12px;
+            border: 1px solid rgba(101, 53, 224, 0.1);
         }
         .result-note i {
             margin-left: 4px;
@@ -301,7 +305,6 @@
                 <div class="prompt-result-actions">
                     <button class="copy-btn" onclick="copyGeneratedPrompt()"><i class="bi bi-files"></i> نسخ النص</button>
                 </div>
-                <!-- الملاحظة الجديدة أسفل المخرجات -->
                 <div class="result-note">
                     <i class="bi bi-info-circle"></i> يرجى مراجعة المخرجات قبل استخدامها للتأكد من دقتها.
                 </div>
@@ -351,7 +354,7 @@
         </div>
     </div>
 
-    <!-- نافذة الإعدادات -->
+    <!-- نافذة الإعدادات (لعرض/نسخ بيانات المستخدم) -->
     <div class="bottom-sheet-overlay" id="settingsSheet" onclick="closeSheetOnBackdrop(event, 'settingsSheet')">
         <div class="bottom-sheet" onclick="event.stopPropagation()">
             <div class="sheet-header">
@@ -360,20 +363,23 @@
             </div>
             <div id="settingsContent">
                 <div class="settings-group">
-                    <label>اسم المستخدم</label>
+                    <label>اسم المستخدم الحالي</label>
                     <div class="settings-row">
-                        <input type="text" id="settingsUsername" value="">
+                        <input type="text" id="settingsUsername" value="" readonly>
                         <button class="btn-copy" onclick="copyField('settingsUsername')"><i class="bi bi-files"></i></button>
                     </div>
                 </div>
                 <div class="settings-group">
-                    <label>كلمة المرور</label>
+                    <label>كلمة المرور الحالية</label>
                     <div class="settings-row">
-                        <input type="text" id="settingsPassword" value="">
+                        <input type="text" id="settingsPassword" value="" readonly>
                         <button class="btn-copy" onclick="copyField('settingsPassword')"><i class="bi bi-files"></i></button>
                     </div>
                 </div>
-                <button class="btn-save-settings" onclick="updateSettings()"><i class="bi bi-check-lg"></i> حفظ التغييرات</button>
+                <div style="font-size: 12px; color: #4f367a; text-align: center; margin: 15px 0 5px 0; border-top: 1px solid rgba(101,53,224,0.1); padding-top: 12px;">
+                    يمكنك نسخ بياناتك، أو التواصل مع الإدارة لتغييرها.
+                </div>
+                <button class="btn-save-settings" onclick="updateSettings()"><i class="bi bi-check-lg"></i> تحديث بياناتي</button>
             </div>
         </div>
     </div>
@@ -440,15 +446,23 @@
         const latestAd = {{ latest_ad|tojson }};
         let userData = {{ user_data|tojson }};
         
-        // إزالة التحديد التلقائي، جعل القيمة فارغة في البداية
         let currentCharacter = null; 
         let isProcessing = false;
         let isStreaming = false;
         let abortController = null;
 
         function initScreen() {
-            if (!userId) { window.location.href = '/sign'; return; }
-            if (!userData || !userData.username) { window.location.href = '/sign'; return; }
+            /* 1. التحقق من تسجيل الدخول. إذا لم يكن مسجل، يتم إعادة توجيهه فوراً */
+            if (!userId) { 
+                console.warn("المستخدم غير مسجل الدخول. جاري التوجيه إلى صفحة التسجيل.");
+                window.location.href = '/sign'; 
+                return; 
+            }
+            if (!userData || !userData.username) { 
+                console.warn("بيانات المستخدم غير مكتملة.");
+                window.location.href = '/sign'; 
+                return; 
+            }
 
             renderStyleButtons();
             updateWelcomeDisplay();
@@ -487,7 +501,7 @@
                 'minimalist': 'bi-circle',
                 'modern': 'bi-pentagon'
             };
-            // عرض جميع الشخصيات (تم إزالة القيد slice)
+            // 2. عرض جميع الشخصيات من قاعدة البيانات. (تم حذف slice(0, 5))
             const displayChars = characters;
             container.innerHTML = displayChars.map(char => `
                 <div class="style-btn ${char.callback_key === currentCharacter ? 'active' : ''}" data-key="${char.callback_key}">
@@ -515,7 +529,6 @@
                 subtitle.innerHTML = char.description.replace(/\n/g, '<br>');
                 input.placeholder = `اكتب ماتريد لـ ${char.name}...`;
             } else {
-                // إذا لم يتم اختيار شخصية، نعرض رسالة عامة
                 title.textContent = "اختر نمطاً";
                 subtitle.innerHTML = "يرجى اختيار شخصية من الأزرار أدناه للبدء.";
                 input.placeholder = "اختر نمطاً أولاً...";
@@ -624,7 +637,6 @@
             if (isStreaming) { stopStreaming(); return; }
             if (isProcessing) return;
             
-            // التحقق من اختيار الشخصية قبل الإرسال
             if (!currentCharacter) {
                 showToastNotification('يرجى اختيار نمط (شخصية) أولاً قبل الضغط على إنشاء.');
                 return;
@@ -687,14 +699,16 @@
             }
         }
 
+        // ---- إعدادات الحساب (عرض وتحديث بيانات المستخدم) ----
         function openSettingsSheet() {
             document.getElementById('settingsUsername').value = userData.username || '';
-            document.getElementById('settingsPassword').value = '';
+            document.getElementById('settingsPassword').value = ''; // لا نعرض كلمة المرور لأسباب أمنية
             document.getElementById('settingsSheet').classList.add('active');
         }
 
         function copyField(id) {
             const input = document.getElementById(id);
+            if(!input.value) return;
             navigator.clipboard.writeText(input.value).then(() => {
                 showToastNotification('تم نسخ القيمة');
             });
@@ -718,6 +732,7 @@
                     showToastNotification('تم تحديث البيانات بنجاح');
                     userData.username = username;
                     closeSheet('settingsSheet');
+                    updateWelcomeDisplay(); // تحديث الواجهة إذا تغير الاسم
                 } else {
                     showToastNotification(data.message);
                 }
