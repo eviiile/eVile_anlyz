@@ -84,6 +84,17 @@ def ensure_users_table(cur):
     )''')
     logger.info("✅ Ensured users table")
 
+# --- إضافة دالة لحذف العمود القديم وحل مشكلة الخطأ ---
+def drop_old_telegram_id_column(cur):
+    cur.execute("""
+        SELECT column_name 
+        FROM information_schema.columns 
+        WHERE table_name='users' AND column_name='telegram_id'
+    """)
+    if cur.fetchone():
+        cur.execute("ALTER TABLE users DROP COLUMN telegram_id")
+        logger.info("✅ Dropped obsolete column 'telegram_id' from users table")
+
 def init_db():
     try:
         with get_db() as cur:
@@ -105,6 +116,7 @@ def init_db():
             ensure_notification_columns(cur)
             ensure_ads_table(cur)
             ensure_users_table(cur)
+            drop_old_telegram_id_column(cur) # إضافة استدعاء دالة الحذف هنا
             
             logger.info("Database initialized/updated successfully")
             print("✅ Database tables ensured successfully.")
@@ -434,7 +446,6 @@ def delete_ad(ad_id):
         flash(str(e), 'error')
     return redirect(url_for('admin_panel'))
 
-# --- مسار شحن النقاط الجديد في Admin ---
 @app.route('/api/admin/update_credits', methods=['POST'])
 @admin_required
 def update_credits():
