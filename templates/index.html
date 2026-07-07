@@ -235,6 +235,7 @@
         .social-btn.instagram { color: #2d1b4e; }
         .social-btn.bell { color: #2d1b4e; }
         .social-btn.gear { color: #2d1b4e; }
+        .social-btn.image-prompt { color: #2d1b4e; } /* الزر الجديد */
         
         .social-btn .notif-badge {
             position: absolute; top: -4px; right: -4px; width: 14px; height: 14px; background: #ff4d4d;
@@ -246,6 +247,62 @@
             .main-container { max-width: 600px; margin: 0 auto; padding: 30px 20px 100px 20px; padding-top: 100px; }
             .social-bar { left: 50%; }
         }
+
+        /* ===== أنماط النافذة المنبثقة لتحويل الصورة ===== */
+        .image-prompt-sheet .bottom-sheet {
+            max-width: 500px; width: 100%; margin: 0 16px; padding: 20px; border-radius: 24px;
+        }
+        .image-upload-card {
+            background: rgba(255, 255, 255, 0.3);
+            border: 2px dashed rgba(101, 53, 224, 0.3);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: border-color 0.3s, background 0.3s;
+            position: relative;
+            min-height: 140px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .image-upload-card:hover { border-color: #6535e0; background: rgba(255,255,255,0.2); }
+        .image-upload-card.dragover { border-color: #6535e0; background: rgba(101,53,224,0.05); }
+        .image-upload-card img {
+            max-width: 100%; max-height: 200px; border-radius: 12px; display: none; object-fit: contain;
+        }
+        .image-upload-card.has-image img { display: block; }
+        .image-upload-card.has-image .upload-icon,
+        .image-upload-card.has-image .upload-text,
+        .image-upload-card.has-image .upload-sub { display: none; }
+        .image-upload-card .file-input {
+            position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%;
+        }
+        .image-result-area {
+            margin-top: 16px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 16px;
+            padding: 12px;
+            min-height: 60px;
+        }
+        .image-result-area textarea {
+            width: 100%; background: transparent; border: none; resize: none; outline: none;
+            font-family: 'Tajawal', sans-serif; font-size: 14px; color: #1f153f; text-align: center;
+            min-height: 60px;
+        }
+        .image-result-area textarea::placeholder { color: #7b5b9e; }
+        .image-prompt-actions {
+            display: flex; justify-content: flex-end; gap: 8px; margin-top: 8px;
+        }
+        .btn-generate-image {
+            width: 100%; padding: 10px; background: #6535e0; border: none; border-radius: 30px;
+            color: #fff; font-weight: 700; font-size: 15px; cursor: pointer; transition: 0.2s;
+            box-shadow: 0 4px 15px rgba(101,53,224,0.2);
+        }
+        .btn-generate-image:active { transform: scale(0.96); }
+        .btn-generate-image:disabled { opacity: 0.5; cursor: not-allowed; }
+        .image-error { color: #d1455a; font-size: 13px; text-align: center; margin-top: 8px; }
     </style>
 </head>
 <body>
@@ -324,13 +381,16 @@
         </div>
     </div>
 
-    <!-- الشريط السفلي -->
+    <!-- الشريط السفلي (تم إضافة زر استخراج برومبت) -->
     <div class="social-bar">
         <a href="https://t.me/Evile_Prompts" target="_blank" class="social-btn telegram"><i class="bi bi-telegram"></i></a>
         <a href="https://www.instagram.com/bla6c7" target="_blank" class="social-btn instagram"><i class="bi bi-instagram"></i></a>
         <div class="social-btn bell" onclick="openNotificationsSheet()">
             <i class="bi bi-bell"></i>
             <span class="notif-badge" id="notifBadge" style="display: none;">0</span>
+        </div>
+        <div class="social-btn image-prompt" onclick="openImagePromptSheet()" title="استخراج برومبت">
+            <i class="bi bi-image"></i>
         </div>
         <div class="social-btn gear" onclick="openSettingsSheet()">
             <i class="bi bi-gear"></i>
@@ -386,6 +446,39 @@
                     يمكنك نسخ بياناتك، أو التواصل مع الإدارة لتغييرها.
                 </div>
                 <button class="btn-save-settings" onclick="updateSettings()"><i class="bi bi-check-lg"></i> تحديث بياناتي</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== نافذة تحويل الصورة إلى برومبت (جديدة) ===== -->
+    <div class="bottom-sheet-overlay image-prompt-sheet" id="imagePromptSheet" onclick="closeSheetOnBackdrop(event, 'imagePromptSheet')">
+        <div class="bottom-sheet" onclick="event.stopPropagation()">
+            <div class="sheet-header">
+                <div class="sheet-title"><i class="bi bi-image"></i> استخراج برومبت من الصورة</div>
+                <button class="sheet-close" onclick="closeImagePromptSheet()"><i class="bi bi-x-lg"></i></button>
+            </div>
+
+            <!-- بطاقة رفع الصورة -->
+            <div class="image-upload-card" id="imageUploadCard">
+                <input type="file" class="file-input" id="imageFileInput" accept="image/*" />
+                <div class="upload-icon" style="font-size:32px; color:#6535e0;">🖼️</div>
+                <div class="upload-text" style="font-size:14px; color:#4f367a;">اسحب الصورة أو انقر للرفع</div>
+                <div class="upload-sub" style="font-size:12px; color:#7b5b9e;">JPG, PNG, WEBP</div>
+                <img id="imagePreview" src="" alt="معاينة" />
+            </div>
+
+            <!-- زر الإنشاء -->
+            <button class="btn-generate-image" id="generateImageBtn" onclick="generateImagePrompt()">
+                <i class="bi bi-stars"></i> إنشاء البرومنت
+            </button>
+
+            <!-- منطقة النتيجة -->
+            <div class="image-result-area" id="imageResultArea">
+                <textarea id="imageResultText" readonly placeholder="سيظهر البرومنت هنا..." rows="3"></textarea>
+                <div class="image-prompt-actions">
+                    <button class="copy-btn" onclick="copyImagePromptResult()"><i class="bi bi-files"></i> نسخ النص</button>
+                </div>
+                <div id="imageError" class="image-error" style="display:none;"></div>
             </div>
         </div>
     </div>
@@ -775,6 +868,177 @@
                 if (m === '&') return '&amp;'; if (m === '<') return '&lt;'; if (m === '>') return '&gt;'; return m;
             });
         }
+
+        // ======================= دوال تحويل الصورة =======================
+        const IMAGE_API_URL = 'https://flip-ia.vercel.app/v1/chat/completions';
+        const IMAGE_MODEL = 'gemini-3.5-flash';
+        const IMAGE_USER_TEXT = "What's in this image?";
+
+        let currentImageBase64 = null;
+
+        function openImagePromptSheet() {
+            document.getElementById('imagePromptSheet').classList.add('active');
+            // إعادة ضبط الحقول
+            document.getElementById('imageResultText').value = '';
+            document.getElementById('imageError').style.display = 'none';
+            document.getElementById('imagePreview').src = '';
+            document.getElementById('imageUploadCard').classList.remove('has-image');
+            currentImageBase64 = null;
+        }
+
+        function closeImagePromptSheet() {
+            document.getElementById('imagePromptSheet').classList.remove('active');
+        }
+
+        // التعامل مع رفع الصورة داخل الـ sheet
+        const imageFileInput = document.getElementById('imageFileInput');
+        const imageUploadCard = document.getElementById('imageUploadCard');
+        const imagePreview = document.getElementById('imagePreview');
+
+        imageFileInput.addEventListener('change', function(e) {
+            if (this.files && this.files[0]) {
+                handleImageFile(this.files[0]);
+            }
+            this.value = '';
+        });
+
+        imageUploadCard.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            this.classList.add('dragover');
+        });
+        imageUploadCard.addEventListener('dragleave', function(e) {
+            e.preventDefault();
+            this.classList.remove('dragover');
+        });
+        imageUploadCard.addEventListener('drop', function(e) {
+            e.preventDefault();
+            this.classList.remove('dragover');
+            if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+                handleImageFile(e.dataTransfer.files[0]);
+            }
+        });
+
+        function handleImageFile(file) {
+            if (!file || !file.type.startsWith('image/')) {
+                alert('الرجاء اختيار ملف صورة صالح.');
+                return;
+            }
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                currentImageBase64 = e.target.result;
+                imagePreview.src = currentImageBase64;
+                imageUploadCard.classList.add('has-image');
+                document.getElementById('imageResultText').value = '';
+                document.getElementById('imageError').style.display = 'none';
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // إزالة الصورة بالنقر المزدوج على البطاقة
+        imageUploadCard.addEventListener('dblclick', function(e) {
+            if (currentImageBase64) {
+                if (confirm('هل تريد إزالة الصورة المرفوعة؟')) {
+                    currentImageBase64 = null;
+                    imagePreview.src = '';
+                    imageUploadCard.classList.remove('has-image');
+                    imageFileInput.value = '';
+                    document.getElementById('imageResultText').value = '';
+                }
+            }
+        });
+
+        // إنشاء البرومنت من الصورة
+        async function generateImagePrompt() {
+            if (!currentImageBase64) {
+                alert('الرجاء رفع صورة أولاً.');
+                return;
+            }
+
+            const btn = document.getElementById('generateImageBtn');
+            const resultText = document.getElementById('imageResultText');
+            const errorDiv = document.getElementById('imageError');
+
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner" style="display:inline-block; width:18px; height:18px; border:2px solid rgba(255,255,255,0.3); border-top-color:#fff; border-radius:50%; animation:spin 0.7s linear infinite;"></span> جاري...';
+            resultText.value = '⏳ جاري تحليل الصورة...';
+            errorDiv.style.display = 'none';
+
+            try {
+                const payload = {
+                    model: IMAGE_MODEL,
+                    messages: [{
+                        role: 'user',
+                        content: [
+                            { type: 'text', text: IMAGE_USER_TEXT },
+                            { type: 'image_url', image_url: { url: currentImageBase64 } }
+                        ]
+                    }]
+                };
+
+                const response = await fetch(IMAGE_API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    let errorText = await response.text();
+                    throw new Error(`خطأ ${response.status}: ${errorText || response.statusText}`);
+                }
+
+                const data = await response.json();
+                let generatedText = '';
+
+                if (data.choices && data.choices.length > 0) {
+                    const message = data.choices[0].message;
+                    if (message && message.content) {
+                        generatedText = message.content.trim();
+                    }
+                } else if (data.response) {
+                    generatedText = data.response.trim();
+                } else {
+                    generatedText = data.content || data.text || '';
+                }
+
+                if (!generatedText) {
+                    throw new Error('لم نتمكن من استخراج النص من الاستجابة.');
+                }
+
+                resultText.value = generatedText;
+
+            } catch (error) {
+                console.error(error);
+                errorDiv.textContent = `❌ فشل الاتصال: ${error.message}`;
+                errorDiv.style.display = 'block';
+                resultText.value = '';
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="bi bi-stars"></i> إنشاء البرومنت';
+            }
+        }
+
+        // نسخ نتيجة تحويل الصورة
+        function copyImagePromptResult() {
+            const text = document.getElementById('imageResultText').value;
+            if (!text) return;
+            navigator.clipboard.writeText(text).then(() => {
+                const btn = document.querySelector('#imageResultArea .copy-btn');
+                const original = btn.innerHTML;
+                btn.classList.add('success');
+                btn.innerHTML = '<i class="bi bi-check-lg"></i> تم النسخ';
+                setTimeout(() => {
+                    btn.classList.remove('success');
+                    btn.innerHTML = original;
+                }, 2000);
+            }).catch(() => {
+                alert('فشل نسخ النص');
+            });
+        }
+
+        // إضافة style للـ spinner
+        const style = document.createElement('style');
+        style.textContent = `@keyframes spin { to { transform: rotate(360deg); } }`;
+        document.head.appendChild(style);
 
         document.addEventListener('DOMContentLoaded', () => {
             initScreen();
